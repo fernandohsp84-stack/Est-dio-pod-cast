@@ -3,410 +3,317 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎙️ Estúdio das Historinhas do Miguel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Historinhas do Miguel</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-–sky: #6EC6F5;
-–sun: #FFD166;
-–coral: #FF6B6B;
-–mint: #06D6A0;
-–purple: #845EC2;
-–bg: #FFF8EE;
-–card: #FFFFFF;
-–text: #2D2D2D;
-–soft: #F0E6FF;
+–ap-purple: #B160F5;
+–ap-purple-dark: #8833CC;
+–ap-bg: #0F0F12;
+–ap-surface: #1C1C22;
+–ap-surface2: #28282F;
+–ap-border: rgba(255,255,255,0.08);
+–ap-text: #F2F2F7;
+–ap-text2: #8E8E93;
+–ap-text3: #48484A;
+–ap-green: #30D158;
+–ap-orange: #FF9F0A;
+–ap-blue: #0A84FF;
+–r: 14px;
+–r2: 10px;
 }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { background: var(–ap-bg); }
 
 body {
-font-family: ‘Nunito’, sans-serif;
-background: var(–bg);
-color: var(–text);
+font-family: ‘Inter’, -apple-system, BlinkMacSystemFont, sans-serif;
+background: var(–ap-bg);
+color: var(–ap-text);
 min-height: 100vh;
 overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
 }
 
-/* ── HEADER ── */
+/* HEADER */
 header {
-background: linear-gradient(135deg, var(–purple) 0%, #B39DDB 50%, var(–sky) 100%);
-padding: 24px 20px 32px;
-text-align: center;
-position: relative;
-overflow: hidden;
+padding: env(safe-area-inset-top, 16px) 20px 0;
+background: var(–ap-bg);
+position: sticky; top: 0; z-index: 100;
 }
-header::before {
-content: ‘’;
-position: absolute;
-bottom: -20px; left: 0; right: 0;
-height: 40px;
-background: var(–bg);
-border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+.header-inner {
+display: flex; align-items: center; gap: 14px;
+padding: 16px 0 14px;
+border-bottom: 1px solid var(–ap-border);
 }
-header h1 {
-font-family: ‘Fredoka One’, cursive;
-font-size: clamp(1.8rem, 5vw, 2.8rem);
-color: #fff;
-text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
-letter-spacing: 1px;
+.app-icon {
+width: 44px; height: 44px; flex-shrink: 0;
+background: linear-gradient(145deg, var(–ap-purple), var(–ap-purple-dark));
+border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+font-size: 22px;
+box-shadow: 0 4px 16px rgba(177,96,245,0.4);
 }
-header p {
-color: rgba(255,255,255,0.9);
-font-size: 1rem;
-margin-top: 6px;
-font-weight: 600;
-}
-.stars {
-position: absolute;
-top: 10px; left: 0; right: 0;
-pointer-events: none;
-font-size: 1.2rem;
+.header-text h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+.header-text p  { font-size: 12px; color: var(–ap-text2); margin-top: 1px; font-weight: 500; }
+.header-badge {
+margin-left: auto;
+background: var(–ap-purple); color: #fff;
+font-size: 11px; font-weight: 700;
+padding: 3px 10px; border-radius: 20px;
 }
 
-/* ── LAYOUT ── */
+/* MAIN */
 main {
-max-width: 860px;
-margin: 0 auto;
-padding: 24px 16px 60px;
-display: flex;
-flex-direction: column;
-gap: 20px;
+max-width: 600px; margin: 0 auto;
+padding: 20px 16px 80px;
+display: flex; flex-direction: column; gap: 12px;
+}
+
+.section-label {
+font-size: 11px; font-weight: 700; color: var(–ap-text2);
+letter-spacing: 0.8px; text-transform: uppercase;
+padding: 0 4px; margin-bottom: 2px;
 }
 
 .card {
-background: var(–card);
-border-radius: 20px;
-padding: 22px 20px;
-box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-border: 2px solid transparent;
-transition: border-color .2s;
-}
-.card.active { border-color: var(–purple); }
-
-.card-title {
-font-family: ‘Fredoka One’, cursive;
-font-size: 1.3rem;
-color: var(–purple);
-margin-bottom: 14px;
-display: flex;
-align-items: center;
-gap: 8px;
-}
-.step-badge {
-background: var(–purple);
-color: #fff;
-border-radius: 50%;
-width: 28px; height: 28px;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-font-size: .85rem;
-font-family: ‘Nunito’, sans-serif;
-font-weight: 800;
-flex-shrink: 0;
+background: var(–ap-surface);
+border-radius: var(–r);
+border: 1px solid var(–ap-border);
+overflow: hidden;
 }
 
-/* ── UPLOAD ── */
+/* UPLOAD */
 #drop-zone {
-border: 3px dashed #C4B5FD;
-border-radius: 16px;
-padding: 36px 20px;
-text-align: center;
-cursor: pointer;
-transition: background .2s, border-color .2s;
-background: var(–soft);
+display: flex; flex-direction: column; align-items: center;
+gap: 10px; padding: 36px 20px;
+cursor: pointer; text-align: center;
+border: 1.5px dashed rgba(177,96,245,0.4);
+border-radius: var(–r);
+background: var(–ap-surface);
+transition: background .15s;
 }
-#drop-zone:hover, #drop-zone.drag-over {
-background: #EDE9FF;
-border-color: var(–purple);
+#drop-zone.drag-over, #drop-zone:active { background: rgba(177,96,245,0.08); border-color: var(–ap-purple); }
+.upload-icon-wrap {
+width: 56px; height: 56px; border-radius: 14px;
+background: rgba(177,96,245,0.15);
+display: flex; align-items: center; justify-content: center; font-size: 26px;
 }
-#drop-zone .icon { font-size: 3rem; }
-#drop-zone p { font-weight: 700; color: var(–purple); margin-top: 8px; }
-#drop-zone small { color: #888; font-size: .85rem; }
+#drop-zone h3 { font-size: 15px; font-weight: 700; }
+#drop-zone p  { font-size: 12px; color: var(–ap-text2); }
+.upload-label-btn {
+background: var(–ap-purple); color: #fff;
+font-size: 14px; font-weight: 700;
+padding: 10px 24px; border-radius: 22px;
+cursor: pointer; display: inline-block;
+transition: opacity .15s;
+}
+.upload-label-btn:active { opacity: .75; }
 #file-input { display: none; }
 
-#file-info {
-margin-top: 12px;
-display: none;
-align-items: center;
-gap: 10px;
-background: #F0FFF8;
-border: 2px solid var(–mint);
-border-radius: 12px;
-padding: 10px 14px;
-font-weight: 700;
-color: #065;
+/* FILE LOADED */
+#file-loaded {
+display: none; padding: 14px 16px;
+gap: 12px; align-items: center;
 }
-#file-info .fname { flex: 1; font-size: .9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-thumb {
+width: 44px; height: 44px; flex-shrink: 0;
+background: linear-gradient(145deg, var(–ap-purple), var(–ap-purple-dark));
+border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.file-meta { flex: 1; min-width: 0; }
+.file-name { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-dur  { font-size: 12px; color: var(–ap-text2); margin-top: 2px; }
+.change-btn {
+background: var(–ap-surface2); border: 1px solid var(–ap-border);
+color: var(–ap-purple); font-size: 12px; font-weight: 700;
+padding: 6px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap;
+}
 
-/* ── WAVEFORM ── */
-#waveform-wrap { display: none; }
+/* WAVEFORM */
+#waveform-section { display: none; padding: 0 16px 14px; }
 canvas#waveform {
-width: 100%;
-height: 80px;
-border-radius: 12px;
-background: #1a1040;
-display: block;
-margin-bottom: 10px;
+width: 100%; height: 60px; display: block;
+border-radius: 10px; background: var(–ap-surface2); margin-bottom: 10px;
 }
-.playbar {
-display: flex;
-align-items: center;
-gap: 10px;
-}
+.playbar { display: flex; align-items: center; gap: 10px; }
 .play-btn {
-background: var(–purple);
-border: none;
-border-radius: 50%;
-width: 42px; height: 42px;
-color: #fff;
-font-size: 1.1rem;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: transform .15s, background .2s;
-flex-shrink: 0;
+width: 38px; height: 38px; flex-shrink: 0;
+background: var(–ap-purple); border: none; border-radius: 50%;
+color: #fff; font-size: 14px; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+transition: opacity .15s;
 }
-.play-btn:hover { transform: scale(1.1); background: #6A3FA6; }
-#time-display { font-size: .85rem; color: #666; font-weight: 700; white-space: nowrap; }
+.play-btn:active { opacity: .75; }
 input[type=range].seek {
-flex: 1;
-accent-color: var(–purple);
-height: 4px;
-cursor: pointer;
+flex: 1; height: 3px; cursor: pointer;
+-webkit-appearance: none; appearance: none;
+background: var(–ap-surface2); border-radius: 99px; outline: none;
+}
+input[type=range].seek::-webkit-slider-thumb {
+-webkit-appearance: none; width: 14px; height: 14px;
+border-radius: 50%; background: var(–ap-purple); cursor: pointer;
+}
+#time-display {
+font-size: 11px; color: var(–ap-text2); font-weight: 600;
+white-space: nowrap; min-width: 76px; text-align: right;
+font-variant-numeric: tabular-nums;
 }
 
-/* ── THEME GRID ── */
-.theme-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-gap: 10px;
-}
+/* THEME GRID */
+.theme-grid-wrap { padding: 14px 16px; display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
 .theme-btn {
-border: 2px solid #E0D6FF;
-border-radius: 14px;
-padding: 12px 8px;
-background: #fff;
-cursor: pointer;
-text-align: center;
-transition: all .2s;
-font-family: ‘Nunito’, sans-serif;
-font-size: .85rem;
-font-weight: 700;
-color: #555;
+background: var(–ap-surface2); border: 1.5px solid var(–ap-border);
+border-radius: var(–r2); padding: 12px 6px 10px;
+cursor: pointer; text-align: center; font-family: inherit;
+transition: all .12s;
 }
-.theme-btn .emoji { font-size: 1.8rem; display: block; margin-bottom: 4px; }
-.theme-btn:hover { border-color: var(–purple); transform: translateY(-2px); }
-.theme-btn.selected {
-border-color: var(–purple);
-background: var(–soft);
-color: var(–purple);
-box-shadow: 0 4px 12px rgba(132,94,194,0.2);
-}
+.theme-btn .t-em  { font-size: 1.6rem; display: block; margin-bottom: 5px; }
+.theme-btn .t-lb  { font-size: 11px; font-weight: 600; color: var(–ap-text2); display: block; }
+.theme-btn:active { transform: scale(0.94); }
+.theme-btn.selected { border-color: var(–ap-purple); background: rgba(177,96,245,0.12); }
+.theme-btn.selected .t-lb { color: var(–ap-purple); }
 
-/* ── SLIDERS ── */
-.slider-row {
-display: flex;
-align-items: center;
-gap: 12px;
-margin-bottom: 14px;
+.vol-row {
+display: flex; align-items: center; gap: 10px;
+padding: 0 16px 14px;
 }
-.slider-row label {
-font-weight: 700;
-font-size: .9rem;
-min-width: 160px;
-color: #444;
+.vol-icon { font-size: 15px; }
+input[type=range].ap-range {
+flex: 1; height: 4px; cursor: pointer;
+-webkit-appearance: none; appearance: none;
+background: var(–ap-surface2); border-radius: 99px; outline: none;
 }
-.slider-row label span { font-size: .8rem; color: #888; font-weight: 600; }
-.slider-row input[type=range] {
-flex: 1;
-accent-color: var(–purple);
-height: 6px;
-cursor: pointer;
+input[type=range].ap-range::-webkit-slider-thumb {
+-webkit-appearance: none; width: 18px; height: 18px;
+border-radius: 50%; background: #fff; cursor: pointer;
+box-shadow: 0 1px 6px rgba(0,0,0,0.4);
 }
-.slider-val {
-font-size: .85rem;
-font-weight: 800;
-color: var(–purple);
-min-width: 36px;
-text-align: right;
-}
+.vol-val { font-size: 12px; color: var(–ap-text2); font-weight: 700; min-width: 30px; text-align: right; }
 
-/* ── EFFECTS ── */
-.fx-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-gap: 8px;
-}
+/* SLIDERS */
+.sliders-wrap { padding: 8px 16px 14px; display: flex; flex-direction: column; gap: 18px; }
+.sl-row { display: flex; flex-direction: column; gap: 7px; }
+.sl-hd  { display: flex; justify-content: space-between; align-items: baseline; }
+.sl-label { font-size: 13px; font-weight: 600; }
+.sl-val   { font-size: 13px; font-weight: 700; color: var(–ap-purple); }
+
+/* FX GRID */
+.fx-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; padding: 14px 16px; }
 .fx-btn {
-border: 2px solid #E5E5E5;
-border-radius: 12px;
-padding: 10px 6px;
-background: #fff;
-cursor: pointer;
-text-align: center;
-font-family: ‘Nunito’, sans-serif;
-font-size: .8rem;
-font-weight: 700;
-color: #555;
-transition: all .18s;
-position: relative;
+background: var(–ap-surface2); border: 1.5px solid var(–ap-border);
+border-radius: var(–r2); padding: 10px 4px 8px;
+cursor: pointer; text-align: center; font-family: inherit;
+transition: all .12s; position: relative;
 }
-.fx-btn .emoji { font-size: 1.5rem; display: block; margin-bottom: 3px; }
-.fx-btn:hover { border-color: var(–coral); transform: scale(1.04); }
-.fx-btn.active {
-border-color: var(–coral);
-background: #FFF0F0;
-color: var(–coral);
+.fx-btn .f-em { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+.fx-btn .f-lb { font-size: 10px; font-weight: 600; color: var(–ap-text2); display: block; line-height: 1.2; }
+.fx-btn:active { transform: scale(0.91); }
+.fx-btn.active { border-color: var(–ap-orange); background: rgba(255,159,10,0.12); }
+.fx-btn.active .f-lb { color: var(–ap-orange); }
+.fx-dot {
+position: absolute; top: 5px; right: 5px;
+width: 7px; height: 7px; border-radius: 50%;
+background: var(–ap-orange); display: none;
 }
-.fx-btn .fx-badge {
-position: absolute;
-top: -6px; right: -6px;
-background: var(–coral);
-color: #fff;
-border-radius: 50%;
-width: 18px; height: 18px;
-font-size: .65rem;
-display: none;
-align-items: center;
-justify-content: center;
-}
-.fx-btn.active .fx-badge { display: flex; }
+.fx-btn.active .fx-dot { display: block; }
 
-/* ── SFPLAY TIMELINE ── */
-.sf-timeline {
-display: flex;
-gap: 8px;
-flex-wrap: wrap;
-margin-top: 10px;
+/* TOGGLES */
+.toggle-row {
+display: flex; align-items: center; padding: 14px 16px; gap: 12px;
+border-bottom: 1px solid var(–ap-border);
 }
-.sf-chip {
-background: var(–sun);
-border-radius: 20px;
-padding: 4px 12px;
-font-size: .8rem;
-font-weight: 800;
-color: #5a4000;
-display: flex;
-align-items: center;
-gap: 6px;
-cursor: default;
+.toggle-row:last-child { border-bottom: none; }
+.tg-icon {
+width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+display: flex; align-items: center; justify-content: center; font-size: 16px;
 }
-.sf-chip button {
-background: none;
-border: none;
-font-size: .75rem;
-cursor: pointer;
-color: #5a4000;
-padding: 0;
-line-height: 1;
+.tg-icon.orange { background: rgba(255,159,10,0.18); }
+.tg-icon.blue   { background: rgba(10,132,255,0.18); }
+.tg-body { flex: 1; }
+.tg-title { font-size: 15px; font-weight: 600; }
+.tg-sub   { font-size: 12px; color: var(–ap-text2); margin-top: 1px; }
+.ios-toggle { position: relative; display: inline-block; width: 50px; height: 30px; flex-shrink: 0; }
+.ios-toggle input { opacity: 0; width: 0; height: 0; }
+.ios-slider {
+position: absolute; inset: 0;
+background: var(–ap-surface2); border-radius: 30px;
+cursor: pointer; transition: background .2s;
+border: 1.5px solid var(–ap-border);
 }
+.ios-slider::before {
+content: ‘’; position: absolute;
+width: 24px; height: 24px; left: 2px; top: 1px;
+background: #fff; border-radius: 50%;
+transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.ios-toggle input:checked + .ios-slider { background: var(–ap-green); border-color: var(–ap-green); }
+.ios-toggle input:checked + .ios-slider::before { transform: translateX(20px); }
 
-/* ── PROCESS BTN ── */
-.process-btn {
-width: 100%;
-padding: 18px;
-background: linear-gradient(135deg, var(–purple), var(–coral));
-border: none;
-border-radius: 16px;
-color: #fff;
-font-family: ‘Fredoka One’, cursive;
-font-size: 1.4rem;
-cursor: pointer;
-letter-spacing: 1px;
-box-shadow: 0 6px 20px rgba(132,94,194,0.35);
-transition: transform .15s, box-shadow .15s;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 10px;
+/* PROCESS BTN */
+#proc-btn {
+width: 100%; padding: 16px; border: none; border-radius: var(–r);
+background: linear-gradient(135deg, var(–ap-purple), var(–ap-purple-dark));
+color: #fff; font-family: inherit; font-size: 16px; font-weight: 800;
+cursor: pointer; letter-spacing: -0.2px;
+box-shadow: 0 6px 24px rgba(177,96,245,0.35);
+display: flex; align-items: center; justify-content: center; gap: 8px;
+transition: opacity .15s;
 }
-.process-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(132,94,194,0.4); }
-.process-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+#proc-btn:active { opacity: .85; }
+#proc-btn:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; }
 
-/* ── PROGRESS ── */
-#progress-wrap { display: none; }
-.progress-bar-bg {
-height: 14px;
-background: #EDE9FF;
-border-radius: 99px;
-overflow: hidden;
-margin: 8px 0 6px;
-}
-.progress-bar-fill {
-height: 100%;
-background: linear-gradient(90deg, var(–purple), var(–mint));
-border-radius: 99px;
-transition: width .4s ease;
-width: 0%;
-}
-#progress-label { font-size: .85rem; color: #666; font-weight: 700; }
+/* PROGRESS */
+#progress-wrap { display: none; padding: 16px; }
+.prog-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.prog-title { font-size: 14px; font-weight: 700; }
+.prog-pct   { font-size: 14px; font-weight: 700; color: var(–ap-purple); }
+.prog-bg    { height: 6px; background: var(–ap-surface2); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+.prog-fill  { height: 100%; border-radius: 99px; transition: width .4s ease; width: 0%; background: linear-gradient(90deg, var(–ap-purple), var(–ap-blue)); }
+#progress-label { font-size: 12px; color: var(–ap-text2); font-weight: 500; }
 
-/* ── OUTPUT ── */
+/* OUTPUT */
 #output-wrap { display: none; }
-.output-card {
-background: linear-gradient(135deg, #F0FFF8, #E8F4FF);
-border: 2px solid var(–mint);
-border-radius: 20px;
-padding: 22px 20px;
-text-align: center;
+.out-inner { padding: 22px 16px; text-align: center; }
+.out-art {
+width: 80px; height: 80px; border-radius: 18px; margin: 0 auto 14px;
+background: linear-gradient(145deg, var(–ap-purple), var(–ap-purple-dark));
+display: flex; align-items: center; justify-content: center; font-size: 38px;
+box-shadow: 0 8px 28px rgba(177,96,245,0.4);
 }
-.output-card .big-emoji { font-size: 3.5rem; }
-.output-card h3 {
-font-family: ‘Fredoka One’, cursive;
-font-size: 1.4rem;
-color: var(–purple);
-margin: 8px 0 4px;
-}
-.output-card p { font-size: .9rem; color: #555; margin-bottom: 14px; }
+.out-inner h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.3px; }
+.out-inner p  { font-size: 13px; color: var(–ap-text2); margin-bottom: 16px; }
+audio#out-player { width: 100%; margin-bottom: 16px; border-radius: 10px; }
 .dl-btn {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: var(–mint);
-color: #fff;
-border: none;
-border-radius: 14px;
-padding: 13px 28px;
-font-family: ‘Fredoka One’, cursive;
-font-size: 1.1rem;
-cursor: pointer;
-text-decoration: none;
-transition: transform .15s, background .15s;
-box-shadow: 0 4px 14px rgba(6,214,160,0.35);
+display: inline-flex; align-items: center; gap: 8px;
+background: var(–ap-green); color: #fff; text-decoration: none;
+border: none; border-radius: 12px; padding: 13px 28px;
+font-family: inherit; font-size: 15px; font-weight: 800;
+box-shadow: 0 4px 16px rgba(48,209,88,0.3); cursor: pointer;
+transition: opacity .15s;
 }
-.dl-btn:hover { transform: translateY(-2px); background: #05C090; }
-audio#out-player {
-width: 100%;
-margin-top: 14px;
-border-radius: 12px;
-}
+.dl-btn:active { opacity: .8; }
 
-/* ── TOAST ── */
+/* TOAST */
 #toast {
 position: fixed;
-bottom: 20px; left: 50%;
+bottom: calc(env(safe-area-inset-bottom,0px) + 20px); left: 50%;
 transform: translateX(-50%) translateY(80px);
-background: #333;
-color: #fff;
-padding: 10px 22px;
-border-radius: 30px;
-font-size: .9rem;
-font-weight: 700;
-transition: transform .3s;
-z-index: 999;
-pointer-events: none;
+background: rgba(44,44,46,0.95); color: #fff;
+padding: 10px 20px; border-radius: 30px;
+font-size: 13px; font-weight: 600;
+transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+z-index: 999; pointer-events: none; white-space: nowrap;
+backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+border: 1px solid rgba(255,255,255,0.1);
 }
 #toast.show { transform: translateX(-50%) translateY(0); }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 500px) {
-.slider-row label { min-width: 120px; font-size: .82rem; }
-.theme-grid { grid-template-columns: repeat(3, 1fr); }
+@media (min-width:480px) {
+.fx-grid { grid-template-columns: repeat(6,1fr); }
+.theme-grid-wrap { grid-template-columns: repeat(4,1fr); }
 }
 </style>
 
@@ -414,29 +321,39 @@ pointer-events: none;
 <body>
 
 <header>
-  <div class="stars">✨ 🌟 ⭐ 🌟 ✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✨ 🌟 ⭐</div>
-  <h1>🎙️ Estúdio das Historinhas do Miguel</h1>
-  <p>Transforme sua leitura em um podcast incrível! 🚀</p>
+  <div class="header-inner">
+    <div class="app-icon">🎙️</div>
+    <div class="header-text">
+      <h1>Historinhas do Miguel</h1>
+      <p>Estúdio de Podcast</p>
+    </div>
+    <span class="header-badge">ESTÚDIO</span>
+  </div>
 </header>
 
 <main>
 
-  <!-- STEP 1: UPLOAD -->
+  <!-- 1. GRAVAÇÃO -->
 
-  <div class="card active" id="card-upload">
-    <div class="card-title"><span class="step-badge">1</span> Suba sua gravação</div>
-    <div id="drop-zone" onclick="document.getElementById('file-input').click()">
-      <div class="icon">🎤</div>
-      <p>Clique ou arraste seu áudio aqui</p>
-      <small>MP3, WAV, M4A, OGG, WebM • Até 200 MB</small>
+  <div class="section-label">1 — Gravação</div>
+  <div id="drop-zone" onclick="document.getElementById('file-input').click()">
+    <div class="upload-icon-wrap">🎤</div>
+    <h3>Adicionar gravação</h3>
+    <p>MP3 · WAV · M4A · AAC · OGG</p>
+    <span class="upload-label-btn">Escolher arquivo</span>
+  </div>
+  <input type="file" id="file-input" accept="audio/*,.m4a,.mp3,.wav,.aac,.ogg,.webm,.caf">
+
+  <div class="card" id="file-loaded">
+    <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
+      <div class="file-thumb">🎵</div>
+      <div class="file-meta">
+        <div class="file-name" id="fname-label">—</div>
+        <div class="file-dur"  id="dur-label">—</div>
+      </div>
+      <button class="change-btn" onclick="resetFile()">Trocar</button>
     </div>
-    <input type="file" id="file-input" accept="audio/*">
-    <div id="file-info">
-      <span>🎵</span>
-      <span class="fname" id="fname-label"></span>
-      <span id="dur-label" style="color:#888;font-size:.85rem;"></span>
-    </div>
-    <div id="waveform-wrap" style="margin-top:14px;">
+    <div id="waveform-section">
       <canvas id="waveform"></canvas>
       <div class="playbar">
         <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
@@ -446,746 +363,530 @@ pointer-events: none;
     </div>
   </div>
 
-  <!-- STEP 2: THEME -->
+  <!-- 2. TRILHA -->
 
-  <div class="card" id="card-theme">
-    <div class="card-title"><span class="step-badge">2</span> Escolha o tema da trilha</div>
-    <div class="theme-grid" id="theme-grid"></div>
-    <div class="slider-row" style="margin-top:16px;">
-      <label>Volume da trilha <span>(fundo)</span></label>
-      <input type="range" id="bg-vol" min="0" max="100" value="25">
-      <span class="slider-val" id="bg-vol-val">25%</span>
+  <div class="section-label">2 — Trilha de fundo</div>
+  <div class="card">
+    <div class="theme-grid-wrap" id="theme-grid"></div>
+    <div class="vol-row">
+      <span class="vol-icon">🔈</span>
+      <input type="range" class="ap-range" id="bg-vol" min="0" max="100" value="25">
+      <span class="vol-icon">🔊</span>
+      <span class="vol-val" id="bg-vol-val">25%</span>
     </div>
   </div>
 
-  <!-- STEP 3: AUDIO FX -->
+  <!-- 3. ÁUDIO -->
 
-  <div class="card" id="card-fx">
-    <div class="card-title"><span class="step-badge">3</span> Ajuste de áudio</div>
-    <div class="slider-row">
-      <label>Volume da voz</label>
-      <input type="range" id="voice-vol" min="50" max="300" value="150">
-      <span class="slider-val" id="voice-vol-val">150%</span>
-    </div>
-    <div class="slider-row">
-      <label>Redução de ruído <span>(filtro)</span></label>
-      <input type="range" id="noise-red" min="0" max="100" value="60">
-      <span class="slider-val" id="noise-red-val">60%</span>
-    </div>
-    <div class="slider-row">
-      <label>Reverb <span>(ambiente)</span></label>
-      <input type="range" id="reverb" min="0" max="100" value="15">
-      <span class="slider-val" id="reverb-val">15%</span>
-    </div>
-    <div class="slider-row">
-      <label>Compressão <span>(equaliza)</span></label>
-      <input type="range" id="compress" min="0" max="100" value="70">
-      <span class="slider-val" id="compress-val">70%</span>
+  <div class="section-label">3 — Ajuste de áudio</div>
+  <div class="card">
+    <div class="sliders-wrap">
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🎤 Volume da voz</span><span class="sl-val" id="voice-vol-val">150%</span></div>
+        <input type="range" class="ap-range" id="voice-vol" min="50" max="300" value="150">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🧹 Redução de ruído</span><span class="sl-val" id="noise-red-val">60%</span></div>
+        <input type="range" class="ap-range" id="noise-red" min="0" max="100" value="60">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🌀 Reverb</span><span class="sl-val" id="reverb-val">15%</span></div>
+        <input type="range" class="ap-range" id="reverb" min="0" max="100" value="15">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">⚡ Compressão</span><span class="sl-val" id="compress-val">70%</span></div>
+        <input type="range" class="ap-range" id="compress" min="0" max="100" value="70">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🎚️ Fade in</span><span class="sl-val" id="fade-in-val">2.0s</span></div>
+        <input type="range" class="ap-range" id="fade-in" min="0" max="5" value="2" step="0.5">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🎚️ Fade out</span><span class="sl-val" id="fade-out-val">3.0s</span></div>
+        <input type="range" class="ap-range" id="fade-out" min="0" max="5" value="3" step="0.5">
+      </div>
     </div>
   </div>
 
-  <!-- STEP 4: SOUND FX -->
+  <!-- 4. EFEITOS -->
 
-  <div class="card" id="card-sfx">
-    <div class="card-title"><span class="step-badge">4</span> Efeitos sonoros & onomatopeias</div>
-    <p style="font-size:.85rem;color:#777;margin-bottom:10px;">Clique para marcar os efeitos que serão adicionados automaticamente na mixagem</p>
+  <div class="section-label">4 — Efeitos sonoros</div>
+  <div class="card">
     <div class="fx-grid" id="fx-grid"></div>
-    <div id="sf-added" style="margin-top:10px;"></div>
   </div>
 
-  <!-- STEP 5: EXTRAS -->
+  <!-- 5. VINHETAS -->
 
-  <div class="card" id="card-extra">
-    <div class="card-title"><span class="step-badge">5</span> Acabamento final</div>
-    <div class="slider-row">
-      <label>Fade in <span>(abertura)</span></label>
-      <input type="range" id="fade-in" min="0" max="5" value="2" step="0.5">
-      <span class="slider-val" id="fade-in-val">2s</span>
+  <div class="section-label">5 — Vinhetas</div>
+  <div class="card">
+    <div class="toggle-row">
+      <div class="tg-icon orange">🎺</div>
+      <div class="tg-body">
+        <div class="tg-title">Vinheta de abertura</div>
+        <div class="tg-sub">Toque musical antes da narração</div>
+      </div>
+      <label class="ios-toggle"><input type="checkbox" id="add-intro" checked><span class="ios-slider"></span></label>
     </div>
-    <div class="slider-row">
-      <label>Fade out <span>(encerramento)</span></label>
-      <input type="range" id="fade-out" min="0" max="5" value="3" step="0.5">
-      <span class="slider-val" id="fade-out-val">3s</span>
-    </div>
-    <div style="margin-bottom:10px;">
-      <label style="font-weight:700;font-size:.9rem;color:#444;display:flex;align-items:center;gap:8px;cursor:pointer;">
-        <input type="checkbox" id="add-intro" checked style="width:18px;height:18px;accent-color:var(--purple);">
-        Adicionar vinheta de abertura 🎺
-      </label>
-    </div>
-    <div>
-      <label style="font-weight:700;font-size:.9rem;color:#444;display:flex;align-items:center;gap:8px;cursor:pointer;">
-        <input type="checkbox" id="add-outro" checked style="width:18px;height:18px;accent-color:var(--purple);">
-        Adicionar vinheta de encerramento 🌙
-      </label>
+    <div class="toggle-row">
+      <div class="tg-icon blue">🌙</div>
+      <div class="tg-body">
+        <div class="tg-title">Vinheta de encerramento</div>
+        <div class="tg-sub">Toque musical ao final</div>
+      </div>
+      <label class="ios-toggle"><input type="checkbox" id="add-outro" checked><span class="ios-slider"></span></label>
     </div>
   </div>
 
-  <!-- PROCESS -->
+  <!-- PRODUZIR -->
 
-  <button class="process-btn" id="proc-btn" onclick="processAudio()" disabled>
-    ✨ Produzir meu Podcast! 🎙️
+  <button id="proc-btn" onclick="processAudio()" disabled>
+    ✨ Produzir Podcast
   </button>
 
-  <!-- PROGRESS -->
+  <!-- PROGRESSO -->
 
   <div class="card" id="progress-wrap">
-    <div class="card-title">🔄 Processando...</div>
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-fill"></div></div>
+    <div class="prog-hd">
+      <span class="prog-title">Processando...</span>
+      <span class="prog-pct" id="prog-pct">0%</span>
+    </div>
+    <div class="prog-bg"><div class="prog-fill" id="prog-fill"></div></div>
     <div id="progress-label">Preparando...</div>
   </div>
 
   <!-- OUTPUT -->
 
-  <div id="output-wrap">
-    <div class="output-card">
-      <div class="big-emoji">🎉</div>
-      <h3>Seu podcast está pronto!</h3>
-      <p>Ouça abaixo e depois baixe para subir no Spotify 🚀</p>
+  <div class="card" id="output-wrap">
+    <div class="out-inner">
+      <div class="out-art">🎉</div>
+      <h3>Podcast pronto!</h3>
+      <p>Ouça abaixo e baixe para o Spotify 🚀</p>
       <audio id="out-player" controls></audio>
-      <br><br>
-      <a id="dl-link" class="dl-btn" download="meu-podcast.wav">⬇️ Baixar WAV</a>
+      <br>
+      <a id="dl-link" class="dl-btn" download="historinhas-miguel.wav">⬇ Baixar WAV</a>
     </div>
   </div>
 
 </main>
-
 <div id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-//  DATA
-// ═══════════════════════════════════════════════
+/* ── DATA ── */
 const THEMES = [
-  { id:'none',    emoji:'🔇', label:'Sem trilha',    color:null },
-  { id:'forest',  emoji:'🌲', label:'Floresta',      color:'#2d8a4e' },
-  { id:'ocean',   emoji:'🌊', label:'Oceano',        color:'#1e6fa8' },
-  { id:'space',   emoji:'🚀', label:'Espaço',        color:'#3d1f8a' },
-  { id:'castle',  emoji:'🏰', label:'Castelo',       color:'#8a5a1f' },
-  { id:'rain',    emoji:'🌧️', label:'Chuva',         color:'#4a6d8a' },
-  { id:'farm',    emoji:'🐄', label:'Fazenda',       color:'#6a8a2d' },
-  { id:'magic',   emoji:'🪄', label:'Magia',         color:'#7a1f8a' },
-  { id:'sleep',   emoji:'😴', label:'Hora de Dormir',color:'#2d3d6a' },
-  { id:'adv',     emoji:'🗺️', label:'Aventura',      color:'#8a3d1f' },
-  { id:'joy',     emoji:'🎡', label:'Alegre',        color:'#8a7a1f' },
-  { id:'mystery', emoji:'🔍', label:'Mistério',      color:'#1f5a6a' },
+  {id:'none',    e:'🔇', l:'Sem trilha'},
+  {id:'forest',  e:'🌲', l:'Floresta'},
+  {id:'ocean',   e:'🌊', l:'Oceano'},
+  {id:'space',   e:'🚀', l:'Espaço'},
+  {id:'castle',  e:'🏰', l:'Castelo'},
+  {id:'rain',    e:'🌧️', l:'Chuva'},
+  {id:'magic',   e:'🪄', l:'Magia'},
+  {id:'sleep',   e:'😴', l:'Dormir'},
+  {id:'adv',     e:'🗺️', l:'Aventura'},
+  {id:'joy',     e:'🎡', l:'Alegre'},
+  {id:'farm',    e:'🐄', l:'Fazenda'},
+  {id:'mystery', e:'🔍', l:'Mistério'},
 ];
-
 const SFX = [
-  { id:'stars',   emoji:'⭐', label:'Magia/Estrelas' },
-  { id:'laugh',   emoji:'😂', label:'Risada' },
-  { id:'wow',     emoji:'😮', label:'Uau!' },
-  { id:'drum',    emoji:'🥁', label:'Bumbo' },
-  { id:'bell',    emoji:'🔔', label:'Sino' },
-  { id:'wind',    emoji:'💨', label:'Vento' },
-  { id:'pop',     emoji:'🎈', label:'Pop!' },
-  { id:'tada',    emoji:'🎉', label:'Tadaaa!' },
-  { id:'horse',   emoji:'🐴', label:'Cavalos' },
-  { id:'bird',    emoji:'🐦', label:'Passarinhos' },
-  { id:'thunder', emoji:'⚡', label:'Trovão' },
-  { id:'magic2',  emoji:'🪄', label:'Encantamento' },
+  {id:'stars', e:'⭐', l:'Estrelas'}, {id:'laugh', e:'😂', l:'Risada'},
+  {id:'wow',   e:'😮', l:'Uau!'},    {id:'drum',  e:'🥁', l:'Bumbo'},
+  {id:'bell',  e:'🔔', l:'Sino'},    {id:'wind',  e:'💨', l:'Vento'},
+  {id:'pop',   e:'🎈', l:'Pop!'},    {id:'tada',  e:'🎉', l:'Tadaaa'},
+  {id:'horse', e:'🐴', l:'Cavalos'}, {id:'bird',  e:'🐦', l:'Pássaros'},
+  {id:'thunder',e:'⚡',l:'Trovão'},  {id:'magic2',e:'✨', l:'Encanto'},
 ];
 
-// ═══════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════
-let audioCtx = null;
-let sourceBuffer = null;
-let audioEl = null;
-let selectedTheme = 'none';
-let activeFX = new Set();
-let isPlaying = false;
-let playSource = null;
-let startedAt = 0;
-let pausedAt = 0;
+/* ── STATE ── */
+let audioCtx=null, sourceBuffer=null, selectedTheme='none';
+let activeFX=new Set(), isPlaying=false;
+let playSource=null, startedAt=0, pausedAt=0, seekRAF=null;
 
-// ═══════════════════════════════════════════════
-//  INIT UI
-// ═══════════════════════════════════════════════
-function buildThemeGrid() {
-  const g = document.getElementById('theme-grid');
-  THEMES.forEach(t => {
-    const b = document.createElement('button');
-    b.className = 'theme-btn' + (t.id === 'none' ? ' selected' : '');
-    b.innerHTML = `<span class="emoji">${t.emoji}</span>${t.label}`;
-    b.onclick = () => {
-      document.querySelectorAll('.theme-btn').forEach(x => x.classList.remove('selected'));
-      b.classList.add('selected');
-      selectedTheme = t.id;
+/* ── BUILD UI ── */
+function buildThemeGrid(){
+  const g=document.getElementById('theme-grid');
+  THEMES.forEach(t=>{
+    const b=document.createElement('button');
+    b.className='theme-btn'+(t.id==='none'?' selected':'');
+    b.innerHTML=`<span class="t-em">${t.e}</span><span class="t-lb">${t.l}</span>`;
+    b.onclick=()=>{document.querySelectorAll('.theme-btn').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selectedTheme=t.id;};
+    g.appendChild(b);
+  });
+}
+function buildFxGrid(){
+  const g=document.getElementById('fx-grid');
+  SFX.forEach(fx=>{
+    const b=document.createElement('button');
+    b.className='fx-btn'; b.id='fx-'+fx.id;
+    b.innerHTML=`<span class="f-em">${fx.e}</span><span class="f-lb">${fx.l}</span><span class="fx-dot"></span>`;
+    b.onclick=()=>{
+      if(activeFX.has(fx.id)){activeFX.delete(fx.id);b.classList.remove('active');}
+      else{activeFX.add(fx.id);b.classList.add('active');}
     };
     g.appendChild(b);
   });
 }
-
-function buildFxGrid() {
-  const g = document.getElementById('fx-grid');
-  SFX.forEach(fx => {
-    const b = document.createElement('button');
-    b.className = 'fx-btn';
-    b.id = 'fx-' + fx.id;
-    b.innerHTML = `<span class="emoji">${fx.emoji}</span>${fx.label}<span class="fx-badge">✓</span>`;
-    b.onclick = () => {
-      if (activeFX.has(fx.id)) {
-        activeFX.delete(fx.id);
-        b.classList.remove('active');
-      } else {
-        activeFX.add(fx.id);
-        b.classList.add('active');
-      }
-    };
-    g.appendChild(b);
+function bindSliders(){
+  [['bg-vol','%'],['voice-vol','%'],['noise-red','%'],['reverb','%'],['compress','%']].forEach(([id,u])=>{
+    const el=document.getElementById(id),val=document.getElementById(id+'-val');
+    el.addEventListener('input',()=>val.textContent=el.value+u);
+  });
+  ['fade-in','fade-out'].forEach(id=>{
+    const el=document.getElementById(id),val=document.getElementById(id+'-val');
+    el.addEventListener('input',()=>val.textContent=parseFloat(el.value).toFixed(1)+'s');
   });
 }
 
-function bindSliders() {
-  const sliders = [
-    ['bg-vol','%'],['voice-vol','%'],['noise-red','%'],
-    ['reverb','%'],['compress','%'],['fade-in','s'],['fade-out','s']
-  ];
-  sliders.forEach(([id, unit]) => {
-    const el = document.getElementById(id);
-    const val = document.getElementById(id+'-val');
-    el.oninput = () => val.textContent = el.value + unit;
+/* ── FILE HANDLING (Safari iOS safe) ── */
+function setupFileInput(){
+  const fi=document.getElementById('file-input');
+  const dz=document.getElementById('drop-zone');
+  // Use addEventListener (not .onchange) — more reliable on iOS
+  fi.addEventListener('change',function(){
+    if(this.files&&this.files[0]) loadFile(this.files[0]);
+  });
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+  dz.addEventListener('drop',e=>{
+    e.preventDefault(); dz.classList.remove('drag-over');
+    if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
   });
 }
 
-// ═══════════════════════════════════════════════
-//  FILE HANDLING
-// ═══════════════════════════════════════════════
-function setupFileInput() {
-  const fi = document.getElementById('file-input');
-  const dz = document.getElementById('drop-zone');
-
-  fi.onchange = e => loadFile(e.target.files[0]);
-
-  dz.ondragover = e => { e.preventDefault(); dz.classList.add('drag-over'); };
-  dz.ondragleave = () => dz.classList.remove('drag-over');
-  dz.ondrop = e => {
-    e.preventDefault();
-    dz.classList.remove('drag-over');
-    const f = e.dataTransfer.files[0];
-    if (f && f.type.startsWith('audio/')) loadFile(f);
-    else toast('⚠️ Por favor, suba um arquivo de áudio');
-  };
+function resetFile(){
+  if(isPlaying) stopPreview();
+  sourceBuffer=null; pausedAt=0;
+  try{document.getElementById('file-input').value='';}catch(e){}
+  document.getElementById('drop-zone').style.display='';
+  document.getElementById('file-loaded').style.display='none';
+  document.getElementById('waveform-section').style.display='none';
+  document.getElementById('proc-btn').disabled=true;
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('progress-wrap').style.display='none';
 }
 
-async function loadFile(file) {
-  if (!file) return;
-  toast('📂 Carregando áudio...');
-  document.getElementById('fname-label').textContent = file.name;
-  document.getElementById('file-info').style.display = 'flex';
+async function loadFile(file){
+  toast('📂 Carregando...');
+  document.getElementById('fname-label').textContent=file.name;
+  document.getElementById('dur-label').textContent=formatSize(file.size);
+  document.getElementById('drop-zone').style.display='none';
+  document.getElementById('file-loaded').style.display='block';
+  document.getElementById('waveform-section').style.display='none';
 
-  const arrayBuf = await file.arrayBuffer();
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  sourceBuffer = await audioCtx.decodeAudioData(arrayBuf);
-
-  const dur = sourceBuffer.duration;
-  document.getElementById('dur-label').textContent = formatTime(dur);
-  document.getElementById('seek-bar').max = dur;
-
-  drawWaveform(sourceBuffer);
-  document.getElementById('waveform-wrap').style.display = 'block';
-  document.getElementById('proc-btn').disabled = false;
-  document.getElementById('card-upload').classList.add('active');
-  toast('✅ Áudio carregado!');
-}
-
-// ═══════════════════════════════════════════════
-//  WAVEFORM
-// ═══════════════════════════════════════════════
-function drawWaveform(buffer) {
-  const canvas = document.getElementById('waveform');
-  const ctx = canvas.getContext('2d');
-  canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-  canvas.height = 80 * window.devicePixelRatio;
-  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  const W = canvas.offsetWidth, H = 80;
-
-  const data = buffer.getChannelData(0);
-  const step = Math.ceil(data.length / W);
-  ctx.clearRect(0,0,W,H);
-
-  const grad = ctx.createLinearGradient(0,0,W,0);
-  grad.addColorStop(0,'#B39DDB');
-  grad.addColorStop(0.5,'#845EC2');
-  grad.addColorStop(1,'#FF6B6B');
-  ctx.fillStyle = grad;
-
-  for (let i=0;i<W;i++) {
-    let max = 0;
-    for (let j=0;j<step;j++) {
-      const v = Math.abs(data[i*step+j] || 0);
-      if (v > max) max = v;
+  try{
+    // Safari iOS: AudioContext MUST be created inside user gesture handler
+    if(!audioCtx){
+      audioCtx=new(window.AudioContext||window.webkitAudioContext)({sampleRate:44100});
     }
-    const h = Math.max(2, max * H);
-    ctx.fillRect(i, (H-h)/2, 1, h);
+    // Resume if suspended (iOS auto-suspends)
+    if(audioCtx.state==='suspended') await audioCtx.resume();
+
+    const arrayBuf=await file.arrayBuffer();
+
+    // Safari has buggy Promise-based decodeAudioData — use callback form
+    sourceBuffer=await new Promise((resolve,reject)=>{
+      audioCtx.decodeAudioData(
+        arrayBuf,
+        buf=>resolve(buf),
+        err=>reject(new Error('Decode failed: '+err))
+      );
+    });
+
+    const dur=sourceBuffer.duration;
+    document.getElementById('dur-label').textContent=formatTime(dur)+' · '+formatSize(file.size);
+    const sb=document.getElementById('seek-bar'); sb.max=dur; sb.value=0;
+    drawWaveform(sourceBuffer);
+    document.getElementById('waveform-section').style.display='block';
+    document.getElementById('proc-btn').disabled=false;
+    toast('✅ Áudio pronto!');
+
+  }catch(err){
+    console.error('loadFile error:',err);
+    toast('❌ Não foi possível carregar. Tente exportar como MP3.');
+    resetFile();
   }
 }
 
-// ═══════════════════════════════════════════════
-//  PREVIEW PLAYBACK
-// ═══════════════════════════════════════════════
-function togglePlay() {
-  if (!sourceBuffer) return;
-  if (isPlaying) stopPreview();
-  else startPreview();
+/* ── WAVEFORM ── */
+function drawWaveform(buf){
+  const canvas=document.getElementById('waveform');
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth, H=60;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const data=buf.getChannelData(0);
+  const step=Math.ceil(data.length/W);
+  const grad=ctx.createLinearGradient(0,0,W,0);
+  grad.addColorStop(0,'#B160F5'); grad.addColorStop(0.5,'#8833CC'); grad.addColorStop(1,'#0A84FF');
+  ctx.fillStyle=grad;
+  for(let i=0;i<W;i++){
+    let max=0;
+    for(let j=0;j<step;j++){const v=Math.abs(data[i*step+j]||0);if(v>max)max=v;}
+    const h=Math.max(2,max*H*0.9);
+    ctx.fillRect(i,(H-h)/2,1,h);
+  }
 }
 
-function startPreview() {
-  if (!audioCtx) return;
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  playSource = audioCtx.createBufferSource();
-  playSource.buffer = sourceBuffer;
+/* ── PLAYBACK ── */
+function togglePlay(){if(!sourceBuffer)return;if(isPlaying)stopPreview();else startPreview();}
+function startPreview(){
+  if(!audioCtx||!sourceBuffer)return;
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  playSource=audioCtx.createBufferSource();
+  playSource.buffer=sourceBuffer;
   playSource.connect(audioCtx.destination);
-  startedAt = audioCtx.currentTime - pausedAt;
-  playSource.start(0, pausedAt);
-  isPlaying = true;
-  document.getElementById('play-btn').textContent = '⏸';
-  playSource.onended = () => {
-    isPlaying = false;
-    pausedAt = 0;
-    document.getElementById('play-btn').textContent = '▶';
-    document.getElementById('seek-bar').value = 0;
+  startedAt=audioCtx.currentTime-pausedAt;
+  playSource.start(0,pausedAt);
+  isPlaying=true;
+  document.getElementById('play-btn').textContent='⏸';
+  playSource.onended=()=>{
+    isPlaying=false; pausedAt=0;
+    document.getElementById('play-btn').textContent='▶';
+    document.getElementById('seek-bar').value=0;
+    if(sourceBuffer) document.getElementById('time-display').textContent='0:00 / '+formatTime(sourceBuffer.duration);
+    if(seekRAF)cancelAnimationFrame(seekRAF);
   };
   updateSeek();
 }
-
-function stopPreview() {
-  if (playSource) { try { playSource.stop(); } catch(e){} }
-  pausedAt = audioCtx.currentTime - startedAt;
-  isPlaying = false;
-  document.getElementById('play-btn').textContent = '▶';
+function stopPreview(){
+  if(playSource){try{playSource.stop();}catch(e){}}
+  pausedAt=audioCtx?Math.min(audioCtx.currentTime-startedAt,sourceBuffer?sourceBuffer.duration:0):0;
+  isPlaying=false;
+  document.getElementById('play-btn').textContent='▶';
+  if(seekRAF)cancelAnimationFrame(seekRAF);
+}
+function updateSeek(){
+  if(!isPlaying)return;
+  const cur=audioCtx.currentTime-startedAt;
+  document.getElementById('seek-bar').value=Math.min(cur,sourceBuffer.duration);
+  document.getElementById('time-display').textContent=formatTime(cur)+' / '+formatTime(sourceBuffer.duration);
+  seekRAF=requestAnimationFrame(updateSeek);
 }
 
-function updateSeek() {
-  if (!isPlaying) return;
-  const cur = audioCtx.currentTime - startedAt;
-  document.getElementById('seek-bar').value = cur;
-  document.getElementById('time-display').textContent =
-    formatTime(cur) + ' / ' + formatTime(sourceBuffer.duration);
-  requestAnimationFrame(updateSeek);
-}
+/* ── PROCESS ── */
+async function processAudio(){
+  if(!sourceBuffer){toast('⚠️ Suba um áudio primeiro!');return;}
+  if(isPlaying)stopPreview();
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('seek-bar').oninput = function() {
-    pausedAt = parseFloat(this.value);
-    if (isPlaying) { stopPreview(); startPreview(); }
-  };
-});
+  const pw=document.getElementById('progress-wrap');
+  pw.style.display='block';
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('proc-btn').disabled=true;
+  pw.scrollIntoView({behavior:'smooth',block:'nearest'});
 
-// ═══════════════════════════════════════════════
-//  AUDIO SYNTHESIS HELPERS
-// ═══════════════════════════════════════════════
-function generateThemeTone(ctx, duration, theme) {
-  if (theme === 'none') return null;
-
-  const buf = ctx.createBuffer(2, ctx.sampleRate * duration, ctx.sampleRate);
-
-  const configs = {
-    forest:  { base:220, harmonics:[1,1.5,2,3],   amp:.06 },
-    ocean:   { base:110, harmonics:[1,2,3,4.1],    amp:.08 },
-    space:   { base:55,  harmonics:[1,2,3.7,5.1],  amp:.05 },
-    castle:  { base:165, harmonics:[1,2,3,4],      amp:.07 },
-    rain:    { base:0,   harmonics:[],              amp:.04, noise:true },
-    farm:    { base:196, harmonics:[1,2,3,4,5],    amp:.06 },
-    magic:   { base:440, harmonics:[1,1.25,1.5,2], amp:.05 },
-    sleep:   { base:80,  harmonics:[1,2,3],         amp:.04 },
-    adv:     { base:130, harmonics:[1,2,3,4],       amp:.07 },
-    joy:     { base:261, harmonics:[1,2,3,4,5,6],  amp:.06 },
-    mystery: { base:98,  harmonics:[1,1.7,2.5,3.9],amp:.05 },
-  };
-  const cfg = configs[theme] || configs.forest;
-
-  for (let ch=0;ch<2;ch++) {
-    const d = buf.getChannelData(ch);
-    const sr = ctx.sampleRate;
-    for (let i=0;i<d.length;i++) {
-      let s = 0;
-      if (cfg.noise) {
-        s = (Math.random()*2-1) * cfg.amp;
-        // low-pass simulation
-        if (i>0) s = d[i-1]*0.95 + s*0.05;
-      } else {
-        cfg.harmonics.forEach((h,idx) => {
-          const f = cfg.base * h;
-          const a = cfg.amp / (idx+1);
-          const lfo = 1 + 0.02 * Math.sin(2*Math.PI*0.3*i/sr);
-          s += a * Math.sin(2*Math.PI*f*i/sr) * lfo;
-        });
-      }
-      // fade in/out for background
-      const fi = Math.min(i/(sr*2), 1);
-      const fo = Math.min((d.length-i)/(sr*2), 1);
-      d[i] = s * fi * fo;
-    }
-  }
-  return buf;
-}
-
-function generateSFXTone(ctx, fxId) {
-  const sr = ctx.sampleRate;
-  const dur = 1.2;
-  const buf = ctx.createBuffer(1, sr*dur, sr);
-  const d = buf.getChannelData(0);
-
-  const sfxMap = {
-    stars:   () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(1000+500*Math.sin(5*t))*t)*Math.exp(-3*t)*0.4; } },
-    laugh:   () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=(Math.random()*2-1)*Math.exp(-4*t)*0.5*(1+0.8*Math.sin(12*2*Math.PI*t)); } },
-    wow:     () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(300+200*t)*t)*Math.exp(-2.5*t)*0.5; } },
-    drum:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=(Math.sin(2*Math.PI*60*t)*Math.exp(-10*t)+(Math.random()*2-1)*Math.exp(-20*t))*0.6; } },
-    bell:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*880*t)*Math.exp(-4*t)*0.5; } },
-    wind:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=(Math.random()*2-1)*0.15*Math.exp(-0.5*t)*(1+Math.sin(2*Math.PI*0.5*t)); } },
-    pop:     () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(800-600*t)*t)*Math.exp(-15*t)*0.6; } },
-    tada:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; const f=523+261*(t>0.3?1:0)+(t>0.6?261:0); d[i]=Math.sin(2*Math.PI*f*t)*0.4*(t<0.1?t/0.1:Math.exp(-1*(t-0.1))); } },
-    horse:   () => { for(let i=0;i<d.length;i++) { const t=i/sr; const c=Math.floor(t/0.12)%2; d[i]=(Math.random()*2-1)*0.4*Math.exp(-15*(t%0.12))*c; } },
-    bird:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(2000+800*Math.sin(8*Math.PI*t))*t)*Math.exp(-2*t)*0.35; } },
-    thunder: () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=(Math.random()*2-1)*0.7*Math.exp(-3*t)*(1+0.5*Math.sin(40*t)); } },
-    magic2:  () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(600+1000*Math.exp(-3*t))*t)*Math.exp(-2*t)*0.45; } },
-  };
-  (sfxMap[fxId] || sfxMap.bell)();
-  return buf;
-}
-
-// ═══════════════════════════════════════════════
-//  PROCESS
-// ═══════════════════════════════════════════════
-async function processAudio() {
-  if (!sourceBuffer) { toast('⚠️ Suba um áudio primeiro!'); return; }
-
-  // stop preview
-  if (isPlaying) stopPreview();
-
-  const progWrap = document.getElementById('progress-wrap');
-  const progFill = document.getElementById('prog-fill');
-  const progLabel = document.getElementById('progress-label');
-  progWrap.style.display = 'block';
-  document.getElementById('output-wrap').style.display = 'none';
-  document.getElementById('proc-btn').disabled = true;
-
-  const setProgress = (pct, label) => {
-    progFill.style.width = pct + '%';
-    progLabel.textContent = label;
+  const setP=(pct,lbl)=>{
+    document.getElementById('prog-fill').style.width=pct+'%';
+    document.getElementById('prog-pct').textContent=pct+'%';
+    document.getElementById('progress-label').textContent=lbl;
   };
 
-  setProgress(5, '🎤 Processando voz...');
-  await delay(200);
+  setP(5,'🎤 Preparando...');
+  await delay(150);
 
-  // Params
-  const voiceGain   = parseInt(document.getElementById('voice-vol').value) / 100;
-  const bgVol       = parseInt(document.getElementById('bg-vol').value) / 100 * 0.3;
-  const noiseRed    = parseInt(document.getElementById('noise-red').value) / 100;
-  const reverbAmt   = parseInt(document.getElementById('reverb').value) / 100;
-  const compAmt     = parseInt(document.getElementById('compress').value) / 100;
-  const fadeInSec   = parseFloat(document.getElementById('fade-in').value);
-  const fadeOutSec  = parseFloat(document.getElementById('fade-out').value);
-  const addIntro    = document.getElementById('add-intro').checked;
-  const addOutro    = document.getElementById('add-outro').checked;
+  const voiceGain=parseInt(document.getElementById('voice-vol').value)/100;
+  const bgVol=parseInt(document.getElementById('bg-vol').value)/100*0.28;
+  const noiseRed=parseInt(document.getElementById('noise-red').value)/100;
+  const reverbAmt=parseInt(document.getElementById('reverb').value)/100;
+  const compAmt=parseInt(document.getElementById('compress').value)/100;
+  const fadeInSec=parseFloat(document.getElementById('fade-in').value);
+  const fadeOutSec=parseFloat(document.getElementById('fade-out').value);
+  const addIntro=document.getElementById('add-intro').checked;
+  const addOutro=document.getElementById('add-outro').checked;
 
-  const SR = 44100;
-  const ctx2 = new OfflineAudioContext(2, SR * (sourceBuffer.duration + (addIntro?3:0) + (addOutro?3:0) + 1), SR);
+  const SR=44100;
+  const introDur=addIntro?3:0;
+  const outroDur=addOutro?3:0;
+  const totalDur=sourceBuffer.duration+introDur+outroDur+0.5;
+  const ctx2=new OfflineAudioContext(2,Math.ceil(SR*totalDur),SR);
 
-  // ── VOICE CHAIN ──
-  const voiceSrc = ctx2.createBufferSource();
-  // resample if needed
-  if (sourceBuffer.sampleRate !== SR) {
-    const resampled = resampleBuffer(sourceBuffer, SR, ctx2);
-    voiceSrc.buffer = resampled;
-  } else {
-    voiceSrc.buffer = sourceBuffer;
-  }
+  // Voice chain
+  const vBuf=sourceBuffer.sampleRate!==SR?resampleBuffer(sourceBuffer,SR,ctx2):sourceBuffer;
+  const vSrc=ctx2.createBufferSource(); vSrc.buffer=vBuf;
+  const gainNode=ctx2.createGain(); gainNode.gain.value=voiceGain;
+  const hpf=ctx2.createBiquadFilter(); hpf.type='highpass'; hpf.frequency.value=80+noiseRed*120; hpf.Q.value=0.5;
+  const lpf=ctx2.createBiquadFilter(); lpf.type='lowpass'; lpf.frequency.value=13000-noiseRed*4000;
+  const eq=ctx2.createBiquadFilter(); eq.type='peaking'; eq.frequency.value=3000; eq.gain.value=3+compAmt*4; eq.Q.value=1;
+  const comp=ctx2.createDynamicsCompressor();
+  comp.threshold.value=-24-compAmt*12; comp.knee.value=10; comp.ratio.value=3+compAmt*6;
+  comp.attack.value=0.003; comp.release.value=0.25;
+  const conv=ctx2.createConvolver(); conv.buffer=makeIR(ctx2,1.5*reverbAmt+0.1,2);
+  const dryG=ctx2.createGain(); dryG.gain.value=1-reverbAmt*0.4;
+  const wetG=ctx2.createGain(); wetG.gain.value=reverbAmt*0.4;
+  const master=ctx2.createGain();
 
-  // Gain
-  const gainNode = ctx2.createGain();
-  gainNode.gain.value = voiceGain;
+  const startOff=introDur;
+  const endT=startOff+sourceBuffer.duration;
+  master.gain.setValueAtTime(0,0);
+  if(fadeInSec>0){master.gain.setValueAtTime(0,startOff);master.gain.linearRampToValueAtTime(1,startOff+fadeInSec);}
+  else{master.gain.setValueAtTime(1,startOff);}
+  if(fadeOutSec>0){master.gain.setValueAtTime(1,Math.max(startOff,endT-fadeOutSec));master.gain.linearRampToValueAtTime(0,endT);}
 
-  // High-pass (noise reduction sim)
-  const hpf = ctx2.createBiquadFilter();
-  hpf.type = 'highpass';
-  hpf.frequency.value = 80 + noiseRed * 120;
-  hpf.Q.value = 0.5;
+  vSrc.connect(hpf);hpf.connect(lpf);lpf.connect(eq);eq.connect(comp);
+  comp.connect(dryG);comp.connect(conv);conv.connect(wetG);
+  dryG.connect(master);wetG.connect(master);master.connect(ctx2.destination);
+  vSrc.start(startOff);
 
-  // Low-pass (warmth)
-  const lpf = ctx2.createBiquadFilter();
-  lpf.type = 'lowpass';
-  lpf.frequency.value = 12000 - noiseRed * 4000;
-
-  // Presence boost
-  const eq = ctx2.createBiquadFilter();
-  eq.type = 'peaking';
-  eq.frequency.value = 3000;
-  eq.gain.value = 3 + compAmt * 4;
-  eq.Q.value = 1;
-
-  // Compressor
-  const comp = ctx2.createDynamicsCompressor();
-  comp.threshold.value = -24 - compAmt * 12;
-  comp.knee.value = 10;
-  comp.ratio.value = 3 + compAmt * 6;
-  comp.attack.value = 0.003;
-  comp.release.value = 0.25;
-
-  // Reverb (convolver with impulse)
-  const convolver = ctx2.createConvolver();
-  const irBuf = makeImpulseResponse(ctx2, 1.5 * reverbAmt + 0.1, 2);
-  convolver.buffer = irBuf;
-  const dryGain = ctx2.createGain(); dryGain.gain.value = 1 - reverbAmt * 0.4;
-  const wetGain = ctx2.createGain(); wetGain.gain.value = reverbAmt * 0.4;
-
-  setProgress(20, '🎛️ Aplicando equalização...');
+  setP(30,'🎵 Trilha...');
   await delay(100);
 
-  // Fade in/out on master
-  const masterGain = ctx2.createGain();
-  const startOffset = addIntro ? 3 : 0;
-  const voiceDur = sourceBuffer.duration;
-  masterGain.gain.setValueAtTime(0, 0);
-  masterGain.gain.linearRampToValueAtTime(1, fadeInSec);
-  masterGain.gain.setValueAtTime(1, ctx2.length/SR - fadeOutSec - 0.01);
-  masterGain.gain.linearRampToValueAtTime(0, ctx2.length/SR);
+  if(selectedTheme!=='none'){
+    const tBuf=generateTheme(ctx2,totalDur,selectedTheme);
+    if(tBuf){const tSrc=ctx2.createBufferSource();tSrc.buffer=tBuf;const tG=ctx2.createGain();tG.gain.value=bgVol;tSrc.connect(tG);tG.connect(ctx2.destination);tSrc.start(0);}
+  }
 
-  // Connect voice chain
-  voiceSrc.connect(hpf);
-  hpf.connect(lpf);
-  lpf.connect(eq);
-  eq.connect(comp);
-  comp.connect(dryGain);
-  comp.connect(convolver);
-  convolver.connect(wetGain);
-  dryGain.connect(masterGain);
-  wetGain.connect(masterGain);
-  masterGain.connect(ctx2.destination);
-  voiceSrc.start(startOffset);
-
-  setProgress(40, '🎵 Adicionando trilha de fundo...');
+  setP(50,'✨ Efeitos...');
   await delay(100);
 
-  // ── BACKGROUND THEME ──
-  if (selectedTheme !== 'none') {
-    const themeBuf = generateThemeTone(ctx2, ctx2.length/SR, selectedTheme);
-    if (themeBuf) {
-      const themeSrc = ctx2.createBufferSource();
-      themeSrc.buffer = themeBuf;
-      const themeGain = ctx2.createGain();
-      themeGain.gain.value = bgVol;
-      themeSrc.connect(themeGain);
-      themeGain.connect(ctx2.destination);
-      themeSrc.start(0);
-    }
-  }
+  const fxList=[...activeFX];
+  fxList.forEach((fxId,idx)=>{
+    const fxBuf=generateSFX(ctx2,fxId);
+    const fxSrc=ctx2.createBufferSource();fxSrc.buffer=fxBuf;
+    const fxG=ctx2.createGain();fxG.gain.value=0.3;
+    fxSrc.connect(fxG);fxG.connect(ctx2.destination);
+    const t=startOff+(sourceBuffer.duration/(fxList.length+1))*(idx+1);
+    fxSrc.start(Math.max(0.01,t));
+  });
 
-  setProgress(55, '✨ Inserindo efeitos sonoros...');
+  setP(65,'🎺 Vinhetas...');
   await delay(100);
 
-  // ── SFX ── (scatter through the audio)
-  const fxList = [...activeFX];
-  if (fxList.length > 0) {
-    const voiceTotal = voiceDur;
-    fxList.forEach((fxId, idx) => {
-      const fxBuf = generateSFXTone(ctx2, fxId);
-      const fxSrc = ctx2.createBufferSource();
-      fxSrc.buffer = fxBuf;
-      const fxGain = ctx2.createGain();
-      fxGain.gain.value = 0.35;
-      fxSrc.connect(fxGain);
-      fxGain.connect(ctx2.destination);
-      // Place at even intervals through the voice
-      const t = startOffset + (voiceTotal / (fxList.length+1)) * (idx+1);
-      fxSrc.start(Math.max(startOffset, t));
-    });
-  }
+  if(addIntro){const s=ctx2.createBufferSource();s.buffer=makeJingle(ctx2,3,'intro');const g=ctx2.createGain();g.gain.value=0.55;s.connect(g);g.connect(ctx2.destination);s.start(0);}
+  if(addOutro){const s=ctx2.createBufferSource();s.buffer=makeJingle(ctx2,3,'outro');const g=ctx2.createGain();g.gain.value=0.55;s.connect(g);g.connect(ctx2.destination);s.start(Math.max(0.01,endT));}
 
-  setProgress(65, '🎺 Adicionando vinheta...');
-  await delay(100);
-
-  // ── INTRO JINGLE ──
-  if (addIntro) {
-    const introBuf = makeJingle(ctx2, 3, 'intro');
-    const introSrc = ctx2.createBufferSource();
-    introSrc.buffer = introBuf;
-    const introGain = ctx2.createGain();
-    introGain.gain.value = 0.6;
-    introSrc.connect(introGain);
-    introGain.connect(ctx2.destination);
-    introSrc.start(0);
-  }
-
-  // ── OUTRO JINGLE ──
-  if (addOutro) {
-    const outroBuf = makeJingle(ctx2, 3, 'outro');
-    const outroSrc = ctx2.createBufferSource();
-    outroSrc.buffer = outroBuf;
-    const outroGain = ctx2.createGain();
-    outroGain.gain.value = 0.6;
-    outroSrc.connect(outroGain);
-    outroGain.connect(ctx2.destination);
-    outroSrc.start(ctx2.length/SR - 3);
-  }
-
-  setProgress(80, '🔄 Renderizando...');
+  setP(80,'🔄 Renderizando...');
   await delay(50);
 
-  // ── RENDER ──
   let rendered;
-  try {
-    rendered = await ctx2.startRendering();
-  } catch(e) {
-    toast('❌ Erro na renderização: ' + e.message);
-    document.getElementById('proc-btn').disabled = false;
-    return;
-  }
+  try{rendered=await ctx2.startRendering();}
+  catch(e){toast('❌ Erro: '+e.message);document.getElementById('proc-btn').disabled=false;pw.style.display='none';return;}
 
-  setProgress(92, '💾 Codificando WAV...');
+  setP(95,'💾 Codificando WAV...');
   await delay(100);
 
-  const wavBlob = bufferToWav(rendered);
-  const url = URL.createObjectURL(wavBlob);
+  const wavBlob=bufferToWav(rendered);
+  const url=URL.createObjectURL(wavBlob);
+  document.getElementById('out-player').src=url;
+  const dl=document.getElementById('dl-link');
+  dl.href=url; dl.download='historinhas-miguel-'+Date.now()+'.wav';
 
-  setProgress(100, '✅ Pronto!');
+  setP(100,'✅ Concluído!');
   await delay(300);
 
-  // ── OUTPUT ──
-  document.getElementById('out-player').src = url;
-  document.getElementById('dl-link').href = url;
-  document.getElementById('dl-link').download = 'podcast-' + Date.now() + '.wav';
-  document.getElementById('output-wrap').style.display = 'block';
-  document.getElementById('proc-btn').disabled = false;
-  progWrap.style.display = 'none';
-
-  document.getElementById('output-wrap').scrollIntoView({ behavior: 'smooth' });
-  toast('🎉 Podcast pronto para o Spotify!');
+  pw.style.display='none';
+  document.getElementById('output-wrap').style.display='block';
+  document.getElementById('proc-btn').disabled=false;
+  document.getElementById('output-wrap').scrollIntoView({behavior:'smooth'});
+  toast('🎉 Pronto para o Spotify!');
 }
 
-// ═══════════════════════════════════════════════
-//  IMPULSE RESPONSE (reverb)
-// ═══════════════════════════════════════════════
-function makeImpulseResponse(ctx, duration, decay) {
-  const len = ctx.sampleRate * duration;
-  const buf = ctx.createBuffer(2, len, ctx.sampleRate);
-  for (let ch=0;ch<2;ch++) {
-    const d = buf.getChannelData(ch);
-    for (let i=0;i<len;i++) {
-      d[i] = (Math.random()*2-1) * Math.pow(1-i/len, decay);
+/* ── SYNTH ── */
+function generateTheme(ctx,dur,theme){
+  const SR=ctx.sampleRate,len=Math.ceil(SR*dur);
+  const buf=ctx.createBuffer(2,len,SR);
+  const cfgs={
+    forest:{base:220,h:[1,1.5,2,3],amp:.055},ocean:{base:110,h:[1,2,3,4.1],amp:.07},
+    space:{base:55,h:[1,2,3.7,5.1],amp:.045},castle:{base:165,h:[1,2,3,4],amp:.06},
+    rain:{base:0,h:[],amp:.035,noise:true},magic:{base:440,h:[1,1.25,1.5,2],amp:.045},
+    sleep:{base:80,h:[1,2,3],amp:.038},adv:{base:130,h:[1,2,3,4],amp:.06},
+    joy:{base:261,h:[1,2,3,4,5,6],amp:.055},farm:{base:196,h:[1,2,3,4,5],amp:.055},
+    mystery:{base:98,h:[1,1.7,2.5,3.9],amp:.045},
+  };
+  const cfg=cfgs[theme]||cfgs.forest;
+  for(let ch=0;ch<2;ch++){
+    const d=buf.getChannelData(ch);
+    for(let i=0;i<len;i++){
+      let s=0;
+      if(cfg.noise){s=i===0?0:d[i-1]*0.95+(Math.random()*2-1)*cfg.amp*0.05;}
+      else{cfg.h.forEach((hv,idx)=>{const f=cfg.base*hv,a=cfg.amp/(idx+1);s+=a*Math.sin(2*Math.PI*f*i/SR)*(1+0.02*Math.sin(2*Math.PI*0.3*i/SR));});}
+      const fi=Math.min(i/(SR*2),1),fo=Math.min((len-i)/(SR*2),1);
+      d[i]=s*fi*fo;
     }
   }
   return buf;
 }
 
-// ═══════════════════════════════════════════════
-//  JINGLE
-// ═══════════════════════════════════════════════
-function makeJingle(ctx, duration, type) {
-  const SR = ctx.sampleRate;
-  const buf = ctx.createBuffer(2, SR*duration, SR);
-  const notes = type === 'intro'
-    ? [523.25, 659.25, 783.99, 1046.50]
-    : [1046.50, 783.99, 659.25, 523.25];
+function generateSFX(ctx,id){
+  const SR=ctx.sampleRate,buf=ctx.createBuffer(1,SR*1.2,SR),d=buf.getChannelData(0);
+  const fns={
+    stars:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(1000+500*Math.sin(5*t))*t)*Math.exp(-3*t)*0.4;}},
+    laugh:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.random()*2-1)*Math.exp(-4*t)*0.5*(1+0.8*Math.sin(12*2*Math.PI*t));}},
+    wow:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(300+200*t)*t)*Math.exp(-2.5*t)*0.5;}},
+    drum:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.sin(2*Math.PI*60*t)*Math.exp(-10*t)+(Math.random()*2-1)*Math.exp(-20*t))*0.6;}},
+    bell:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*880*t)*Math.exp(-4*t)*0.5;}},
+    wind:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.random()*2-1)*0.15*Math.exp(-0.5*t)*(1+Math.sin(2*Math.PI*0.5*t));}},
+    pop:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(800-600*t)*t)*Math.exp(-15*t)*0.6;}},
+    tada:()=>{for(let i=0;i<d.length;i++){const t=i/SR;const f=523+(t>0.3?261:0)+(t>0.6?261:0);d[i]=Math.sin(2*Math.PI*f*t)*0.4*(t<0.1?t/0.1:Math.exp(-(t-0.1)));}},
+    horse:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.random()*2-1)*0.4*Math.exp(-15*(t%0.12))*(Math.floor(t/0.12)%2);}},
+    bird:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(2000+800*Math.sin(8*Math.PI*t))*t)*Math.exp(-2*t)*0.35;}},
+    thunder:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.random()*2-1)*0.7*Math.exp(-3*t)*(1+0.5*Math.sin(40*t));}},
+    magic2:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(600+1000*Math.exp(-3*t))*t)*Math.exp(-2*t)*0.45;}},
+  };
+  (fns[id]||fns.bell)();
+  return buf;
+}
 
-  for (let ch=0;ch<2;ch++) {
-    const d = buf.getChannelData(ch);
-    notes.forEach((freq, idx) => {
-      const start = Math.floor(idx * SR * 0.55);
-      const noteDur = SR * 0.5;
-      for (let i=0;i<noteDur && (start+i)<d.length;i++) {
-        const t = i/SR;
-        const env = Math.exp(-3*t);
-        d[start+i] += Math.sin(2*Math.PI*freq*t)*env*0.3;
-        d[start+i] += Math.sin(2*Math.PI*freq*2*t)*env*0.1;
+function makeIR(ctx,dur,decay){
+  const len=Math.ceil(ctx.sampleRate*dur),buf=ctx.createBuffer(2,len,ctx.sampleRate);
+  for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}
+  return buf;
+}
+
+function makeJingle(ctx,dur,type){
+  const SR=ctx.sampleRate,buf=ctx.createBuffer(2,Math.ceil(SR*dur),SR);
+  const notes=type==='intro'?[523.25,659.25,783.99,1046.50]:[1046.50,783.99,659.25,523.25];
+  for(let ch=0;ch<2;ch++){
+    const d=buf.getChannelData(ch);
+    notes.forEach((freq,idx)=>{
+      const start=Math.floor(idx*SR*0.55),noteDur=Math.floor(SR*0.5);
+      for(let i=0;i<noteDur&&(start+i)<d.length;i++){
+        const t=i/SR,env=Math.exp(-3*t);
+        d[start+i]+=Math.sin(2*Math.PI*freq*t)*env*0.28+Math.sin(2*Math.PI*freq*2*t)*env*0.09;
       }
     });
-    // overall fade
-    for (let i=0;i<d.length;i++) {
-      const fEnv = Math.min(i/(SR*0.1), 1) * Math.min((d.length-i)/(SR*0.3), 1);
-      d[i] *= fEnv;
-    }
+    for(let i=0;i<d.length;i++)d[i]*=Math.min(i/(SR*0.08),1)*Math.min((d.length-i)/(SR*0.25),1);
   }
   return buf;
 }
 
-// ═══════════════════════════════════════════════
-//  RESAMPLE
-// ═══════════════════════════════════════════════
-function resampleBuffer(buf, targetSR, ctx) {
-  const ratio = targetSR / buf.sampleRate;
-  const newLen = Math.ceil(buf.length * ratio);
-  const out = ctx.createBuffer(buf.numberOfChannels, newLen, targetSR);
-  for (let ch=0;ch<buf.numberOfChannels;ch++) {
-    const src = buf.getChannelData(ch);
-    const dst = out.getChannelData(ch);
-    for (let i=0;i<newLen;i++) {
-      const pos = i/ratio;
-      const p0 = Math.floor(pos);
-      const frac = pos-p0;
-      const s0 = src[p0] || 0;
-      const s1 = src[p0+1] || 0;
-      dst[i] = s0 + frac*(s1-s0);
-    }
+function resampleBuffer(buf,targetSR,ctx){
+  const ratio=targetSR/buf.sampleRate,newLen=Math.ceil(buf.length*ratio);
+  const out=ctx.createBuffer(Math.min(buf.numberOfChannels,2),newLen,targetSR);
+  for(let ch=0;ch<out.numberOfChannels;ch++){
+    const src=buf.getChannelData(ch),dst=out.getChannelData(ch);
+    for(let i=0;i<newLen;i++){const pos=i/ratio,p0=Math.floor(pos),f=pos-p0;dst[i]=(src[p0]||0)+f*((src[p0+1]||0)-(src[p0]||0));}
   }
   return out;
 }
 
-// ═══════════════════════════════════════════════
-//  WAV ENCODER
-// ═══════════════════════════════════════════════
-function bufferToWav(buffer) {
-  const numCh = buffer.numberOfChannels;
-  const SR = buffer.sampleRate;
-  const len = buffer.length;
-  const arrayBuf = new ArrayBuffer(44 + len * numCh * 2);
-  const view = new DataView(arrayBuf);
-
-  function write(offset, str) { for(let i=0;i<str.length;i++) view.setUint8(offset+i, str.charCodeAt(i)); }
-  function w16(o,v) { view.setInt16(o,v,true); }
-  function w32(o,v) { view.setUint32(o,v,true); }
-
-  write(0,'RIFF');
-  w32(4, 36 + len*numCh*2);
-  write(8,'WAVE');
-  write(12,'fmt ');
-  w32(16,16); w16(20,1); w16(22,numCh);
-  w32(24,SR); w32(28,SR*numCh*2);
-  w16(32,numCh*2); w16(34,16);
-  write(36,'data');
-  w32(40,len*numCh*2);
-
-  let offset = 44;
-  for (let i=0;i<len;i++) {
-    for (let ch=0;ch<numCh;ch++) {
-      const s = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[i]));
-      view.setInt16(offset, s<0 ? s*0x8000 : s*0x7FFF, true);
-      offset += 2;
-    }
+function bufferToWav(buf){
+  const nCh=buf.numberOfChannels,SR=buf.sampleRate,len=buf.length;
+  const ab=new ArrayBuffer(44+len*nCh*2),v=new DataView(ab);
+  const ws=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};
+  ws(0,'RIFF');v.setUint32(4,36+len*nCh*2,true);ws(8,'WAVE');
+  ws(12,'fmt ');v.setUint32(16,16,true);v.setInt16(20,1,true);v.setInt16(22,nCh,true);
+  v.setUint32(24,SR,true);v.setUint32(28,SR*nCh*2,true);v.setInt16(32,nCh*2,true);v.setInt16(34,16,true);
+  ws(36,'data');v.setUint32(40,len*nCh*2,true);
+  let off=44;
+  for(let i=0;i<len;i++)for(let ch=0;ch<nCh;ch++){
+    const s=Math.max(-1,Math.min(1,buf.getChannelData(ch)[i]));
+    v.setInt16(off,s<0?s*0x8000:s*0x7FFF,true);off+=2;
   }
-  return new Blob([arrayBuf], {type:'audio/wav'});
+  return new Blob([ab],{type:'audio/wav'});
 }
 
-// ═══════════════════════════════════════════════
-//  UTILS
-// ═══════════════════════════════════════════════
-function formatTime(s) {
-  const m = Math.floor(s/60);
-  const sec = Math.floor(s%60).toString().padStart(2,'0');
-  return m+':'+sec;
-}
+/* ── UTILS ── */
+function formatTime(s){if(!isFinite(s)||s<0)return'0:00';return Math.floor(s/60)+':'+(Math.floor(s%60)).toString().padStart(2,'0');}
+function formatSize(b){return b>1e6?(b/1e6).toFixed(1)+' MB':(b/1e3).toFixed(0)+' KB';}
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+let toastT;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3000);}
 
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-let toastTimer;
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-// ═══════════════════════════════════════════════
-//  BOOT
-// ═══════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  buildThemeGrid();
-  buildFxGrid();
-  bindSliders();
-  setupFileInput();
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  buildThemeGrid(); buildFxGrid(); bindSliders(); setupFileInput();
+  document.getElementById('seek-bar').addEventListener('input',function(){
+    pausedAt=parseFloat(this.value);
+    if(isPlaying){stopPreview();startPreview();}
+    else if(sourceBuffer) document.getElementById('time-display').textContent=formatTime(pausedAt)+' / '+formatTime(sourceBuffer.duration);
+  });
 });
 </script>
 
