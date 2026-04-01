@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎙️ Estúdio das Historinhas do Miguel</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+–sky: #6EC6F5;
+–sun: #FFD166;
+–coral: #FF6B6B;
+–mint: #06D6A0;
+–purple: #845EC2;
+–bg: #FFF8EE;
+–card: #FFFFFF;
+–text: #2D2D2D;
+–soft: #F0E6FF;
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘Nunito’, sans-serif;
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+background: linear-gradient(135deg, var(–purple) 0%, #B39DDB 50%, var(–sky) 100%);
+padding: 24px 20px 32px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+header::before {
+content: ‘’;
+position: absolute;
+bottom: -20px; left: 0; right: 0;
+height: 40px;
+background: var(–bg);
+border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+header h1 {
+font-family: ‘Fredoka One’, cursive;
+font-size: clamp(1.8rem, 5vw, 2.8rem);
+color: #fff;
+text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+letter-spacing: 1px;
+}
+header p {
+color: rgba(255,255,255,0.9);
+font-size: 1rem;
+margin-top: 6px;
+font-weight: 600;
+}
+.stars {
+position: absolute;
+top: 10px; left: 0; right: 0;
+pointer-events: none;
+font-size: 1.2rem;
+}
+
+/* ── LAYOUT ── */
+main {
+max-width: 860px;
+margin: 0 auto;
+padding: 24px 16px 60px;
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+.card {
+background: var(–card);
+border-radius: 20px;
+padding: 22px 20px;
+box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+border: 2px solid transparent;
+transition: border-color .2s;
+}
+.card.active { border-color: var(–purple); }
+
+.card-title {
+font-family: ‘Fredoka One’, cursive;
+font-size: 1.3rem;
+color: var(–purple);
+margin-bottom: 14px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.step-badge {
+background: var(–purple);
+color: #fff;
+border-radius: 50%;
+width: 28px; height: 28px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: .85rem;
+font-family: ‘Nunito’, sans-serif;
+font-weight: 800;
+flex-shrink: 0;
+}
+
+/* ── UPLOAD ── */
+#drop-zone {
+border: 3px dashed #C4B5FD;
+border-radius: 16px;
+padding: 36px 20px;
+text-align: center;
+cursor: pointer;
+transition: background .2s, border-color .2s;
+background: var(–soft);
+}
+#drop-zone:hover, #drop-zone.drag-over {
+background: #EDE9FF;
+border-color: var(–purple);
+}
+#drop-zone .icon { font-size: 3rem; }
+#drop-zone p { font-weight: 700; color: var(–purple); margin-top: 8px; }
+#drop-zone small { color: #888; font-size: .85rem; }
+#file-input { display: none; }
+
+#file-info {
+margin-top: 12px;
+display: none;
+align-items: center;
+gap: 10px;
+background: #F0FFF8;
+border: 2px solid var(–mint);
+border-radius: 12px;
+padding: 10px 14px;
+font-weight: 700;
+color: #065;
+}
+#file-info .fname { flex: 1; font-size: .9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── WAVEFORM ── */
+#waveform-wrap { display: none; }
+canvas#waveform {
+width: 100%;
+height: 80px;
+border-radius: 12px;
+background: #1a1040;
+display: block;
+margin-bottom: 10px;
+}
+.playbar {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.play-btn {
+background: var(–purple);
+border: none;
+border-radius: 50%;
+width: 42px; height: 42px;
+color: #fff;
+font-size: 1.1rem;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform .15s, background .2s;
+flex-shrink: 0;
+}
+.play-btn:hover { transform: scale(1.1); background: #6A3FA6; }
+#time-display { font-size: .85rem; color: #666; font-weight: 700; white-space: nowrap; }
+input[type=range].seek {
+flex: 1;
+accent-color: var(–purple);
+height: 4px;
+cursor: pointer;
+}
+
+/* ── THEME GRID ── */
+.theme-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+gap: 10px;
+}
+.theme-btn {
+border: 2px solid #E0D6FF;
+border-radius: 14px;
+padding: 12px 8px;
+background: #fff;
+cursor: pointer;
+text-align: center;
+transition: all .2s;
+font-family: ‘Nunito’, sans-serif;
+font-size: .85rem;
+font-weight: 700;
+color: #555;
+}
+.theme-btn .emoji { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+.theme-btn:hover { border-color: var(–purple); transform: translateY(-2px); }
+.theme-btn.selected {
+border-color: var(–purple);
+background: var(–soft);
+color: var(–purple);
+box-shadow: 0 4px 12px rgba(132,94,194,0.2);
+}
+
+/* ── SLIDERS ── */
+.slider-row {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 14px;
+}
+.slider-row label {
+font-weight: 700;
+font-size: .9rem;
+min-width: 160px;
+color: #444;
+}
+.slider-row label span { font-size: .8rem; color: #888; font-weight: 600; }
+.slider-row input[type=range] {
+flex: 1;
+accent-color: var(–purple);
+height: 6px;
+cursor: pointer;
+}
+.slider-val {
+font-size: .85rem;
+font-weight: 800;
+color: var(–purple);
+min-width: 36px;
+text-align: right;
+}
+
+/* ── EFFECTS ── */
+.fx-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+gap: 8px;
+}
+.fx-btn {
+border: 2px solid #E5E5E5;
+border-radius: 12px;
+padding: 10px 6px;
+background: #fff;
+cursor: pointer;
+text-align: center;
+font-family: ‘Nunito’, sans-serif;
+font-size: .8rem;
+font-weight: 700;
+color: #555;
+transition: all .18s;
+position: relative;
+}
+.fx-btn .emoji { font-size: 1.5rem; display: block; margin-bottom: 3px; }
+.fx-btn:hover { border-color: var(–coral); transform: scale(1.04); }
+.fx-btn.active {
+border-color: var(–coral);
+background: #FFF0F0;
+color: var(–coral);
+}
+.fx-btn .fx-badge {
+position: absolute;
+top: -6px; right: -6px;
+background: var(–coral);
+color: #fff;
+border-radius: 50%;
+width: 18px; height: 18px;
+font-size: .65rem;
+display: none;
+align-items: center;
+justify-content: center;
+}
+.fx-btn.active .fx-badge { display: flex; }
+
+/* ── SFPLAY TIMELINE ── */
+.sf-timeline {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+margin-top: 10px;
+}
+.sf-chip {
+background: var(–sun);
+border-radius: 20px;
+padding: 4px 12px;
+font-size: .8rem;
+font-weight: 800;
+color: #5a4000;
+display: flex;
+align-items: center;
+gap: 6px;
+cursor: default;
+}
+.sf-chip button {
+background: none;
+border: none;
+font-size: .75rem;
+cursor: pointer;
+color: #5a4000;
+padding: 0;
+line-height: 1;
+}
+
+/* ── PROCESS BTN ── */
+.process-btn {
+width: 100%;
+padding: 18px;
+background: linear-gradient(135deg, var(–purple), var(–coral));
+border: none;
+border-radius: 16px;
+color: #fff;
+font-family: ‘Fredoka One’, cursive;
+font-size: 1.4rem;
+cursor: pointer;
+letter-spacing: 1px;
+box-shadow: 0 6px 20px rgba(132,94,194,0.35);
+transition: transform .15s, box-shadow .15s;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+}
+.process-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(132,94,194,0.4); }
+.process-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* ── PROGRESS ── */
+#progress-wrap { display: none; }
+.progress-bar-bg {
+height: 14px;
+background: #EDE9FF;
+border-radius: 99px;
+overflow: hidden;
+margin: 8px 0 6px;
+}
+.progress-bar-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–purple), var(–mint));
+border-radius: 99px;
+transition: width .4s ease;
+width: 0%;
+}
+#progress-label { font-size: .85rem; color: #666; font-weight: 700; }
+
+/* ── OUTPUT ── */
+#output-wrap { display: none; }
+.output-card {
+background: linear-gradient(135deg, #F0FFF8, #E8F4FF);
+border: 2px solid var(–mint);
+border-radius: 20px;
+padding: 22px 20px;
+text-align: center;
+}
+.output-card .big-emoji { font-size: 3.5rem; }
+.output-card h3 {
+font-family: ‘Fredoka One’, cursive;
+font-size: 1.4rem;
+color: var(–purple);
+margin: 8px 0 4px;
+}
+.output-card p { font-size: .9rem; color: #555; margin-bottom: 14px; }
+.dl-btn {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: var(–mint);
+color: #fff;
+border: none;
+border-radius: 14px;
+padding: 13px 28px;
+font-family: ‘Fredoka One’, cursive;
+font-size: 1.1rem;
+cursor: pointer;
+text-decoration: none;
+transition: transform .15s, background .15s;
+box-shadow: 0 4px 14px rgba(6,214,160,0.35);
+}
+.dl-btn:hover { transform: translateY(-2px); background: #05C090; }
+audio#out-player {
+width: 100%;
+margin-top: 14px;
+border-radius: 12px;
+}
+
+/* ── TOAST ── */
+#toast {
+position: fixed;
+bottom: 20px; left: 50%;
+transform: translateX(-50%) translateY(80px);
+background: #333;
+color: #fff;
+padding: 10px 22px;
+border-radius: 30px;
+font-size: .9rem;
+font-weight: 700;
+transition: transform .3s;
+z-index: 999;
+pointer-events: none;
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 500px) {
+.slider-row label { min-width: 120px; font-size: .82rem; }
+.theme-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="stars">✨ 🌟 ⭐ 🌟 ✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✨ 🌟 ⭐</div>
+  <h1>🎙️ Estúdio das Historinhas do Miguel</h1>
+  <p>Transforme sua leitura em um podcast incrível! 🚀</p>
+</header>
+
+<main>
+
+  <!-- STEP 1: UPLOAD -->
+
+  <div class="card active" id="card-upload">
+    <div class="card-title"><span class="step-badge">1</span> Suba sua gravação</div>
+    <div id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div class="icon">🎤</div>
+      <p>Clique ou arraste seu áudio aqui</p>
+      <small>MP3, WAV, M4A, OGG, WebM • Até 200 MB</small>
+    </div>
+    <input type="file" id="file-input" accept="audio/*">
+    <div id="file-info">
+      <span>🎵</span>
+      <span class="fname" id="fname-label"></span>
+      <span id="dur-label" style="color:#888;font-size:.85rem;"></span>
+    </div>
+    <div id="waveform-wrap" style="margin-top:14px;">
+      <canvas id="waveform"></canvas>
+      <div class="playbar">
+        <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+        <input type="range" class="seek" id="seek-bar" value="0" min="0" step="0.01">
+        <span id="time-display">0:00 / 0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: THEME -->
+
+  <div class="card" id="card-theme">
+    <div class="card-title"><span class="step-badge">2</span> Escolha o tema da trilha</div>
+    <div class="theme-grid" id="theme-grid"></div>
+    <div class="slider-row" style="margin-top:16px;">
+      <label>Volume da trilha <span>(fundo)</span></label>
+      <input type="range" id="bg-vol" min="0" max="100" value="25">
+      <span class="slider-val" id="bg-vol-val">25%</span>
+    </div>
+  </div>
+
+  <!-- STEP 3: AUDIO FX -->
+
+  <div class="card" id="card-fx">
+    <div class="card-title"><span class="step-badge">3</span> Ajuste de áudio</div>
+    <div class="slider-row">
+      <label>Volume da voz</label>
+      <input type="range" id="voice-vol" min="50" max="300" value="150">
+      <span class="slider-val" id="voice-vol-val">150%</span>
+    </div>
+    <div class="slider-row">
+      <label>Redução de ruído <span>(filtro)</span></label>
+      <input type="range" id="noise-red" min="0" max="100" value="60">
+      <span class="slider-val" id="noise-red-val">60%</span>
+    </div>
+    <div class="slider-row">
+      <label>Reverb <span>(ambiente)</span></label>
+      <input type="range" id="reverb" min="0" max="100" value="15">
+      <span class="slider-val" id="reverb-val">15%</span>
+    </div>
+    <div class="slider-row">
+      <label>Compressão <span>(equaliza)</span></label>
+      <input type="range" id="compress" min="0" max="100" value="70">
+      <span class="slider-val" id="compress-val">70%</span>
+    </div>
+  </div>
+
+  <!-- STEP 4: SOUND FX -->
+
+  <div class="card" id="card-sfx">
+    <div class="card-title"><span class="step-badge">4</span> Efeitos sonoros & onomatopeias</div>
+    <p style="font-size:.85rem;color:#777;margin-bottom:10px;">Clique para marcar os efeitos que serão adicionados automaticamente na mixagem</p>
+    <div class="fx-grid" id="fx-grid"></div>
+    <div id="sf-added" style="margin-top:10px;"></div>
+  </div>
+
+  <!-- STEP 5: EXTRAS -->
+
+  <div class="card" id="card-extra">
+    <div class="card-title"><span class="step-badge">5</span> Acabamento final</div>
+    <div class="slider-row">
+      <label>Fade in <span>(abertura)</span></label>
+      <input type="range" id="fade-in" min="0" max="5" value="2" step="0.5">
+      <span class="slider-val" id="fade-in-val">2s</span>
+    </div>
+    <div class="slider-row">
+      <label>Fade out <span>(encerramento)</span></label>
+      <input type="range" id="fade-out" min="0" max="5" value="3" step="0.5">
+      <span class="slider-val" id="fade-out-val">3s</span>
+    </div>
+    <div style="margin-bottom:10px;">
+      <label style="font-weight:700;font-size:.9rem;color:#444;display:flex;align-items:center;gap:8px;cursor:pointer;">
+        <input type="checkbox" id="add-intro" checked style="width:18px;height:18px;accent-color:var(--purple);">
+        Adicionar vinheta de abertura 🎺
+      </label>
+    </div>
+    <div>
+      <label style="font-weight:700;font-size:.9rem;color:#444;display:flex;align-items:center;gap:8px;cursor:pointer;">
+        <input type="checkbox" id="add-outro" checked style="width:18px;height:18px;accent-color:var(--purple);">
+        Adicionar vinheta de encerramento 🌙
+      </label>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+
+  <button class="process-btn" id="proc-btn" onclick="processAudio()" disabled>
+    ✨ Produzir meu Podcast! 🎙️
+  </button>
+
+  <!-- PROGRESS -->
+
+  <div class="card" id="progress-wrap">
+    <div class="card-title">🔄 Processando...</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-fill"></div></div>
+    <div id="progress-label">Preparando...</div>
+  </div>
+
+  <!-- OUTPUT -->
+
+  <div id="output-wrap">
+    <div class="output-card">
+      <div class="big-emoji">🎉</div>
+      <h3>Seu podcast está pronto!</h3>
+      <p>Ouça abaixo e depois baixe para subir no Spotify 🚀</p>
+      <audio id="out-player" controls></audio>
+      <br><br>
+      <a id="dl-link" class="dl-btn" download="meu-podcast.wav">⬇️ Baixar WAV</a>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════
+const THEMES = [
+  { id:'none',    emoji:'🔇', label:'Sem trilha',    color:null },
+  { id:'forest',  emoji:'🌲', label:'Floresta',      color:'#2d8a4e' },
+  { id:'ocean',   emoji:'🌊', label:'Oceano',        color:'#1e6fa8' },
+  { id:'space',   emoji:'🚀', label:'Espaço',        color:'#3d1f8a' },
+  { id:'castle',  emoji:'🏰', label:'Castelo',       color:'#8a5a1f' },
+  { id:'rain',    emoji:'🌧️', label:'Chuva',         color:'#4a6d8a' },
+  { id:'farm',    emoji:'🐄', label:'Fazenda',       color:'#6a8a2d' },
+  { id:'magic',   emoji:'🪄', label:'Magia',         color:'#7a1f8a' },
+  { id:'sleep',   emoji:'😴', label:'Hora de Dormir',color:'#2d3d6a' },
+  { id:'adv',     emoji:'🗺️', label:'Aventura',      color:'#8a3d1f' },
+  { id:'joy',     emoji:'🎡', label:'Alegre',        color:'#8a7a1f' },
+  { id:'mystery', emoji:'🔍', label:'Mistério',      color:'#1f5a6a' },
+];
+
+const SFX = [
+  { id:'stars',   emoji:'⭐', label:'Magia/Estrelas' },
+  { id:'laugh',   emoji:'😂', label:'Risada' },
+  { id:'wow',     emoji:'😮', label:'Uau!' },
+  { id:'drum',    emoji:'🥁', label:'Bumbo' },
+  { id:'bell',    emoji:'🔔', label:'Sino' },
+  { id:'wind',    emoji:'💨', label:'Vento' },
+  { id:'pop',     emoji:'🎈', label:'Pop!' },
+  { id:'tada',    emoji:'🎉', label:'Tadaaa!' },
+  { id:'horse',   emoji:'🐴', label:'Cavalos' },
+  { id:'bird',    emoji:'🐦', label:'Passarinhos' },
+  { id:'thunder', emoji:'⚡', label:'Trovão' },
+  { id:'magic2',  emoji:'🪄', label:'Encantamento' },
+];
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let audioCtx = null;
+let sourceBuffer = null;
+let audioEl = null;
+let selectedTheme = 'none';
+let activeFX = new Set();
+let isPlaying = false;
+let playSource = null;
+let startedAt = 0;
+let pausedAt = 0;
+
+// ═══════════════════════════════════════════════
+//  INIT UI
+// ═══════════════════════════════════════════════
+function buildThemeGrid() {
+  const g = document.getElementById('theme-grid');
+  THEMES.forEach(t => {
+    const b = document.createElement('button');
+    b.className = 'theme-btn' + (t.id === 'none' ? ' selected' : '');
+    b.innerHTML = `<span class="emoji">${t.emoji}</span>${t.label}`;
+    b.onclick = () => {
+      document.querySelectorAll('.theme-btn').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+      selectedTheme = t.id;
+    };
+    g.appendChild(b);
+  });
+}
+
+function buildFxGrid() {
+  const g = document.getElementById('fx-grid');
+  SFX.forEach(fx => {
+    const b = document.createElement('button');
+    b.className = 'fx-btn';
+    b.id = 'fx-' + fx.id;
+    b.innerHTML = `<span class="emoji">${fx.emoji}</span>${fx.label}<span class="fx-badge">✓</span>`;
+    b.onclick = () => {
+      if (activeFX.has(fx.id)) {
+        activeFX.delete(fx.id);
+        b.classList.remove('active');
+      } else {
+        activeFX.add(fx.id);
+        b.classList.add('active');
+      }
+    };
+    g.appendChild(b);
+  });
+}
+
+function bindSliders() {
+  const sliders = [
+    ['bg-vol','%'],['voice-vol','%'],['noise-red','%'],
+    ['reverb','%'],['compress','%'],['fade-in','s'],['fade-out','s']
+  ];
+  sliders.forEach(([id, unit]) => {
+    const el = document.getElementById(id);
+    const val = document.getElementById(id+'-val');
+    el.oninput = () => val.textContent = el.value + unit;
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  FILE HANDLING
+// ═══════════════════════════════════════════════
+function setupFileInput() {
+  const fi = document.getElementById('file-input');
+  const dz = document.getElementById('drop-zone');
+
+  fi.onchange = e => loadFile(e.target.files[0]);
+
+  dz.ondragover = e => { e.preventDefault(); dz.classList.add('drag-over'); };
+  dz.ondragleave = () => dz.classList.remove('drag-over');
+  dz.ondrop = e => {
+    e.preventDefault();
+    dz.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('audio/')) loadFile(f);
+    else toast('⚠️ Por favor, suba um arquivo de áudio');
+  };
+}
+
+async function loadFile(file) {
+  if (!file) return;
+  toast('📂 Carregando áudio...');
+  document.getElementById('fname-label').textContent = file.name;
+  document.getElementById('file-info').style.display = 'flex';
+
+  const arrayBuf = await file.arrayBuffer();
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  sourceBuffer = await audioCtx.decodeAudioData(arrayBuf);
+
+  const dur = sourceBuffer.duration;
+  document.getElementById('dur-label').textContent = formatTime(dur);
+  document.getElementById('seek-bar').max = dur;
+
+  drawWaveform(sourceBuffer);
+  document.getElementById('waveform-wrap').style.display = 'block';
+  document.getElementById('proc-btn').disabled = false;
+  document.getElementById('card-upload').classList.add('active');
+  toast('✅ Áudio carregado!');
+}
+
+// ═══════════════════════════════════════════════
+//  WAVEFORM
+// ═══════════════════════════════════════════════
+function drawWaveform(buffer) {
+  const canvas = document.getElementById('waveform');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+  canvas.height = 80 * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  const W = canvas.offsetWidth, H = 80;
+
+  const data = buffer.getChannelData(0);
+  const step = Math.ceil(data.length / W);
+  ctx.clearRect(0,0,W,H);
+
+  const grad = ctx.createLinearGradient(0,0,W,0);
+  grad.addColorStop(0,'#B39DDB');
+  grad.addColorStop(0.5,'#845EC2');
+  grad.addColorStop(1,'#FF6B6B');
+  ctx.fillStyle = grad;
+
+  for (let i=0;i<W;i++) {
+    let max = 0;
+    for (let j=0;j<step;j++) {
+      const v = Math.abs(data[i*step+j] || 0);
+      if (v > max) max = v;
+    }
+    const h = Math.max(2, max * H);
+    ctx.fillRect(i, (H-h)/2, 1, h);
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  PREVIEW PLAYBACK
+// ═══════════════════════════════════════════════
+function togglePlay() {
+  if (!sourceBuffer) return;
+  if (isPlaying) stopPreview();
+  else startPreview();
+}
+
+function startPreview() {
+  if (!audioCtx) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  playSource = audioCtx.createBufferSource();
+  playSource.buffer = sourceBuffer;
+  playSource.connect(audioCtx.destination);
+  startedAt = audioCtx.currentTime - pausedAt;
+  playSource.start(0, pausedAt);
+  isPlaying = true;
+  document.getElementById('play-btn').textContent = '⏸';
+  playSource.onended = () => {
+    isPlaying = false;
+    pausedAt = 0;
+    document.getElementById('play-btn').textContent = '▶';
+    document.getElementById('seek-bar').value = 0;
+  };
+  updateSeek();
+}
+
+function stopPreview() {
+  if (playSource) { try { playSource.stop(); } catch(e){} }
+  pausedAt = audioCtx.currentTime - startedAt;
+  isPlaying = false;
+  document.getElementById('play-btn').textContent = '▶';
+}
+
+function updateSeek() {
+  if (!isPlaying) return;
+  const cur = audioCtx.currentTime - startedAt;
+  document.getElementById('seek-bar').value = cur;
+  document.getElementById('time-display').textContent =
+    formatTime(cur) + ' / ' + formatTime(sourceBuffer.duration);
+  requestAnimationFrame(updateSeek);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('seek-bar').oninput = function() {
+    pausedAt = parseFloat(this.value);
+    if (isPlaying) { stopPreview(); startPreview(); }
+  };
+});
+
+// ═══════════════════════════════════════════════
+//  AUDIO SYNTHESIS HELPERS
+// ═══════════════════════════════════════════════
+function generateThemeTone(ctx, duration, theme) {
+  if (theme === 'none') return null;
+
+  const buf = ctx.createBuffer(2, ctx.sampleRate * duration, ctx.sampleRate);
+
+  const configs = {
+    forest:  { base:220, harmonics:[1,1.5,2,3],   amp:.06 },
+    ocean:   { base:110, harmonics:[1,2,3,4.1],    amp:.08 },
+    space:   { base:55,  harmonics:[1,2,3.7,5.1],  amp:.05 },
+    castle:  { base:165, harmonics:[1,2,3,4],      amp:.07 },
+    rain:    { base:0,   harmonics:[],              amp:.04, noise:true },
+    farm:    { base:196, harmonics:[1,2,3,4,5],    amp:.06 },
+    magic:   { base:440, harmonics:[1,1.25,1.5,2], amp:.05 },
+    sleep:   { base:80,  harmonics:[1,2,3],         amp:.04 },
+    adv:     { base:130, harmonics:[1,2,3,4],       amp:.07 },
+    joy:     { base:261, harmonics:[1,2,3,4,5,6],  amp:.06 },
+    mystery: { base:98,  harmonics:[1,1.7,2.5,3.9],amp:.05 },
+  };
+  const cfg = configs[theme] || configs.forest;
+
+  for (let ch=0;ch<2;ch++) {
+    const d = buf.getChannelData(ch);
+    const sr = ctx.sampleRate;
+    for (let i=0;i<d.length;i++) {
+      let s = 0;
+      if (cfg.noise) {
+        s = (Math.random()*2-1) * cfg.amp;
+        // low-pass simulation
+        if (i>0) s = d[i-1]*0.95 + s*0.05;
+      } else {
+        cfg.harmonics.forEach((h,idx) => {
+          const f = cfg.base * h;
+          const a = cfg.amp / (idx+1);
+          const lfo = 1 + 0.02 * Math.sin(2*Math.PI*0.3*i/sr);
+          s += a * Math.sin(2*Math.PI*f*i/sr) * lfo;
+        });
+      }
+      // fade in/out for background
+      const fi = Math.min(i/(sr*2), 1);
+      const fo = Math.min((d.length-i)/(sr*2), 1);
+      d[i] = s * fi * fo;
+    }
+  }
+  return buf;
+}
+
+function generateSFXTone(ctx, fxId) {
+  const sr = ctx.sampleRate;
+  const dur = 1.2;
+  const buf = ctx.createBuffer(1, sr*dur, sr);
+  const d = buf.getChannelData(0);
+
+  const sfxMap = {
+    stars:   () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(1000+500*Math.sin(5*t))*t)*Math.exp(-3*t)*0.4; } },
+    laugh:   () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=(Math.random()*2-1)*Math.exp(-4*t)*0.5*(1+0.8*Math.sin(12*2*Math.PI*t)); } },
+    wow:     () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(300+200*t)*t)*Math.exp(-2.5*t)*0.5; } },
+    drum:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=(Math.sin(2*Math.PI*60*t)*Math.exp(-10*t)+(Math.random()*2-1)*Math.exp(-20*t))*0.6; } },
+    bell:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*880*t)*Math.exp(-4*t)*0.5; } },
+    wind:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=(Math.random()*2-1)*0.15*Math.exp(-0.5*t)*(1+Math.sin(2*Math.PI*0.5*t)); } },
+    pop:     () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(800-600*t)*t)*Math.exp(-15*t)*0.6; } },
+    tada:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; const f=523+261*(t>0.3?1:0)+(t>0.6?261:0); d[i]=Math.sin(2*Math.PI*f*t)*0.4*(t<0.1?t/0.1:Math.exp(-1*(t-0.1))); } },
+    horse:   () => { for(let i=0;i<d.length;i++) { const t=i/sr; const c=Math.floor(t/0.12)%2; d[i]=(Math.random()*2-1)*0.4*Math.exp(-15*(t%0.12))*c; } },
+    bird:    () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(2000+800*Math.sin(8*Math.PI*t))*t)*Math.exp(-2*t)*0.35; } },
+    thunder: () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=(Math.random()*2-1)*0.7*Math.exp(-3*t)*(1+0.5*Math.sin(40*t)); } },
+    magic2:  () => { for(let i=0;i<d.length;i++) { const t=i/sr; d[i]=Math.sin(2*Math.PI*(600+1000*Math.exp(-3*t))*t)*Math.exp(-2*t)*0.45; } },
+  };
+  (sfxMap[fxId] || sfxMap.bell)();
+  return buf;
+}
+
+// ═══════════════════════════════════════════════
+//  PROCESS
+// ═══════════════════════════════════════════════
+async function processAudio() {
+  if (!sourceBuffer) { toast('⚠️ Suba um áudio primeiro!'); return; }
+
+  // stop preview
+  if (isPlaying) stopPreview();
+
+  const progWrap = document.getElementById('progress-wrap');
+  const progFill = document.getElementById('prog-fill');
+  const progLabel = document.getElementById('progress-label');
+  progWrap.style.display = 'block';
+  document.getElementById('output-wrap').style.display = 'none';
+  document.getElementById('proc-btn').disabled = true;
+
+  const setProgress = (pct, label) => {
+    progFill.style.width = pct + '%';
+    progLabel.textContent = label;
+  };
+
+  setProgress(5, '🎤 Processando voz...');
+  await delay(200);
+
+  // Params
+  const voiceGain   = parseInt(document.getElementById('voice-vol').value) / 100;
+  const bgVol       = parseInt(document.getElementById('bg-vol').value) / 100 * 0.3;
+  const noiseRed    = parseInt(document.getElementById('noise-red').value) / 100;
+  const reverbAmt   = parseInt(document.getElementById('reverb').value) / 100;
+  const compAmt     = parseInt(document.getElementById('compress').value) / 100;
+  const fadeInSec   = parseFloat(document.getElementById('fade-in').value);
+  const fadeOutSec  = parseFloat(document.getElementById('fade-out').value);
+  const addIntro    = document.getElementById('add-intro').checked;
+  const addOutro    = document.getElementById('add-outro').checked;
+
+  const SR = 44100;
+  const ctx2 = new OfflineAudioContext(2, SR * (sourceBuffer.duration + (addIntro?3:0) + (addOutro?3:0) + 1), SR);
+
+  // ── VOICE CHAIN ──
+  const voiceSrc = ctx2.createBufferSource();
+  // resample if needed
+  if (sourceBuffer.sampleRate !== SR) {
+    const resampled = resampleBuffer(sourceBuffer, SR, ctx2);
+    voiceSrc.buffer = resampled;
+  } else {
+    voiceSrc.buffer = sourceBuffer;
+  }
+
+  // Gain
+  const gainNode = ctx2.createGain();
+  gainNode.gain.value = voiceGain;
+
+  // High-pass (noise reduction sim)
+  const hpf = ctx2.createBiquadFilter();
+  hpf.type = 'highpass';
+  hpf.frequency.value = 80 + noiseRed * 120;
+  hpf.Q.value = 0.5;
+
+  // Low-pass (warmth)
+  const lpf = ctx2.createBiquadFilter();
+  lpf.type = 'lowpass';
+  lpf.frequency.value = 12000 - noiseRed * 4000;
+
+  // Presence boost
+  const eq = ctx2.createBiquadFilter();
+  eq.type = 'peaking';
+  eq.frequency.value = 3000;
+  eq.gain.value = 3 + compAmt * 4;
+  eq.Q.value = 1;
+
+  // Compressor
+  const comp = ctx2.createDynamicsCompressor();
+  comp.threshold.value = -24 - compAmt * 12;
+  comp.knee.value = 10;
+  comp.ratio.value = 3 + compAmt * 6;
+  comp.attack.value = 0.003;
+  comp.release.value = 0.25;
+
+  // Reverb (convolver with impulse)
+  const convolver = ctx2.createConvolver();
+  const irBuf = makeImpulseResponse(ctx2, 1.5 * reverbAmt + 0.1, 2);
+  convolver.buffer = irBuf;
+  const dryGain = ctx2.createGain(); dryGain.gain.value = 1 - reverbAmt * 0.4;
+  const wetGain = ctx2.createGain(); wetGain.gain.value = reverbAmt * 0.4;
+
+  setProgress(20, '🎛️ Aplicando equalização...');
+  await delay(100);
+
+  // Fade in/out on master
+  const masterGain = ctx2.createGain();
+  const startOffset = addIntro ? 3 : 0;
+  const voiceDur = sourceBuffer.duration;
+  masterGain.gain.setValueAtTime(0, 0);
+  masterGain.gain.linearRampToValueAtTime(1, fadeInSec);
+  masterGain.gain.setValueAtTime(1, ctx2.length/SR - fadeOutSec - 0.01);
+  masterGain.gain.linearRampToValueAtTime(0, ctx2.length/SR);
+
+  // Connect voice chain
+  voiceSrc.connect(hpf);
+  hpf.connect(lpf);
+  lpf.connect(eq);
+  eq.connect(comp);
+  comp.connect(dryGain);
+  comp.connect(convolver);
+  convolver.connect(wetGain);
+  dryGain.connect(masterGain);
+  wetGain.connect(masterGain);
+  masterGain.connect(ctx2.destination);
+  voiceSrc.start(startOffset);
+
+  setProgress(40, '🎵 Adicionando trilha de fundo...');
+  await delay(100);
+
+  // ── BACKGROUND THEME ──
+  if (selectedTheme !== 'none') {
+    const themeBuf = generateThemeTone(ctx2, ctx2.length/SR, selectedTheme);
+    if (themeBuf) {
+      const themeSrc = ctx2.createBufferSource();
+      themeSrc.buffer = themeBuf;
+      const themeGain = ctx2.createGain();
+      themeGain.gain.value = bgVol;
+      themeSrc.connect(themeGain);
+      themeGain.connect(ctx2.destination);
+      themeSrc.start(0);
+    }
+  }
+
+  setProgress(55, '✨ Inserindo efeitos sonoros...');
+  await delay(100);
+
+  // ── SFX ── (scatter through the audio)
+  const fxList = [...activeFX];
+  if (fxList.length > 0) {
+    const voiceTotal = voiceDur;
+    fxList.forEach((fxId, idx) => {
+      const fxBuf = generateSFXTone(ctx2, fxId);
+      const fxSrc = ctx2.createBufferSource();
+      fxSrc.buffer = fxBuf;
+      const fxGain = ctx2.createGain();
+      fxGain.gain.value = 0.35;
+      fxSrc.connect(fxGain);
+      fxGain.connect(ctx2.destination);
+      // Place at even intervals through the voice
+      const t = startOffset + (voiceTotal / (fxList.length+1)) * (idx+1);
+      fxSrc.start(Math.max(startOffset, t));
+    });
+  }
+
+  setProgress(65, '🎺 Adicionando vinheta...');
+  await delay(100);
+
+  // ── INTRO JINGLE ──
+  if (addIntro) {
+    const introBuf = makeJingle(ctx2, 3, 'intro');
+    const introSrc = ctx2.createBufferSource();
+    introSrc.buffer = introBuf;
+    const introGain = ctx2.createGain();
+    introGain.gain.value = 0.6;
+    introSrc.connect(introGain);
+    introGain.connect(ctx2.destination);
+    introSrc.start(0);
+  }
+
+  // ── OUTRO JINGLE ──
+  if (addOutro) {
+    const outroBuf = makeJingle(ctx2, 3, 'outro');
+    const outroSrc = ctx2.createBufferSource();
+    outroSrc.buffer = outroBuf;
+    const outroGain = ctx2.createGain();
+    outroGain.gain.value = 0.6;
+    outroSrc.connect(outroGain);
+    outroGain.connect(ctx2.destination);
+    outroSrc.start(ctx2.length/SR - 3);
+  }
+
+  setProgress(80, '🔄 Renderizando...');
+  await delay(50);
+
+  // ── RENDER ──
+  let rendered;
+  try {
+    rendered = await ctx2.startRendering();
+  } catch(e) {
+    toast('❌ Erro na renderização: ' + e.message);
+    document.getElementById('proc-btn').disabled = false;
+    return;
+  }
+
+  setProgress(92, '💾 Codificando WAV...');
+  await delay(100);
+
+  const wavBlob = bufferToWav(rendered);
+  const url = URL.createObjectURL(wavBlob);
+
+  setProgress(100, '✅ Pronto!');
+  await delay(300);
+
+  // ── OUTPUT ──
+  document.getElementById('out-player').src = url;
+  document.getElementById('dl-link').href = url;
+  document.getElementById('dl-link').download = 'podcast-' + Date.now() + '.wav';
+  document.getElementById('output-wrap').style.display = 'block';
+  document.getElementById('proc-btn').disabled = false;
+  progWrap.style.display = 'none';
+
+  document.getElementById('output-wrap').scrollIntoView({ behavior: 'smooth' });
+  toast('🎉 Podcast pronto para o Spotify!');
+}
+
+// ═══════════════════════════════════════════════
+//  IMPULSE RESPONSE (reverb)
+// ═══════════════════════════════════════════════
+function makeImpulseResponse(ctx, duration, decay) {
+  const len = ctx.sampleRate * duration;
+  const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let ch=0;ch<2;ch++) {
+    const d = buf.getChannelData(ch);
+    for (let i=0;i<len;i++) {
+      d[i] = (Math.random()*2-1) * Math.pow(1-i/len, decay);
+    }
+  }
+  return buf;
+}
+
+// ═══════════════════════════════════════════════
+//  JINGLE
+// ═══════════════════════════════════════════════
+function makeJingle(ctx, duration, type) {
+  const SR = ctx.sampleRate;
+  const buf = ctx.createBuffer(2, SR*duration, SR);
+  const notes = type === 'intro'
+    ? [523.25, 659.25, 783.99, 1046.50]
+    : [1046.50, 783.99, 659.25, 523.25];
+
+  for (let ch=0;ch<2;ch++) {
+    const d = buf.getChannelData(ch);
+    notes.forEach((freq, idx) => {
+      const start = Math.floor(idx * SR * 0.55);
+      const noteDur = SR * 0.5;
+      for (let i=0;i<noteDur && (start+i)<d.length;i++) {
+        const t = i/SR;
+        const env = Math.exp(-3*t);
+        d[start+i] += Math.sin(2*Math.PI*freq*t)*env*0.3;
+        d[start+i] += Math.sin(2*Math.PI*freq*2*t)*env*0.1;
+      }
+    });
+    // overall fade
+    for (let i=0;i<d.length;i++) {
+      const fEnv = Math.min(i/(SR*0.1), 1) * Math.min((d.length-i)/(SR*0.3), 1);
+      d[i] *= fEnv;
+    }
+  }
+  return buf;
+}
+
+// ═══════════════════════════════════════════════
+//  RESAMPLE
+// ═══════════════════════════════════════════════
+function resampleBuffer(buf, targetSR, ctx) {
+  const ratio = targetSR / buf.sampleRate;
+  const newLen = Math.ceil(buf.length * ratio);
+  const out = ctx.createBuffer(buf.numberOfChannels, newLen, targetSR);
+  for (let ch=0;ch<buf.numberOfChannels;ch++) {
+    const src = buf.getChannelData(ch);
+    const dst = out.getChannelData(ch);
+    for (let i=0;i<newLen;i++) {
+      const pos = i/ratio;
+      const p0 = Math.floor(pos);
+      const frac = pos-p0;
+      const s0 = src[p0] || 0;
+      const s1 = src[p0+1] || 0;
+      dst[i] = s0 + frac*(s1-s0);
+    }
+  }
+  return out;
+}
+
+// ═══════════════════════════════════════════════
+//  WAV ENCODER
+// ═══════════════════════════════════════════════
+function bufferToWav(buffer) {
+  const numCh = buffer.numberOfChannels;
+  const SR = buffer.sampleRate;
+  const len = buffer.length;
+  const arrayBuf = new ArrayBuffer(44 + len * numCh * 2);
+  const view = new DataView(arrayBuf);
+
+  function write(offset, str) { for(let i=0;i<str.length;i++) view.setUint8(offset+i, str.charCodeAt(i)); }
+  function w16(o,v) { view.setInt16(o,v,true); }
+  function w32(o,v) { view.setUint32(o,v,true); }
+
+  write(0,'RIFF');
+  w32(4, 36 + len*numCh*2);
+  write(8,'WAVE');
+  write(12,'fmt ');
+  w32(16,16); w16(20,1); w16(22,numCh);
+  w32(24,SR); w32(28,SR*numCh*2);
+  w16(32,numCh*2); w16(34,16);
+  write(36,'data');
+  w32(40,len*numCh*2);
+
+  let offset = 44;
+  for (let i=0;i<len;i++) {
+    for (let ch=0;ch<numCh;ch++) {
+      const s = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[i]));
+      view.setInt16(offset, s<0 ? s*0x8000 : s*0x7FFF, true);
+      offset += 2;
+    }
+  }
+  return new Blob([arrayBuf], {type:'audio/wav'});
+}
+
+// ═══════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════
+function formatTime(s) {
+  const m = Math.floor(s/60);
+  const sec = Math.floor(s%60).toString().padStart(2,'0');
+  return m+':'+sec;
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  buildThemeGrid();
+  buildFxGrid();
+  bindSliders();
+  setupFileInput();
+});
+</script>
+
+</body>
+</html>
