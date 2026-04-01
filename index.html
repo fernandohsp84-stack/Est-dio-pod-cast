@@ -6,314 +6,361 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Historinhas do Miguel</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-–ap-purple: #B160F5;
-–ap-purple-dark: #8833CC;
-–ap-bg: #0F0F12;
-–ap-surface: #1C1C22;
-–ap-surface2: #28282F;
-–ap-border: rgba(255,255,255,0.08);
-–ap-text: #F2F2F7;
-–ap-text2: #8E8E93;
-–ap-text3: #48484A;
-–ap-green: #30D158;
-–ap-orange: #FF9F0A;
-–ap-blue: #0A84FF;
+–bg:       #F2F2F7;
+–surface:  #FFFFFF;
+–surface2: #E5E5EA;
+–border:   rgba(0,0,0,0.10);
+–text:     #1C1C1E;
+–text2:    #6C6C70;
+–text3:    #AEAEB2;
+–purple:   #7B2FBE;
+–purple2:  #9B59E0;
+–green:    #34C759;
+–orange:   #FF9500;
+–blue:     #007AFF;
+–red:      #FF3B30;
 –r: 14px;
 –r2: 10px;
 }
 
 - { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html { background: var(–ap-bg); }
+  html, body { background: var(–bg); }
 
 body {
 font-family: ‘Inter’, -apple-system, BlinkMacSystemFont, sans-serif;
-background: var(–ap-bg);
-color: var(–ap-text);
+color: var(–text);
 min-height: 100vh;
-overflow-x: hidden;
 -webkit-font-smoothing: antialiased;
+overflow-x: hidden;
 }
 
-/* HEADER */
+/* ── HEADER ── */
 header {
-padding: env(safe-area-inset-top, 16px) 20px 0;
-background: var(–ap-bg);
+background: rgba(242,242,247,0.92);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
 position: sticky; top: 0; z-index: 100;
+border-bottom: 1px solid var(–border);
+padding-top: env(safe-area-inset-top, 0px);
 }
 .header-inner {
-display: flex; align-items: center; gap: 14px;
-padding: 16px 0 14px;
-border-bottom: 1px solid var(–ap-border);
+display: flex; align-items: center; gap: 12px;
+padding: 12px 16px;
 }
 .app-icon {
-width: 44px; height: 44px; flex-shrink: 0;
-background: linear-gradient(145deg, var(–ap-purple), var(–ap-purple-dark));
+width: 42px; height: 42px; flex-shrink: 0;
+background: linear-gradient(145deg, var(–purple2), var(–purple));
 border-radius: 10px;
-display: flex; align-items: center; justify-content: center;
-font-size: 22px;
-box-shadow: 0 4px 16px rgba(177,96,245,0.4);
+display: flex; align-items: center; justify-content: center; font-size: 20px;
+box-shadow: 0 2px 8px rgba(123,47,190,0.35);
 }
-.header-text h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
-.header-text p  { font-size: 12px; color: var(–ap-text2); margin-top: 1px; font-weight: 500; }
-.header-badge {
+.hd-title { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+.hd-sub   { font-size: 12px; color: var(–text2); margin-top: 1px; }
+.hd-badge {
 margin-left: auto;
-background: var(–ap-purple); color: #fff;
-font-size: 11px; font-weight: 700;
-padding: 3px 10px; border-radius: 20px;
+background: var(–purple); color: #fff;
+font-size: 10px; font-weight: 700;
+padding: 3px 9px; border-radius: 20px; letter-spacing: 0.3px;
 }
 
-/* MAIN */
+/* ── LAYOUT ── */
 main {
-max-width: 600px; margin: 0 auto;
-padding: 20px 16px 80px;
-display: flex; flex-direction: column; gap: 12px;
+max-width: 580px; margin: 0 auto;
+padding: 16px 16px 80px;
+display: flex; flex-direction: column; gap: 10px;
 }
 
-.section-label {
-font-size: 11px; font-weight: 700; color: var(–ap-text2);
-letter-spacing: 0.8px; text-transform: uppercase;
-padding: 0 4px; margin-bottom: 2px;
+.sec-label {
+font-size: 11px; font-weight: 700; color: var(–text2);
+letter-spacing: 0.7px; text-transform: uppercase;
+padding: 0 4px; margin-top: 4px;
 }
 
+/* ── CARD ── */
 .card {
-background: var(–ap-surface);
+background: var(–surface);
 border-radius: var(–r);
-border: 1px solid var(–ap-border);
+border: 1px solid var(–border);
 overflow: hidden;
+box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
-/* UPLOAD */
+/* ── UPLOAD ── */
 #drop-zone {
 display: flex; flex-direction: column; align-items: center;
-gap: 10px; padding: 36px 20px;
+gap: 10px; padding: 32px 20px;
 cursor: pointer; text-align: center;
-border: 1.5px dashed rgba(177,96,245,0.4);
+background: var(–surface);
+border: 2px dashed #C7B8F0;
 border-radius: var(–r);
-background: var(–ap-surface);
 transition: background .15s;
 }
-#drop-zone.drag-over, #drop-zone:active { background: rgba(177,96,245,0.08); border-color: var(–ap-purple); }
-.upload-icon-wrap {
-width: 56px; height: 56px; border-radius: 14px;
-background: rgba(177,96,245,0.15);
-display: flex; align-items: center; justify-content: center; font-size: 26px;
+#drop-zone:active, #drop-zone.drag-over {
+background: #F0EAFF; border-color: var(–purple);
 }
-#drop-zone h3 { font-size: 15px; font-weight: 700; }
-#drop-zone p  { font-size: 12px; color: var(–ap-text2); }
-.upload-label-btn {
-background: var(–ap-purple); color: #fff;
-font-size: 14px; font-weight: 700;
-padding: 10px 24px; border-radius: 22px;
-cursor: pointer; display: inline-block;
-transition: opacity .15s;
+.up-icon {
+width: 54px; height: 54px; border-radius: 14px;
+background: linear-gradient(145deg, #EDE0FF, #D8C5FF);
+display: flex; align-items: center; justify-content: center; font-size: 24px;
 }
-.upload-label-btn:active { opacity: .75; }
+#drop-zone h3 { font-size: 15px; font-weight: 700; color: var(–text); }
+#drop-zone p  { font-size: 12px; color: var(–text2); }
+.up-btn {
+background: var(–purple); color: #fff;
+font-family: inherit; font-size: 14px; font-weight: 700;
+padding: 10px 24px; border-radius: 22px; border: none; cursor: pointer;
+}
 #file-input { display: none; }
 
-/* FILE LOADED */
+/* ── FILE LOADED ── */
 #file-loaded {
 display: none; padding: 14px 16px;
-gap: 12px; align-items: center;
+align-items: center; gap: 12px;
 }
-.file-thumb {
+.f-thumb {
 width: 44px; height: 44px; flex-shrink: 0;
-background: linear-gradient(145deg, var(–ap-purple), var(–ap-purple-dark));
+background: linear-gradient(145deg, var(–purple2), var(–purple));
 border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;
 }
-.file-meta { flex: 1; min-width: 0; }
-.file-name { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.file-dur  { font-size: 12px; color: var(–ap-text2); margin-top: 2px; }
+.f-meta { flex: 1; min-width: 0; }
+.f-name { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.f-dur  { font-size: 12px; color: var(–text2); margin-top: 2px; }
 .change-btn {
-background: var(–ap-surface2); border: 1px solid var(–ap-border);
-color: var(–ap-purple); font-size: 12px; font-weight: 700;
+background: #F2F2F7; border: 1px solid var(–border);
+color: var(–purple); font-family: inherit; font-size: 12px; font-weight: 700;
 padding: 6px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap;
 }
 
-/* WAVEFORM */
-#waveform-section { display: none; padding: 0 16px 14px; }
+/* ── WAVEFORM ── */
+#waveform-section { display: none; padding: 0 14px 14px; }
 canvas#waveform {
-width: 100%; height: 60px; display: block;
-border-radius: 10px; background: var(–ap-surface2); margin-bottom: 10px;
+width: 100%; height: 56px; display: block;
+border-radius: 8px; background: #F2F2F7; margin-bottom: 10px;
 }
 .playbar { display: flex; align-items: center; gap: 10px; }
 .play-btn {
-width: 38px; height: 38px; flex-shrink: 0;
-background: var(–ap-purple); border: none; border-radius: 50%;
-color: #fff; font-size: 14px; cursor: pointer;
+width: 36px; height: 36px; flex-shrink: 0;
+background: var(–purple); border: none; border-radius: 50%;
+color: #fff; font-size: 13px; cursor: pointer;
 display: flex; align-items: center; justify-content: center;
-transition: opacity .15s;
 }
 .play-btn:active { opacity: .75; }
-input[type=range].seek {
-flex: 1; height: 3px; cursor: pointer;
--webkit-appearance: none; appearance: none;
-background: var(–ap-surface2); border-radius: 99px; outline: none;
-}
-input[type=range].seek::-webkit-slider-thumb {
--webkit-appearance: none; width: 14px; height: 14px;
-border-radius: 50%; background: var(–ap-purple); cursor: pointer;
-}
-#time-display {
-font-size: 11px; color: var(–ap-text2); font-weight: 600;
-white-space: nowrap; min-width: 76px; text-align: right;
-font-variant-numeric: tabular-nums;
-}
+#time-display { font-size: 11px; color: var(–text2); font-weight: 600; white-space: nowrap; min-width: 72px; text-align: right; }
 
-/* THEME GRID */
-.theme-grid-wrap { padding: 14px 16px; display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-.theme-btn {
-background: var(–ap-surface2); border: 1.5px solid var(–ap-border);
-border-radius: var(–r2); padding: 12px 6px 10px;
-cursor: pointer; text-align: center; font-family: inherit;
-transition: all .12s;
-}
-.theme-btn .t-em  { font-size: 1.6rem; display: block; margin-bottom: 5px; }
-.theme-btn .t-lb  { font-size: 11px; font-weight: 600; color: var(–ap-text2); display: block; }
-.theme-btn:active { transform: scale(0.94); }
-.theme-btn.selected { border-color: var(–ap-purple); background: rgba(177,96,245,0.12); }
-.theme-btn.selected .t-lb { color: var(–ap-purple); }
-
-.vol-row {
-display: flex; align-items: center; gap: 10px;
-padding: 0 16px 14px;
-}
-.vol-icon { font-size: 15px; }
+/* ── RANGE (Safari-safe: fully custom) ── */
+.ap-range-wrap { position: relative; height: 28px; display: flex; align-items: center; }
 input[type=range].ap-range {
-flex: 1; height: 4px; cursor: pointer;
 -webkit-appearance: none; appearance: none;
-background: var(–ap-surface2); border-radius: 99px; outline: none;
+width: 100%; height: 4px;
+background: transparent;
+outline: none; cursor: pointer;
+position: relative; z-index: 2;
+margin: 0;
+}
+input[type=range].ap-range::-webkit-slider-runnable-track {
+height: 4px; border-radius: 99px;
+background: var(–surface2);
 }
 input[type=range].ap-range::-webkit-slider-thumb {
--webkit-appearance: none; width: 18px; height: 18px;
-border-radius: 50%; background: #fff; cursor: pointer;
-box-shadow: 0 1px 6px rgba(0,0,0,0.4);
+-webkit-appearance: none;
+width: 22px; height: 22px; border-radius: 50%;
+background: #fff; cursor: pointer;
+box-shadow: 0 1px 6px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.06);
+margin-top: -9px;
 }
-.vol-val { font-size: 12px; color: var(–ap-text2); font-weight: 700; min-width: 30px; text-align: right; }
+input[type=range].ap-range::-moz-range-track {
+height: 4px; border-radius: 99px; background: var(–surface2);
+}
+input[type=range].ap-range::-moz-range-thumb {
+width: 22px; height: 22px; border-radius: 50%;
+background: #fff; border: none;
+box-shadow: 0 1px 6px rgba(0,0,0,0.22);
+}
+.seek-range {
+-webkit-appearance: none; appearance: none;
+width: 100%; height: 3px;
+background: var(–surface2); border-radius: 99px;
+outline: none; cursor: pointer; flex: 1;
+}
+.seek-range::-webkit-slider-thumb {
+-webkit-appearance: none; width: 14px; height: 14px;
+border-radius: 50%; background: var(–purple); cursor: pointer;
+}
 
-/* SLIDERS */
-.sliders-wrap { padding: 8px 16px 14px; display: flex; flex-direction: column; gap: 18px; }
-.sl-row { display: flex; flex-direction: column; gap: 7px; }
-.sl-hd  { display: flex; justify-content: space-between; align-items: baseline; }
-.sl-label { font-size: 13px; font-weight: 600; }
-.sl-val   { font-size: 13px; font-weight: 700; color: var(–ap-purple); }
+/* ── THEME GRID ── */
+.theme-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; padding: 14px; }
+.theme-btn {
+background: var(–bg); border: 2px solid var(–border);
+border-radius: var(–r2); padding: 12px 4px 10px;
+cursor: pointer; text-align: center; font-family: inherit;
+transition: all .12s; position: relative;
+}
+.theme-btn .t-em  { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+.theme-btn .t-lb  { font-size: 11px; font-weight: 600; color: var(–text2); display: block; }
+.theme-btn:active { transform: scale(0.93); }
+.theme-btn.selected { border-color: var(–purple); background: #F0EAFF; }
+.theme-btn.selected .t-lb { color: var(–purple); }
+/* preview play badge */
+.theme-btn .t-play {
+position: absolute; top: 5px; right: 5px;
+width: 18px; height: 18px; border-radius: 50%;
+background: var(–purple); color: #fff;
+font-size: 8px; display: flex; align-items: center; justify-content: center;
+opacity: 0; transition: opacity .2s;
+}
+.theme-btn:hover .t-play, .theme-btn:focus .t-play { opacity: 1; }
+.theme-btn.playing .t-play { opacity: 1; background: var(–red); }
 
-/* FX GRID */
-.fx-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; padding: 14px 16px; }
+/* ── VOL ROW ── */
+.vol-row {
+display: flex; align-items: center; gap: 10px;
+padding: 0 14px 14px;
+}
+.vol-icon { font-size: 14px; flex-shrink: 0; }
+.vol-val  { font-size: 12px; font-weight: 700; color: var(–text2); min-width: 34px; text-align: right; }
+
+/* ── SLIDERS SECTION ── */
+.sliders-wrap { padding: 8px 14px 14px; display: flex; flex-direction: column; gap: 18px; }
+.sl-row { display: flex; flex-direction: column; gap: 8px; }
+.sl-hd  { display: flex; justify-content: space-between; align-items: center; }
+.sl-label { font-size: 14px; font-weight: 600; color: var(–text); }
+.sl-val   { font-size: 14px; font-weight: 700; color: var(–purple); min-width: 44px; text-align: right; }
+
+/* ── FX GRID ── */
+.fx-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; padding: 14px; }
 .fx-btn {
-background: var(–ap-surface2); border: 1.5px solid var(–ap-border);
+background: var(–bg); border: 2px solid var(–border);
 border-radius: var(–r2); padding: 10px 4px 8px;
 cursor: pointer; text-align: center; font-family: inherit;
 transition: all .12s; position: relative;
 }
-.fx-btn .f-em { font-size: 1.4rem; display: block; margin-bottom: 3px; }
-.fx-btn .f-lb { font-size: 10px; font-weight: 600; color: var(–ap-text2); display: block; line-height: 1.2; }
-.fx-btn:active { transform: scale(0.91); }
-.fx-btn.active { border-color: var(–ap-orange); background: rgba(255,159,10,0.12); }
-.fx-btn.active .f-lb { color: var(–ap-orange); }
-.fx-dot {
-position: absolute; top: 5px; right: 5px;
-width: 7px; height: 7px; border-radius: 50%;
-background: var(–ap-orange); display: none;
-}
+.fx-btn .f-em { font-size: 1.35rem; display: block; margin-bottom: 3px; }
+.fx-btn .f-lb { font-size: 10px; font-weight: 600; color: var(–text2); display: block; line-height: 1.2; }
+.fx-btn:active { transform: scale(0.90); }
+.fx-btn.active { border-color: var(–orange); background: #FFF3E0; }
+.fx-btn.active .f-lb { color: var(–orange); }
+.fx-dot { position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(–orange); display: none; }
 .fx-btn.active .fx-dot { display: block; }
+/* preview indicator */
+.fx-btn.playing-preview { border-color: var(–purple); background: #F0EAFF; }
 
-/* TOGGLES */
+/* ── PREVIEW BAR ── */
+.preview-bar {
+display: flex; align-items: center; justify-content: space-between;
+padding: 6px 14px 0;
+}
+.preview-bar p { font-size: 11px; color: var(–text2); }
+.preview-stop {
+background: var(–red); color: #fff; border: none;
+border-radius: 10px; padding: 4px 10px;
+font-size: 11px; font-weight: 700; cursor: pointer; display: none;
+}
+.preview-stop.visible { display: block; }
+
+/* ── TOGGLES ── */
 .toggle-row {
-display: flex; align-items: center; padding: 14px 16px; gap: 12px;
-border-bottom: 1px solid var(–ap-border);
+display: flex; align-items: center; padding: 14px;
+gap: 12px; border-bottom: 1px solid var(–border);
 }
 .toggle-row:last-child { border-bottom: none; }
 .tg-icon {
-width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
-display: flex; align-items: center; justify-content: center; font-size: 16px;
+width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+display: flex; align-items: center; justify-content: center; font-size: 15px;
 }
-.tg-icon.orange { background: rgba(255,159,10,0.18); }
-.tg-icon.blue   { background: rgba(10,132,255,0.18); }
+.tg-icon.orn { background: #FFF0D0; }
+.tg-icon.blu { background: #D0E8FF; }
 .tg-body { flex: 1; }
 .tg-title { font-size: 15px; font-weight: 600; }
-.tg-sub   { font-size: 12px; color: var(–ap-text2); margin-top: 1px; }
-.ios-toggle { position: relative; display: inline-block; width: 50px; height: 30px; flex-shrink: 0; }
-.ios-toggle input { opacity: 0; width: 0; height: 0; }
-.ios-slider {
-position: absolute; inset: 0;
-background: var(–ap-surface2); border-radius: 30px;
-cursor: pointer; transition: background .2s;
-border: 1.5px solid var(–ap-border);
-}
-.ios-slider::before {
-content: ‘’; position: absolute;
-width: 24px; height: 24px; left: 2px; top: 1px;
-background: #fff; border-radius: 50%;
-transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-}
-.ios-toggle input:checked + .ios-slider { background: var(–ap-green); border-color: var(–ap-green); }
-.ios-toggle input:checked + .ios-slider::before { transform: translateX(20px); }
+.tg-sub   { font-size: 12px; color: var(–text2); margin-top: 1px; }
 
-/* PROCESS BTN */
+/* iOS TOGGLE — solid colors so it shows on white bg */
+.ios-wrap { position: relative; width: 51px; height: 31px; flex-shrink: 0; }
+.ios-wrap input { position: absolute; opacity: 0; width: 0; height: 0; }
+.ios-track {
+position: absolute; inset: 0; border-radius: 31px;
+background: var(–surface2); transition: background .2s;
+cursor: pointer;
+}
+.ios-thumb {
+position: absolute; width: 27px; height: 27px;
+top: 2px; left: 2px; border-radius: 50%;
+background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+transition: transform .2s; pointer-events: none;
+}
+.ios-wrap input:checked ~ .ios-track { background: var(–green); }
+.ios-wrap input:checked ~ .ios-thumb { transform: translateX(20px); }
+
+/* ── PROC BTN ── */
 #proc-btn {
 width: 100%; padding: 16px; border: none; border-radius: var(–r);
-background: linear-gradient(135deg, var(–ap-purple), var(–ap-purple-dark));
+background: linear-gradient(135deg, var(–purple2), var(–purple));
 color: #fff; font-family: inherit; font-size: 16px; font-weight: 800;
 cursor: pointer; letter-spacing: -0.2px;
-box-shadow: 0 6px 24px rgba(177,96,245,0.35);
+box-shadow: 0 4px 16px rgba(123,47,190,0.30);
 display: flex; align-items: center; justify-content: center; gap: 8px;
-transition: opacity .15s;
 }
-#proc-btn:active { opacity: .85; }
-#proc-btn:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; }
+#proc-btn:active { opacity: .85; transform: scale(0.98); }
+#proc-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-/* PROGRESS */
+/* ── PROGRESS ── */
 #progress-wrap { display: none; padding: 16px; }
-.prog-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.prog-hd { display: flex; justify-content: space-between; margin-bottom: 10px; }
 .prog-title { font-size: 14px; font-weight: 700; }
-.prog-pct   { font-size: 14px; font-weight: 700; color: var(–ap-purple); }
-.prog-bg    { height: 6px; background: var(–ap-surface2); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
-.prog-fill  { height: 100%; border-radius: 99px; transition: width .4s ease; width: 0%; background: linear-gradient(90deg, var(–ap-purple), var(–ap-blue)); }
-#progress-label { font-size: 12px; color: var(–ap-text2); font-weight: 500; }
+.prog-pct   { font-size: 14px; font-weight: 700; color: var(–purple); }
+.prog-bg    { height: 6px; background: var(–surface2); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+.prog-fill  { height: 100%; border-radius: 99px; width: 0%; transition: width .4s; background: linear-gradient(90deg, var(–purple), var(–blue)); }
+#prog-lbl   { font-size: 12px; color: var(–text2); }
 
-/* OUTPUT */
+/* ── OUTPUT ── */
 #output-wrap { display: none; }
 .out-inner { padding: 22px 16px; text-align: center; }
 .out-art {
-width: 80px; height: 80px; border-radius: 18px; margin: 0 auto 14px;
-background: linear-gradient(145deg, var(–ap-purple), var(–ap-purple-dark));
-display: flex; align-items: center; justify-content: center; font-size: 38px;
-box-shadow: 0 8px 28px rgba(177,96,245,0.4);
+width: 76px; height: 76px; border-radius: 18px;
+background: linear-gradient(145deg, var(–purple2), var(–purple));
+display: flex; align-items: center; justify-content: center; font-size: 36px;
+margin: 0 auto 14px;
+box-shadow: 0 6px 20px rgba(123,47,190,0.30);
 }
-.out-inner h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.3px; }
-.out-inner p  { font-size: 13px; color: var(–ap-text2); margin-bottom: 16px; }
-audio#out-player { width: 100%; margin-bottom: 16px; border-radius: 10px; }
+.out-inner h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.out-inner p  { font-size: 13px; color: var(–text2); margin-bottom: 16px; }
+audio#out-player { width: 100%; margin-bottom: 16px; }
 .dl-btn {
 display: inline-flex; align-items: center; gap: 8px;
-background: var(–ap-green); color: #fff; text-decoration: none;
+background: var(–green); color: #fff; text-decoration: none;
 border: none; border-radius: 12px; padding: 13px 28px;
-font-family: inherit; font-size: 15px; font-weight: 800;
-box-shadow: 0 4px 16px rgba(48,209,88,0.3); cursor: pointer;
-transition: opacity .15s;
+font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer;
+box-shadow: 0 3px 12px rgba(52,199,89,0.28);
 }
 .dl-btn:active { opacity: .8; }
 
-/* TOAST */
+/* ── ERROR ── */
+#err-msg {
+display: none; padding: 12px 16px;
+background: #FFF1F0; border: 1px solid #FFCDD0;
+border-radius: var(–r); color: var(–red);
+font-size: 13px; font-weight: 600;
+}
+
+/* ── TOAST ── */
 #toast {
 position: fixed;
 bottom: calc(env(safe-area-inset-bottom,0px) + 20px); left: 50%;
 transform: translateX(-50%) translateY(80px);
-background: rgba(44,44,46,0.95); color: #fff;
+background: rgba(28,28,30,0.92); color: #fff;
 padding: 10px 20px; border-radius: 30px;
 font-size: 13px; font-weight: 600;
 transition: transform .25s cubic-bezier(.34,1.56,.64,1);
 z-index: 999; pointer-events: none; white-space: nowrap;
-backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-border: 1px solid rgba(255,255,255,0.1);
+backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }
 #toast.show { transform: translateX(-50%) translateY(0); }
 
-@media (min-width:480px) {
-.fx-grid { grid-template-columns: repeat(6,1fr); }
-.theme-grid-wrap { grid-template-columns: repeat(4,1fr); }
+@media (min-width: 460px) {
+.fx-grid    { grid-template-columns: repeat(6,1fr); }
+.theme-grid { grid-template-columns: repeat(4,1fr); }
 }
 </style>
 
@@ -323,33 +370,34 @@ border: 1px solid rgba(255,255,255,0.1);
 <header>
   <div class="header-inner">
     <div class="app-icon">🎙️</div>
-    <div class="header-text">
-      <h1>Historinhas do Miguel</h1>
-      <p>Estúdio de Podcast</p>
+    <div>
+      <div class="hd-title">Historinhas do Miguel</div>
+      <div class="hd-sub">Estúdio de Podcast</div>
     </div>
-    <span class="header-badge">ESTÚDIO</span>
+    <span class="hd-badge">ESTÚDIO</span>
   </div>
 </header>
 
 <main>
 
-  <!-- 1. GRAVAÇÃO -->
+  <!-- 1 GRAVAÇÃO -->
 
-  <div class="section-label">1 — Gravação</div>
+  <div class="sec-label">1 — Gravação</div>
+
   <div id="drop-zone" onclick="document.getElementById('file-input').click()">
-    <div class="upload-icon-wrap">🎤</div>
+    <div class="up-icon">🎤</div>
     <h3>Adicionar gravação</h3>
     <p>MP3 · WAV · M4A · AAC · OGG</p>
-    <span class="upload-label-btn">Escolher arquivo</span>
+    <button class="up-btn" type="button">Escolher arquivo</button>
   </div>
   <input type="file" id="file-input" accept="audio/*,.m4a,.mp3,.wav,.aac,.ogg,.webm,.caf">
 
   <div class="card" id="file-loaded">
-    <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
-      <div class="file-thumb">🎵</div>
-      <div class="file-meta">
-        <div class="file-name" id="fname-label">—</div>
-        <div class="file-dur"  id="dur-label">—</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:14px;">
+      <div class="f-thumb">🎵</div>
+      <div class="f-meta">
+        <div class="f-name" id="fname-label">—</div>
+        <div class="f-dur"  id="dur-label">—</div>
       </div>
       <button class="change-btn" onclick="resetFile()">Trocar</button>
     </div>
@@ -357,17 +405,21 @@ border: 1px solid rgba(255,255,255,0.1);
       <canvas id="waveform"></canvas>
       <div class="playbar">
         <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-        <input type="range" class="seek" id="seek-bar" value="0" min="0" step="0.01">
+        <input type="range" class="seek-range" id="seek-bar" value="0" min="0" step="0.01">
         <span id="time-display">0:00 / 0:00</span>
       </div>
     </div>
   </div>
 
-  <!-- 2. TRILHA -->
+  <!-- 2 TRILHA -->
 
-  <div class="section-label">2 — Trilha de fundo</div>
+  <div class="sec-label">2 — Trilha de fundo</div>
   <div class="card">
-    <div class="theme-grid-wrap" id="theme-grid"></div>
+    <div class="preview-bar">
+      <p>Toque em qualquer trilha para ouvir uma amostra</p>
+      <button class="preview-stop" id="theme-stop" onclick="stopThemePreview()">■ Parar</button>
+    </div>
+    <div class="theme-grid" id="theme-grid"></div>
     <div class="vol-row">
       <span class="vol-icon">🔈</span>
       <input type="range" class="ap-range" id="bg-vol" min="0" max="100" value="25">
@@ -376,66 +428,122 @@ border: 1px solid rgba(255,255,255,0.1);
     </div>
   </div>
 
-  <!-- 3. ÁUDIO -->
+  <!-- 3 ÁUDIO -->
 
-  <div class="section-label">3 — Ajuste de áudio</div>
+  <div class="sec-label">3 — Ajuste de áudio</div>
   <div class="card">
     <div class="sliders-wrap">
-      <div class="sl-row">
-        <div class="sl-hd"><span class="sl-label">🎤 Volume da voz</span><span class="sl-val" id="voice-vol-val">150%</span></div>
-        <input type="range" class="ap-range" id="voice-vol" min="50" max="300" value="150">
-      </div>
-      <div class="sl-row">
-        <div class="sl-hd"><span class="sl-label">🧹 Redução de ruído</span><span class="sl-val" id="noise-red-val">60%</span></div>
-        <input type="range" class="ap-range" id="noise-red" min="0" max="100" value="60">
-      </div>
-      <div class="sl-row">
-        <div class="sl-hd"><span class="sl-label">🌀 Reverb</span><span class="sl-val" id="reverb-val">15%</span></div>
-        <input type="range" class="ap-range" id="reverb" min="0" max="100" value="15">
-      </div>
-      <div class="sl-row">
-        <div class="sl-hd"><span class="sl-label">⚡ Compressão</span><span class="sl-val" id="compress-val">70%</span></div>
-        <input type="range" class="ap-range" id="compress" min="0" max="100" value="70">
-      </div>
-      <div class="sl-row">
-        <div class="sl-hd"><span class="sl-label">🎚️ Fade in</span><span class="sl-val" id="fade-in-val">2.0s</span></div>
-        <input type="range" class="ap-range" id="fade-in" min="0" max="5" value="2" step="0.5">
-      </div>
-      <div class="sl-row">
-        <div class="sl-hd"><span class="sl-label">🎚️ Fade out</span><span class="sl-val" id="fade-out-val">3.0s</span></div>
-        <input type="range" class="ap-range" id="fade-out" min="0" max="5" value="3" step="0.5">
-      </div>
+
+```
+  <div class="sl-row">
+    <div class="sl-hd">
+      <span class="sl-label">🎤 Volume da voz</span>
+      <span class="sl-val" id="voice-vol-val">150%</span>
+    </div>
+    <div class="ap-range-wrap">
+      <input type="range" class="ap-range" id="voice-vol" min="50" max="300" value="150">
     </div>
   </div>
 
-  <!-- 4. EFEITOS -->
+  <div class="sl-row">
+    <div class="sl-hd">
+      <span class="sl-label">🧹 Redução de ruído</span>
+      <span class="sl-val" id="noise-red-val">60%</span>
+    </div>
+    <div class="ap-range-wrap">
+      <input type="range" class="ap-range" id="noise-red" min="0" max="100" value="60">
+    </div>
+  </div>
 
-  <div class="section-label">4 — Efeitos sonoros</div>
+  <div class="sl-row">
+    <div class="sl-hd">
+      <span class="sl-label">🌀 Reverb</span>
+      <span class="sl-val" id="reverb-val">15%</span>
+    </div>
+    <div class="ap-range-wrap">
+      <input type="range" class="ap-range" id="reverb" min="0" max="100" value="15">
+    </div>
+  </div>
+
+  <div class="sl-row">
+    <div class="sl-hd">
+      <span class="sl-label">⚡ Compressão</span>
+      <span class="sl-val" id="compress-val">70%</span>
+    </div>
+    <div class="ap-range-wrap">
+      <input type="range" class="ap-range" id="compress" min="0" max="100" value="70">
+    </div>
+  </div>
+
+  <div class="sl-row">
+    <div class="sl-hd">
+      <span class="sl-label">🎚️ Fade in</span>
+      <span class="sl-val" id="fade-in-val">2.0s</span>
+    </div>
+    <div class="ap-range-wrap">
+      <input type="range" class="ap-range" id="fade-in" min="0" max="5" value="2" step="0.5">
+    </div>
+  </div>
+
+  <div class="sl-row">
+    <div class="sl-hd">
+      <span class="sl-label">🎚️ Fade out</span>
+      <span class="sl-val" id="fade-out-val">3.0s</span>
+    </div>
+    <div class="ap-range-wrap">
+      <input type="range" class="ap-range" id="fade-out" min="0" max="5" value="3" step="0.5">
+    </div>
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- 4 EFEITOS -->
+
+  <div class="sec-label">4 — Efeitos sonoros</div>
   <div class="card">
+    <div class="preview-bar">
+      <p>Toque para ativar · Segure para ouvir amostra</p>
+      <button class="preview-stop" id="fx-stop" onclick="stopFXPreview()">■ Parar</button>
+    </div>
     <div class="fx-grid" id="fx-grid"></div>
   </div>
 
-  <!-- 5. VINHETAS -->
+  <!-- 5 VINHETAS -->
 
-  <div class="section-label">5 — Vinhetas</div>
+  <div class="sec-label">5 — Vinhetas</div>
   <div class="card">
     <div class="toggle-row">
-      <div class="tg-icon orange">🎺</div>
+      <div class="tg-icon orn">🎺</div>
       <div class="tg-body">
         <div class="tg-title">Vinheta de abertura</div>
         <div class="tg-sub">Toque musical antes da narração</div>
       </div>
-      <label class="ios-toggle"><input type="checkbox" id="add-intro" checked><span class="ios-slider"></span></label>
+      <div class="ios-wrap">
+        <input type="checkbox" id="add-intro" checked>
+        <div class="ios-track" onclick="this.previousElementSibling.click()"></div>
+        <div class="ios-thumb" onclick="this.previousElementSibling.previousElementSibling.click()"></div>
+      </div>
     </div>
     <div class="toggle-row">
-      <div class="tg-icon blue">🌙</div>
+      <div class="tg-icon blu">🌙</div>
       <div class="tg-body">
         <div class="tg-title">Vinheta de encerramento</div>
         <div class="tg-sub">Toque musical ao final</div>
       </div>
-      <label class="ios-toggle"><input type="checkbox" id="add-outro" checked><span class="ios-slider"></span></label>
+      <div class="ios-wrap">
+        <input type="checkbox" id="add-outro" checked>
+        <div class="ios-track" onclick="this.previousElementSibling.click()"></div>
+        <div class="ios-thumb" onclick="this.previousElementSibling.previousElementSibling.click()"></div>
+      </div>
     </div>
   </div>
+
+  <!-- ERRO -->
+
+  <div id="err-msg"></div>
 
   <!-- PRODUZIR -->
 
@@ -451,7 +559,7 @@ border: 1px solid rgba(255,255,255,0.1);
       <span class="prog-pct" id="prog-pct">0%</span>
     </div>
     <div class="prog-bg"><div class="prog-fill" id="prog-fill"></div></div>
-    <div id="progress-label">Preparando...</div>
+    <div id="prog-lbl">Preparando...</div>
   </div>
 
   <!-- OUTPUT -->
@@ -461,8 +569,7 @@ border: 1px solid rgba(255,255,255,0.1);
       <div class="out-art">🎉</div>
       <h3>Podcast pronto!</h3>
       <p>Ouça abaixo e baixe para o Spotify 🚀</p>
-      <audio id="out-player" controls></audio>
-      <br>
+      <audio id="out-player" controls></audio><br>
       <a id="dl-link" class="dl-btn" download="historinhas-miguel.wav">⬇ Baixar WAV</a>
     </div>
   </div>
@@ -471,7 +578,9 @@ border: 1px solid rgba(255,255,255,0.1);
 <div id="toast"></div>
 
 <script>
-/* ── DATA ── */
+/* ═══════════════════════════════════════
+   DATA
+═══════════════════════════════════════ */
 const THEMES = [
   {id:'none',    e:'🔇', l:'Sem trilha'},
   {id:'forest',  e:'🌲', l:'Floresta'},
@@ -487,405 +596,565 @@ const THEMES = [
   {id:'mystery', e:'🔍', l:'Mistério'},
 ];
 const SFX = [
-  {id:'stars', e:'⭐', l:'Estrelas'}, {id:'laugh', e:'😂', l:'Risada'},
-  {id:'wow',   e:'😮', l:'Uau!'},    {id:'drum',  e:'🥁', l:'Bumbo'},
-  {id:'bell',  e:'🔔', l:'Sino'},    {id:'wind',  e:'💨', l:'Vento'},
-  {id:'pop',   e:'🎈', l:'Pop!'},    {id:'tada',  e:'🎉', l:'Tadaaa'},
-  {id:'horse', e:'🐴', l:'Cavalos'}, {id:'bird',  e:'🐦', l:'Pássaros'},
-  {id:'thunder',e:'⚡',l:'Trovão'},  {id:'magic2',e:'✨', l:'Encanto'},
+  {id:'stars',  e:'⭐', l:'Estrelas'}, {id:'laugh', e:'😂', l:'Risada'},
+  {id:'wow',    e:'😮', l:'Uau!'},    {id:'drum',  e:'🥁', l:'Bumbo'},
+  {id:'bell',   e:'🔔', l:'Sino'},    {id:'wind',  e:'💨', l:'Vento'},
+  {id:'pop',    e:'🎈', l:'Pop!'},    {id:'tada',  e:'🎉', l:'Tadaaa'},
+  {id:'horse',  e:'🐴', l:'Cavalos'},{id:'bird',  e:'🐦', l:'Pássaros'},
+  {id:'thunder',e:'⚡', l:'Trovão'}, {id:'magic2',e:'✨', l:'Encanto'},
 ];
 
-/* ── STATE ── */
-let audioCtx=null, sourceBuffer=null, selectedTheme='none';
-let activeFX=new Set(), isPlaying=false;
-let playSource=null, startedAt=0, pausedAt=0, seekRAF=null;
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let audioCtx = null;
+let sourceBuffer = null;
+let selectedTheme = 'none';
+let activeFX = new Set();
+let isPlaying = false, playSource = null, startedAt = 0, pausedAt = 0, seekRAF = null;
+let previewSource = null; // for theme/sfx preview
 
-/* ── BUILD UI ── */
-function buildThemeGrid(){
-  const g=document.getElementById('theme-grid');
-  THEMES.forEach(t=>{
-    const b=document.createElement('button');
-    b.className='theme-btn'+(t.id==='none'?' selected':'');
-    b.innerHTML=`<span class="t-em">${t.e}</span><span class="t-lb">${t.l}</span>`;
-    b.onclick=()=>{document.querySelectorAll('.theme-btn').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selectedTheme=t.id;};
+/* ═══════════════════════════════════════
+   AUDIO CONTEXT — create once on first gesture
+═══════════════════════════════════════ */
+function getCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)({sampleRate: 44100});
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+/* ═══════════════════════════════════════
+   BUILD UI
+═══════════════════════════════════════ */
+function buildThemeGrid() {
+  const g = document.getElementById('theme-grid');
+  THEMES.forEach(t => {
+    const b = document.createElement('button');
+    b.className = 'theme-btn' + (t.id === 'none' ? ' selected' : '');
+    b.id = 'theme-' + t.id;
+    b.innerHTML = `<span class="t-em">${t.e}</span><span class="t-lb">${t.l}</span><span class="t-play">▶</span>`;
+    b.addEventListener('click', () => selectTheme(t.id, b));
     g.appendChild(b);
   });
 }
-function buildFxGrid(){
-  const g=document.getElementById('fx-grid');
-  SFX.forEach(fx=>{
-    const b=document.createElement('button');
-    b.className='fx-btn'; b.id='fx-'+fx.id;
-    b.innerHTML=`<span class="f-em">${fx.e}</span><span class="f-lb">${fx.l}</span><span class="fx-dot"></span>`;
-    b.onclick=()=>{
-      if(activeFX.has(fx.id)){activeFX.delete(fx.id);b.classList.remove('active');}
-      else{activeFX.add(fx.id);b.classList.add('active');}
-    };
+
+function selectTheme(id, btn) {
+  // If already selected, just preview
+  const alreadySelected = selectedTheme === id;
+  document.querySelectorAll('.theme-btn').forEach(x => x.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedTheme = id;
+  if (id !== 'none') previewTheme(id, btn);
+}
+
+function buildFxGrid() {
+  const g = document.getElementById('fx-grid');
+  SFX.forEach(fx => {
+    const b = document.createElement('button');
+    b.className = 'fx-btn';
+    b.id = 'fx-' + fx.id;
+    b.innerHTML = `<span class="f-em">${fx.e}</span><span class="f-lb">${fx.l}</span><span class="fx-dot"></span>`;
+    // click = toggle; long-press = preview
+    let pressTimer = null;
+    b.addEventListener('click', () => toggleFX(fx.id, b));
+    b.addEventListener('touchstart', () => { pressTimer = setTimeout(() => previewFX(fx.id, b), 500); }, {passive:true});
+    b.addEventListener('touchend', () => { if(pressTimer) clearTimeout(pressTimer); }, {passive:true});
+    b.addEventListener('mousedown', () => { pressTimer = setTimeout(() => previewFX(fx.id, b), 500); });
+    b.addEventListener('mouseup', () => { if(pressTimer) clearTimeout(pressTimer); });
     g.appendChild(b);
   });
 }
-function bindSliders(){
-  [['bg-vol','%'],['voice-vol','%'],['noise-red','%'],['reverb','%'],['compress','%']].forEach(([id,u])=>{
-    const el=document.getElementById(id),val=document.getElementById(id+'-val');
-    el.addEventListener('input',()=>val.textContent=el.value+u);
+
+function toggleFX(id, btn) {
+  if (activeFX.has(id)) { activeFX.delete(id); btn.classList.remove('active'); }
+  else { activeFX.add(id); btn.classList.add('active'); }
+}
+
+function bindSliders() {
+  [['bg-vol','%'],['voice-vol','%'],['noise-red','%'],['reverb','%'],['compress','%']].forEach(([id,u]) => {
+    const el = document.getElementById(id), val = document.getElementById(id+'-val');
+    el.addEventListener('input', () => val.textContent = el.value + u);
   });
-  ['fade-in','fade-out'].forEach(id=>{
-    const el=document.getElementById(id),val=document.getElementById(id+'-val');
-    el.addEventListener('input',()=>val.textContent=parseFloat(el.value).toFixed(1)+'s');
+  ['fade-in','fade-out'].forEach(id => {
+    const el = document.getElementById(id), val = document.getElementById(id+'-val');
+    el.addEventListener('input', () => val.textContent = parseFloat(el.value).toFixed(1) + 's');
   });
 }
 
-/* ── FILE HANDLING (Safari iOS safe) ── */
-function setupFileInput(){
-  const fi=document.getElementById('file-input');
-  const dz=document.getElementById('drop-zone');
-  // Use addEventListener (not .onchange) — more reliable on iOS
-  fi.addEventListener('change',function(){
-    if(this.files&&this.files[0]) loadFile(this.files[0]);
+/* ═══════════════════════════════════════
+   FILE LOADING
+═══════════════════════════════════════ */
+function setupFileInput() {
+  const fi = document.getElementById('file-input');
+  const dz = document.getElementById('drop-zone');
+
+  fi.addEventListener('change', function() {
+    if (this.files && this.files[0]) loadFile(this.files[0]);
   });
-  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
-  dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
-  dz.addEventListener('drop',e=>{
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
     e.preventDefault(); dz.classList.remove('drag-over');
-    if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
   });
 }
 
-function resetFile(){
-  if(isPlaying) stopPreview();
-  sourceBuffer=null; pausedAt=0;
-  try{document.getElementById('file-input').value='';}catch(e){}
-  document.getElementById('drop-zone').style.display='';
-  document.getElementById('file-loaded').style.display='none';
-  document.getElementById('waveform-section').style.display='none';
-  document.getElementById('proc-btn').disabled=true;
-  document.getElementById('output-wrap').style.display='none';
-  document.getElementById('progress-wrap').style.display='none';
+function resetFile() {
+  if (isPlaying) stopPreview();
+  stopThemePreview(); stopFXPreview();
+  sourceBuffer = null; pausedAt = 0;
+  try { document.getElementById('file-input').value = ''; } catch(e) {}
+  document.getElementById('drop-zone').style.display = '';
+  document.getElementById('file-loaded').style.display = 'none';
+  document.getElementById('waveform-section').style.display = 'none';
+  document.getElementById('proc-btn').disabled = true;
+  document.getElementById('output-wrap').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+  document.getElementById('err-msg').style.display = 'none';
 }
 
-async function loadFile(file){
-  toast('📂 Carregando...');
-  document.getElementById('fname-label').textContent=file.name;
-  document.getElementById('dur-label').textContent=formatSize(file.size);
-  document.getElementById('drop-zone').style.display='none';
-  document.getElementById('file-loaded').style.display='block';
-  document.getElementById('waveform-section').style.display='none';
+async function loadFile(file) {
+  showErr('');
+  toast('📂 Carregando ' + file.name + '...');
+  document.getElementById('fname-label').textContent = file.name;
+  document.getElementById('dur-label').textContent = formatSize(file.size);
+  document.getElementById('drop-zone').style.display = 'none';
+  document.getElementById('file-loaded').style.display = 'block';
+  document.getElementById('waveform-section').style.display = 'none';
 
-  try{
-    // Safari iOS: AudioContext MUST be created inside user gesture handler
-    if(!audioCtx){
-      audioCtx=new(window.AudioContext||window.webkitAudioContext)({sampleRate:44100});
-    }
-    // Resume if suspended (iOS auto-suspends)
-    if(audioCtx.state==='suspended') await audioCtx.resume();
+  try {
+    const ctx = getCtx();
+    const arrayBuf = await file.arrayBuffer();
 
-    const arrayBuf=await file.arrayBuffer();
-
-    // Safari has buggy Promise-based decodeAudioData — use callback form
-    sourceBuffer=await new Promise((resolve,reject)=>{
-      audioCtx.decodeAudioData(
-        arrayBuf,
-        buf=>resolve(buf),
-        err=>reject(new Error('Decode failed: '+err))
-      );
+    // Safari callback form — avoids known iOS Promise bug
+    sourceBuffer = await new Promise((resolve, reject) => {
+      ctx.decodeAudioData(arrayBuf, resolve, err => {
+        reject(new Error('Não foi possível decodificar o áudio. Tente converter para MP3 no iPhone: Arquivos > Compartilhar > "Salvar em Arquivos" como MP3.'));
+      });
     });
 
-    const dur=sourceBuffer.duration;
-    document.getElementById('dur-label').textContent=formatTime(dur)+' · '+formatSize(file.size);
-    const sb=document.getElementById('seek-bar'); sb.max=dur; sb.value=0;
+    const dur = sourceBuffer.duration;
+    document.getElementById('dur-label').textContent = formatTime(dur) + ' · ' + formatSize(file.size);
+    const sb = document.getElementById('seek-bar'); sb.max = dur; sb.value = 0;
     drawWaveform(sourceBuffer);
-    document.getElementById('waveform-section').style.display='block';
-    document.getElementById('proc-btn').disabled=false;
-    toast('✅ Áudio pronto!');
+    document.getElementById('waveform-section').style.display = 'block';
+    document.getElementById('proc-btn').disabled = false;
+    toast('✅ Áudio carregado!');
 
-  }catch(err){
-    console.error('loadFile error:',err);
-    toast('❌ Não foi possível carregar. Tente exportar como MP3.');
+  } catch(err) {
+    console.error('loadFile:', err);
+    showErr('❌ ' + (err.message || 'Erro ao carregar áudio'));
     resetFile();
   }
 }
 
-/* ── WAVEFORM ── */
-function drawWaveform(buf){
-  const canvas=document.getElementById('waveform');
-  const dpr=window.devicePixelRatio||1;
-  const W=canvas.offsetWidth, H=60;
-  canvas.width=W*dpr; canvas.height=H*dpr;
-  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
-  const data=buf.getChannelData(0);
-  const step=Math.ceil(data.length/W);
-  const grad=ctx.createLinearGradient(0,0,W,0);
-  grad.addColorStop(0,'#B160F5'); grad.addColorStop(0.5,'#8833CC'); grad.addColorStop(1,'#0A84FF');
-  ctx.fillStyle=grad;
-  for(let i=0;i<W;i++){
-    let max=0;
-    for(let j=0;j<step;j++){const v=Math.abs(data[i*step+j]||0);if(v>max)max=v;}
-    const h=Math.max(2,max*H*0.9);
-    ctx.fillRect(i,(H-h)/2,1,h);
+/* ═══════════════════════════════════════
+   WAVEFORM
+═══════════════════════════════════════ */
+function drawWaveform(buf) {
+  const canvas = document.getElementById('waveform');
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth, H = 56;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
+  const data = buf.getChannelData(0);
+  const step = Math.ceil(data.length / W);
+  const grad = ctx.createLinearGradient(0,0,W,0);
+  grad.addColorStop(0,'#9B59E0'); grad.addColorStop(1,'#007AFF');
+  ctx.fillStyle = grad;
+  for (let i = 0; i < W; i++) {
+    let max = 0;
+    for (let j = 0; j < step; j++) { const v = Math.abs(data[i*step+j]||0); if(v>max) max=v; }
+    const h = Math.max(2, max * H * 0.88);
+    ctx.fillRect(i, (H-h)/2, 1, h);
   }
 }
 
-/* ── PLAYBACK ── */
-function togglePlay(){if(!sourceBuffer)return;if(isPlaying)stopPreview();else startPreview();}
-function startPreview(){
-  if(!audioCtx||!sourceBuffer)return;
-  if(audioCtx.state==='suspended')audioCtx.resume();
-  playSource=audioCtx.createBufferSource();
-  playSource.buffer=sourceBuffer;
-  playSource.connect(audioCtx.destination);
-  startedAt=audioCtx.currentTime-pausedAt;
-  playSource.start(0,pausedAt);
-  isPlaying=true;
-  document.getElementById('play-btn').textContent='⏸';
-  playSource.onended=()=>{
-    isPlaying=false; pausedAt=0;
-    document.getElementById('play-btn').textContent='▶';
-    document.getElementById('seek-bar').value=0;
-    if(sourceBuffer) document.getElementById('time-display').textContent='0:00 / '+formatTime(sourceBuffer.duration);
-    if(seekRAF)cancelAnimationFrame(seekRAF);
+/* ═══════════════════════════════════════
+   PLAYBACK PREVIEW
+═══════════════════════════════════════ */
+function togglePlay() {
+  if (!sourceBuffer) return;
+  if (isPlaying) stopPreview(); else startPreview();
+}
+function startPreview() {
+  const ctx = getCtx();
+  playSource = ctx.createBufferSource();
+  playSource.buffer = sourceBuffer;
+  playSource.connect(ctx.destination);
+  startedAt = ctx.currentTime - pausedAt;
+  playSource.start(0, pausedAt);
+  isPlaying = true;
+  document.getElementById('play-btn').textContent = '⏸';
+  playSource.onended = () => {
+    isPlaying = false; pausedAt = 0;
+    document.getElementById('play-btn').textContent = '▶';
+    document.getElementById('seek-bar').value = 0;
+    if (seekRAF) cancelAnimationFrame(seekRAF);
   };
   updateSeek();
 }
-function stopPreview(){
-  if(playSource){try{playSource.stop();}catch(e){}}
-  pausedAt=audioCtx?Math.min(audioCtx.currentTime-startedAt,sourceBuffer?sourceBuffer.duration:0):0;
-  isPlaying=false;
-  document.getElementById('play-btn').textContent='▶';
-  if(seekRAF)cancelAnimationFrame(seekRAF);
+function stopPreview() {
+  if (playSource) { try { playSource.stop(); } catch(e) {} }
+  pausedAt = audioCtx ? Math.min(audioCtx.currentTime - startedAt, sourceBuffer ? sourceBuffer.duration : 0) : 0;
+  isPlaying = false;
+  document.getElementById('play-btn').textContent = '▶';
+  if (seekRAF) cancelAnimationFrame(seekRAF);
 }
-function updateSeek(){
-  if(!isPlaying)return;
-  const cur=audioCtx.currentTime-startedAt;
-  document.getElementById('seek-bar').value=Math.min(cur,sourceBuffer.duration);
-  document.getElementById('time-display').textContent=formatTime(cur)+' / '+formatTime(sourceBuffer.duration);
-  seekRAF=requestAnimationFrame(updateSeek);
+function updateSeek() {
+  if (!isPlaying) return;
+  const cur = audioCtx.currentTime - startedAt;
+  document.getElementById('seek-bar').value = Math.min(cur, sourceBuffer.duration);
+  document.getElementById('time-display').textContent = formatTime(cur) + ' / ' + formatTime(sourceBuffer.duration);
+  seekRAF = requestAnimationFrame(updateSeek);
 }
 
-/* ── PROCESS ── */
-async function processAudio(){
-  if(!sourceBuffer){toast('⚠️ Suba um áudio primeiro!');return;}
-  if(isPlaying)stopPreview();
+/* ═══════════════════════════════════════
+   THEME PREVIEW
+═══════════════════════════════════════ */
+let themePreviewSource = null, themePreviewBtn = null;
 
-  const pw=document.getElementById('progress-wrap');
-  pw.style.display='block';
-  document.getElementById('output-wrap').style.display='none';
-  document.getElementById('proc-btn').disabled=true;
-  pw.scrollIntoView({behavior:'smooth',block:'nearest'});
+function previewTheme(themeId, btn) {
+  stopThemePreview();
+  const ctx = getCtx();
+  const buf = generateTheme(ctx, 6, themeId);
+  if (!buf) return;
+  themePreviewSource = ctx.createBufferSource();
+  themePreviewSource.buffer = buf;
+  const g = ctx.createGain(); g.gain.value = 0.5;
+  themePreviewSource.connect(g); g.connect(ctx.destination);
+  themePreviewSource.start(0);
+  themePreviewSource.onended = () => {
+    if (themePreviewBtn) themePreviewBtn.classList.remove('playing');
+    document.getElementById('theme-stop').classList.remove('visible');
+    themePreviewSource = null; themePreviewBtn = null;
+  };
+  themePreviewBtn = btn;
+  btn.classList.add('playing');
+  document.getElementById('theme-stop').classList.add('visible');
+  toast('▶ Ouvindo: ' + btn.querySelector('.t-lb').textContent);
+}
 
-  const setP=(pct,lbl)=>{
-    document.getElementById('prog-fill').style.width=pct+'%';
-    document.getElementById('prog-pct').textContent=pct+'%';
-    document.getElementById('progress-label').textContent=lbl;
+function stopThemePreview() {
+  if (themePreviewSource) { try { themePreviewSource.stop(); } catch(e) {} themePreviewSource = null; }
+  if (themePreviewBtn) { themePreviewBtn.classList.remove('playing'); themePreviewBtn = null; }
+  document.getElementById('theme-stop').classList.remove('visible');
+}
+
+/* ═══════════════════════════════════════
+   FX PREVIEW (long press)
+═══════════════════════════════════════ */
+let fxPreviewSource = null, fxPreviewBtn = null;
+
+function previewFX(fxId, btn) {
+  stopFXPreview();
+  const ctx = getCtx();
+  const buf = generateSFX(ctx, fxId);
+  fxPreviewSource = ctx.createBufferSource();
+  fxPreviewSource.buffer = buf;
+  const g = ctx.createGain(); g.gain.value = 0.6;
+  fxPreviewSource.connect(g); g.connect(ctx.destination);
+  fxPreviewSource.start(0);
+  fxPreviewSource.onended = () => {
+    if (fxPreviewBtn) fxPreviewBtn.classList.remove('playing-preview');
+    document.getElementById('fx-stop').classList.remove('visible');
+    fxPreviewSource = null; fxPreviewBtn = null;
+  };
+  fxPreviewBtn = btn; btn.classList.add('playing-preview');
+  document.getElementById('fx-stop').classList.add('visible');
+  toast('▶ ' + btn.querySelector('.f-lb').textContent);
+}
+
+function stopFXPreview() {
+  if (fxPreviewSource) { try { fxPreviewSource.stop(); } catch(e) {} fxPreviewSource = null; }
+  if (fxPreviewBtn) { fxPreviewBtn.classList.remove('playing-preview'); fxPreviewBtn = null; }
+  document.getElementById('fx-stop').classList.remove('visible');
+}
+
+/* ═══════════════════════════════════════
+   PROCESS AUDIO
+═══════════════════════════════════════ */
+async function processAudio() {
+  if (!sourceBuffer) { toast('⚠️ Suba um áudio primeiro!'); return; }
+  stopThemePreview(); stopFXPreview();
+  if (isPlaying) stopPreview();
+
+  showErr('');
+  const pw = document.getElementById('progress-wrap');
+  pw.style.display = 'block';
+  document.getElementById('output-wrap').style.display = 'none';
+  document.getElementById('proc-btn').disabled = true;
+  pw.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  const setP = (pct, lbl) => {
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-pct').textContent = pct + '%';
+    document.getElementById('prog-lbl').textContent = lbl;
   };
 
-  setP(5,'🎤 Preparando...');
-  await delay(150);
+  try {
+    setP(5, '🎤 Preparando voz...');
+    await delay(100);
 
-  const voiceGain=parseInt(document.getElementById('voice-vol').value)/100;
-  const bgVol=parseInt(document.getElementById('bg-vol').value)/100*0.28;
-  const noiseRed=parseInt(document.getElementById('noise-red').value)/100;
-  const reverbAmt=parseInt(document.getElementById('reverb').value)/100;
-  const compAmt=parseInt(document.getElementById('compress').value)/100;
-  const fadeInSec=parseFloat(document.getElementById('fade-in').value);
-  const fadeOutSec=parseFloat(document.getElementById('fade-out').value);
-  const addIntro=document.getElementById('add-intro').checked;
-  const addOutro=document.getElementById('add-outro').checked;
+    const voiceGain  = parseInt(document.getElementById('voice-vol').value) / 100;
+    const bgVol      = parseInt(document.getElementById('bg-vol').value) / 100 * 0.28;
+    const noiseRed   = parseInt(document.getElementById('noise-red').value) / 100;
+    const reverbAmt  = parseInt(document.getElementById('reverb').value) / 100;
+    const compAmt    = parseInt(document.getElementById('compress').value) / 100;
+    const fadeInSec  = parseFloat(document.getElementById('fade-in').value);
+    const fadeOutSec = parseFloat(document.getElementById('fade-out').value);
+    const addIntro   = document.getElementById('add-intro').checked;
+    const addOutro   = document.getElementById('add-outro').checked;
 
-  const SR=44100;
-  const introDur=addIntro?3:0;
-  const outroDur=addOutro?3:0;
-  const totalDur=sourceBuffer.duration+introDur+outroDur+0.5;
-  const ctx2=new OfflineAudioContext(2,Math.ceil(SR*totalDur),SR);
+    const SR = 44100;
+    const introDur = addIntro ? 3 : 0;
+    const totalDur = sourceBuffer.duration + introDur + (addOutro ? 3 : 0) + 0.5;
+    const offCtx = new OfflineAudioContext(2, Math.ceil(SR * totalDur), SR);
 
-  // Voice chain
-  const vBuf=sourceBuffer.sampleRate!==SR?resampleBuffer(sourceBuffer,SR,ctx2):sourceBuffer;
-  const vSrc=ctx2.createBufferSource(); vSrc.buffer=vBuf;
-  const gainNode=ctx2.createGain(); gainNode.gain.value=voiceGain;
-  const hpf=ctx2.createBiquadFilter(); hpf.type='highpass'; hpf.frequency.value=80+noiseRed*120; hpf.Q.value=0.5;
-  const lpf=ctx2.createBiquadFilter(); lpf.type='lowpass'; lpf.frequency.value=13000-noiseRed*4000;
-  const eq=ctx2.createBiquadFilter(); eq.type='peaking'; eq.frequency.value=3000; eq.gain.value=3+compAmt*4; eq.Q.value=1;
-  const comp=ctx2.createDynamicsCompressor();
-  comp.threshold.value=-24-compAmt*12; comp.knee.value=10; comp.ratio.value=3+compAmt*6;
-  comp.attack.value=0.003; comp.release.value=0.25;
-  const conv=ctx2.createConvolver(); conv.buffer=makeIR(ctx2,1.5*reverbAmt+0.1,2);
-  const dryG=ctx2.createGain(); dryG.gain.value=1-reverbAmt*0.4;
-  const wetG=ctx2.createGain(); wetG.gain.value=reverbAmt*0.4;
-  const master=ctx2.createGain();
+    setP(15, '🔧 Montando cadeia de áudio...');
+    await delay(80);
 
-  const startOff=introDur;
-  const endT=startOff+sourceBuffer.duration;
-  master.gain.setValueAtTime(0,0);
-  if(fadeInSec>0){master.gain.setValueAtTime(0,startOff);master.gain.linearRampToValueAtTime(1,startOff+fadeInSec);}
-  else{master.gain.setValueAtTime(1,startOff);}
-  if(fadeOutSec>0){master.gain.setValueAtTime(1,Math.max(startOff,endT-fadeOutSec));master.gain.linearRampToValueAtTime(0,endT);}
+    // Resample if needed
+    const vBuf = sourceBuffer.sampleRate !== SR ? resampleBuffer(sourceBuffer, SR, offCtx) : sourceBuffer;
 
-  vSrc.connect(hpf);hpf.connect(lpf);lpf.connect(eq);eq.connect(comp);
-  comp.connect(dryG);comp.connect(conv);conv.connect(wetG);
-  dryG.connect(master);wetG.connect(master);master.connect(ctx2.destination);
-  vSrc.start(startOff);
+    // Voice chain
+    const vSrc     = offCtx.createBufferSource(); vSrc.buffer = vBuf;
+    const gainNode = offCtx.createGain();          gainNode.gain.value = voiceGain;
+    const hpf      = offCtx.createBiquadFilter();  hpf.type = 'highpass';  hpf.frequency.value = 80 + noiseRed*120; hpf.Q.value = 0.5;
+    const lpf      = offCtx.createBiquadFilter();  lpf.type = 'lowpass';   lpf.frequency.value = 13000 - noiseRed*4000;
+    const eq       = offCtx.createBiquadFilter();  eq.type = 'peaking';    eq.frequency.value = 3000; eq.gain.value = 3 + compAmt*4; eq.Q.value = 1;
+    const compNode = offCtx.createDynamicsCompressor();
+    compNode.threshold.value = -24 - compAmt*12; compNode.knee.value = 10;
+    compNode.ratio.value = 3 + compAmt*6; compNode.attack.value = 0.003; compNode.release.value = 0.25;
+    const conv = offCtx.createConvolver(); conv.buffer = makeIR(offCtx, 1.5*reverbAmt+0.1, 2);
+    const dryG = offCtx.createGain(); dryG.gain.value = 1 - reverbAmt*0.4;
+    const wetG = offCtx.createGain(); wetG.gain.value = reverbAmt*0.4;
+    const master = offCtx.createGain();
 
-  setP(30,'🎵 Trilha...');
-  await delay(100);
+    const startOff = introDur;
+    const endT     = startOff + sourceBuffer.duration;
+    master.gain.setValueAtTime(0, 0);
+    if (fadeInSec > 0) { master.gain.setValueAtTime(0, startOff); master.gain.linearRampToValueAtTime(1, startOff + fadeInSec); }
+    else { master.gain.setValueAtTime(1, startOff); }
+    if (fadeOutSec > 0 && endT > fadeOutSec) { master.gain.setValueAtTime(1, endT - fadeOutSec); master.gain.linearRampToValueAtTime(0, endT); }
 
-  if(selectedTheme!=='none'){
-    const tBuf=generateTheme(ctx2,totalDur,selectedTheme);
-    if(tBuf){const tSrc=ctx2.createBufferSource();tSrc.buffer=tBuf;const tG=ctx2.createGain();tG.gain.value=bgVol;tSrc.connect(tG);tG.connect(ctx2.destination);tSrc.start(0);}
+    vSrc.connect(hpf); hpf.connect(lpf); lpf.connect(eq); eq.connect(compNode);
+    compNode.connect(dryG); compNode.connect(conv); conv.connect(wetG);
+    dryG.connect(master); wetG.connect(master); master.connect(offCtx.destination);
+    vSrc.start(startOff);
+
+    setP(35, '🎵 Adicionando trilha...');
+    await delay(80);
+
+    if (selectedTheme !== 'none') {
+      const tBuf = generateTheme(offCtx, totalDur, selectedTheme);
+      if (tBuf) {
+        const tSrc = offCtx.createBufferSource(); tSrc.buffer = tBuf;
+        const tG   = offCtx.createGain(); tG.gain.value = bgVol;
+        tSrc.connect(tG); tG.connect(offCtx.destination); tSrc.start(0);
+      }
+    }
+
+    setP(50, '✨ Inserindo efeitos...');
+    await delay(80);
+
+    const fxList = [...activeFX];
+    fxList.forEach((fxId, idx) => {
+      const fxBuf = generateSFX(offCtx, fxId);
+      const fxSrc = offCtx.createBufferSource(); fxSrc.buffer = fxBuf;
+      const fxG   = offCtx.createGain(); fxG.gain.value = 0.28;
+      fxSrc.connect(fxG); fxG.connect(offCtx.destination);
+      const t = startOff + (sourceBuffer.duration / (fxList.length + 1)) * (idx + 1);
+      fxSrc.start(Math.max(0.01, t));
+    });
+
+    setP(65, '🎺 Adicionando vinhetas...');
+    await delay(80);
+
+    if (addIntro) {
+      const s = offCtx.createBufferSource(); s.buffer = makeJingle(offCtx, 3, 'intro');
+      const g = offCtx.createGain(); g.gain.value = 0.55;
+      s.connect(g); g.connect(offCtx.destination); s.start(0.01);
+    }
+    if (addOutro) {
+      const s = offCtx.createBufferSource(); s.buffer = makeJingle(offCtx, 3, 'outro');
+      const g = offCtx.createGain(); g.gain.value = 0.55;
+      s.connect(g); g.connect(offCtx.destination); s.start(Math.max(0.01, endT));
+    }
+
+    setP(78, '🔄 Renderizando áudio final...');
+    await delay(50);
+
+    const rendered = await offCtx.startRendering();
+
+    setP(94, '💾 Codificando WAV...');
+    await delay(80);
+
+    const wavBlob = bufferToWav(rendered);
+    const url = URL.createObjectURL(wavBlob);
+
+    document.getElementById('out-player').src = url;
+    const dl = document.getElementById('dl-link');
+    dl.href = url; dl.download = 'historinhas-miguel-' + Date.now() + '.wav';
+
+    setP(100, '✅ Concluído!');
+    await delay(300);
+
+    pw.style.display = 'none';
+    document.getElementById('output-wrap').style.display = 'block';
+    document.getElementById('output-wrap').scrollIntoView({behavior:'smooth'});
+    toast('🎉 Podcast pronto para o Spotify!');
+
+  } catch(err) {
+    console.error('processAudio error:', err);
+    showErr('❌ Erro ao processar: ' + err.message);
+    pw.style.display = 'none';
+  } finally {
+    document.getElementById('proc-btn').disabled = false;
   }
-
-  setP(50,'✨ Efeitos...');
-  await delay(100);
-
-  const fxList=[...activeFX];
-  fxList.forEach((fxId,idx)=>{
-    const fxBuf=generateSFX(ctx2,fxId);
-    const fxSrc=ctx2.createBufferSource();fxSrc.buffer=fxBuf;
-    const fxG=ctx2.createGain();fxG.gain.value=0.3;
-    fxSrc.connect(fxG);fxG.connect(ctx2.destination);
-    const t=startOff+(sourceBuffer.duration/(fxList.length+1))*(idx+1);
-    fxSrc.start(Math.max(0.01,t));
-  });
-
-  setP(65,'🎺 Vinhetas...');
-  await delay(100);
-
-  if(addIntro){const s=ctx2.createBufferSource();s.buffer=makeJingle(ctx2,3,'intro');const g=ctx2.createGain();g.gain.value=0.55;s.connect(g);g.connect(ctx2.destination);s.start(0);}
-  if(addOutro){const s=ctx2.createBufferSource();s.buffer=makeJingle(ctx2,3,'outro');const g=ctx2.createGain();g.gain.value=0.55;s.connect(g);g.connect(ctx2.destination);s.start(Math.max(0.01,endT));}
-
-  setP(80,'🔄 Renderizando...');
-  await delay(50);
-
-  let rendered;
-  try{rendered=await ctx2.startRendering();}
-  catch(e){toast('❌ Erro: '+e.message);document.getElementById('proc-btn').disabled=false;pw.style.display='none';return;}
-
-  setP(95,'💾 Codificando WAV...');
-  await delay(100);
-
-  const wavBlob=bufferToWav(rendered);
-  const url=URL.createObjectURL(wavBlob);
-  document.getElementById('out-player').src=url;
-  const dl=document.getElementById('dl-link');
-  dl.href=url; dl.download='historinhas-miguel-'+Date.now()+'.wav';
-
-  setP(100,'✅ Concluído!');
-  await delay(300);
-
-  pw.style.display='none';
-  document.getElementById('output-wrap').style.display='block';
-  document.getElementById('proc-btn').disabled=false;
-  document.getElementById('output-wrap').scrollIntoView({behavior:'smooth'});
-  toast('🎉 Pronto para o Spotify!');
 }
 
-/* ── SYNTH ── */
-function generateTheme(ctx,dur,theme){
-  const SR=ctx.sampleRate,len=Math.ceil(SR*dur);
-  const buf=ctx.createBuffer(2,len,SR);
-  const cfgs={
-    forest:{base:220,h:[1,1.5,2,3],amp:.055},ocean:{base:110,h:[1,2,3,4.1],amp:.07},
-    space:{base:55,h:[1,2,3.7,5.1],amp:.045},castle:{base:165,h:[1,2,3,4],amp:.06},
-    rain:{base:0,h:[],amp:.035,noise:true},magic:{base:440,h:[1,1.25,1.5,2],amp:.045},
-    sleep:{base:80,h:[1,2,3],amp:.038},adv:{base:130,h:[1,2,3,4],amp:.06},
-    joy:{base:261,h:[1,2,3,4,5,6],amp:.055},farm:{base:196,h:[1,2,3,4,5],amp:.055},
-    mystery:{base:98,h:[1,1.7,2.5,3.9],amp:.045},
+/* ═══════════════════════════════════════
+   SYNTH: THEME
+═══════════════════════════════════════ */
+function generateTheme(ctx, dur, theme) {
+  if (theme === 'none') return null;
+  const SR = ctx.sampleRate, len = Math.ceil(SR * dur);
+  const buf = ctx.createBuffer(2, len, SR);
+  const cfgs = {
+    forest:  {base:220, h:[1,1.5,2,3],    amp:.055},
+    ocean:   {base:110, h:[1,2,3,4.1],    amp:.07},
+    space:   {base:55,  h:[1,2,3.7,5.1],  amp:.045},
+    castle:  {base:165, h:[1,2,3,4],      amp:.06},
+    rain:    {base:0,   h:[],             amp:.035, noise:true},
+    magic:   {base:440, h:[1,1.25,1.5,2], amp:.045},
+    sleep:   {base:80,  h:[1,2,3],        amp:.038},
+    adv:     {base:130, h:[1,2,3,4],      amp:.06},
+    joy:     {base:261, h:[1,2,3,4,5,6],  amp:.055},
+    farm:    {base:196, h:[1,2,3,4,5],    amp:.055},
+    mystery: {base:98,  h:[1,1.7,2.5,3.9],amp:.045},
   };
-  const cfg=cfgs[theme]||cfgs.forest;
-  for(let ch=0;ch<2;ch++){
-    const d=buf.getChannelData(ch);
-    for(let i=0;i<len;i++){
-      let s=0;
-      if(cfg.noise){s=i===0?0:d[i-1]*0.95+(Math.random()*2-1)*cfg.amp*0.05;}
-      else{cfg.h.forEach((hv,idx)=>{const f=cfg.base*hv,a=cfg.amp/(idx+1);s+=a*Math.sin(2*Math.PI*f*i/SR)*(1+0.02*Math.sin(2*Math.PI*0.3*i/SR));});}
-      const fi=Math.min(i/(SR*2),1),fo=Math.min((len-i)/(SR*2),1);
-      d[i]=s*fi*fo;
+  const cfg = cfgs[theme] || cfgs.forest;
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch);
+    for (let i = 0; i < len; i++) {
+      let s = 0;
+      if (cfg.noise) {
+        s = i === 0 ? 0 : d[i-1]*0.95 + (Math.random()*2-1)*cfg.amp*0.05;
+      } else {
+        cfg.h.forEach((hv, idx) => {
+          s += (cfg.amp/(idx+1)) * Math.sin(2*Math.PI*cfg.base*hv*i/SR) * (1 + 0.02*Math.sin(2*Math.PI*0.3*i/SR));
+        });
+      }
+      const fi = Math.min(i/(SR*2), 1), fo = Math.min((len-i)/(SR*2), 1);
+      d[i] = s * fi * fo;
     }
   }
   return buf;
 }
 
-function generateSFX(ctx,id){
-  const SR=ctx.sampleRate,buf=ctx.createBuffer(1,SR*1.2,SR),d=buf.getChannelData(0);
-  const fns={
-    stars:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(1000+500*Math.sin(5*t))*t)*Math.exp(-3*t)*0.4;}},
-    laugh:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.random()*2-1)*Math.exp(-4*t)*0.5*(1+0.8*Math.sin(12*2*Math.PI*t));}},
-    wow:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(300+200*t)*t)*Math.exp(-2.5*t)*0.5;}},
-    drum:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.sin(2*Math.PI*60*t)*Math.exp(-10*t)+(Math.random()*2-1)*Math.exp(-20*t))*0.6;}},
-    bell:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*880*t)*Math.exp(-4*t)*0.5;}},
-    wind:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.random()*2-1)*0.15*Math.exp(-0.5*t)*(1+Math.sin(2*Math.PI*0.5*t));}},
-    pop:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(800-600*t)*t)*Math.exp(-15*t)*0.6;}},
-    tada:()=>{for(let i=0;i<d.length;i++){const t=i/SR;const f=523+(t>0.3?261:0)+(t>0.6?261:0);d[i]=Math.sin(2*Math.PI*f*t)*0.4*(t<0.1?t/0.1:Math.exp(-(t-0.1)));}},
-    horse:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.random()*2-1)*0.4*Math.exp(-15*(t%0.12))*(Math.floor(t/0.12)%2);}},
-    bird:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(2000+800*Math.sin(8*Math.PI*t))*t)*Math.exp(-2*t)*0.35;}},
-    thunder:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=(Math.random()*2-1)*0.7*Math.exp(-3*t)*(1+0.5*Math.sin(40*t));}},
-    magic2:()=>{for(let i=0;i<d.length;i++){const t=i/SR;d[i]=Math.sin(2*Math.PI*(600+1000*Math.exp(-3*t))*t)*Math.exp(-2*t)*0.45;}},
+/* ═══════════════════════════════════════
+   SYNTH: SFX
+═══════════════════════════════════════ */
+function generateSFX(ctx, id) {
+  const SR = ctx.sampleRate, buf = ctx.createBuffer(1, SR*1.2, SR), d = buf.getChannelData(0);
+  const fns = {
+    stars:  () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=Math.sin(2*Math.PI*(1000+500*Math.sin(5*t))*t)*Math.exp(-3*t)*0.4;} },
+    laugh:  () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=(Math.random()*2-1)*Math.exp(-4*t)*0.5*(1+0.8*Math.sin(12*2*Math.PI*t));} },
+    wow:    () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=Math.sin(2*Math.PI*(300+200*t)*t)*Math.exp(-2.5*t)*0.5;} },
+    drum:   () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=(Math.sin(2*Math.PI*60*t)*Math.exp(-10*t)+(Math.random()*2-1)*Math.exp(-20*t))*0.6;} },
+    bell:   () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=Math.sin(2*Math.PI*880*t)*Math.exp(-4*t)*0.5;} },
+    wind:   () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=(Math.random()*2-1)*0.15*Math.exp(-0.5*t)*(1+Math.sin(2*Math.PI*0.5*t));} },
+    pop:    () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=Math.sin(2*Math.PI*(800-600*t)*t)*Math.exp(-15*t)*0.6;} },
+    tada:   () => { for(let i=0;i<d.length;i++){const t=i/SR; const f=523+(t>0.3?261:0)+(t>0.6?261:0); d[i]=Math.sin(2*Math.PI*f*t)*0.4*(t<0.1?t/0.1:Math.exp(-(t-0.1)));} },
+    horse:  () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=(Math.random()*2-1)*0.4*Math.exp(-15*(t%0.12))*(Math.floor(t/0.12)%2);} },
+    bird:   () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=Math.sin(2*Math.PI*(2000+800*Math.sin(8*Math.PI*t))*t)*Math.exp(-2*t)*0.35;} },
+    thunder:() => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=(Math.random()*2-1)*0.7*Math.exp(-3*t)*(1+0.5*Math.sin(40*t));} },
+    magic2: () => { for(let i=0;i<d.length;i++){const t=i/SR; d[i]=Math.sin(2*Math.PI*(600+1000*Math.exp(-3*t))*t)*Math.exp(-2*t)*0.45;} },
   };
-  (fns[id]||fns.bell)();
+  (fns[id] || fns.bell)();
   return buf;
 }
 
-function makeIR(ctx,dur,decay){
-  const len=Math.ceil(ctx.sampleRate*dur),buf=ctx.createBuffer(2,len,ctx.sampleRate);
+function makeIR(ctx, dur, decay) {
+  const len = Math.ceil(ctx.sampleRate*dur), buf = ctx.createBuffer(2,len,ctx.sampleRate);
   for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}
   return buf;
 }
 
-function makeJingle(ctx,dur,type){
-  const SR=ctx.sampleRate,buf=ctx.createBuffer(2,Math.ceil(SR*dur),SR);
-  const notes=type==='intro'?[523.25,659.25,783.99,1046.50]:[1046.50,783.99,659.25,523.25];
+function makeJingle(ctx, dur, type) {
+  const SR=ctx.sampleRate, buf=ctx.createBuffer(2,Math.ceil(SR*dur),SR);
+  const notes = type==='intro' ? [523.25,659.25,783.99,1046.50] : [1046.50,783.99,659.25,523.25];
   for(let ch=0;ch<2;ch++){
     const d=buf.getChannelData(ch);
     notes.forEach((freq,idx)=>{
-      const start=Math.floor(idx*SR*0.55),noteDur=Math.floor(SR*0.5);
-      for(let i=0;i<noteDur&&(start+i)<d.length;i++){
+      const start=Math.floor(idx*SR*0.55), nd=Math.floor(SR*0.5);
+      for(let i=0;i<nd&&(start+i)<d.length;i++){
         const t=i/SR,env=Math.exp(-3*t);
-        d[start+i]+=Math.sin(2*Math.PI*freq*t)*env*0.28+Math.sin(2*Math.PI*freq*2*t)*env*0.09;
+        d[start+i]+=Math.sin(2*Math.PI*freq*t)*env*0.28 + Math.sin(2*Math.PI*freq*2*t)*env*0.09;
       }
     });
-    for(let i=0;i<d.length;i++)d[i]*=Math.min(i/(SR*0.08),1)*Math.min((d.length-i)/(SR*0.25),1);
+    for(let i=0;i<d.length;i++) d[i]*=Math.min(i/(SR*0.08),1)*Math.min((d.length-i)/(SR*0.25),1);
   }
   return buf;
 }
 
-function resampleBuffer(buf,targetSR,ctx){
-  const ratio=targetSR/buf.sampleRate,newLen=Math.ceil(buf.length*ratio);
+function resampleBuffer(buf, targetSR, ctx) {
+  const ratio=targetSR/buf.sampleRate, newLen=Math.ceil(buf.length*ratio);
   const out=ctx.createBuffer(Math.min(buf.numberOfChannels,2),newLen,targetSR);
   for(let ch=0;ch<out.numberOfChannels;ch++){
-    const src=buf.getChannelData(ch),dst=out.getChannelData(ch);
-    for(let i=0;i<newLen;i++){const pos=i/ratio,p0=Math.floor(pos),f=pos-p0;dst[i]=(src[p0]||0)+f*((src[p0+1]||0)-(src[p0]||0));}
+    const src=buf.getChannelData(ch), dst=out.getChannelData(ch);
+    for(let i=0;i<newLen;i++){const p=i/ratio,p0=Math.floor(p),f=p-p0;dst[i]=(src[p0]||0)+f*((src[p0+1]||0)-(src[p0]||0));}
   }
   return out;
 }
 
-function bufferToWav(buf){
-  const nCh=buf.numberOfChannels,SR=buf.sampleRate,len=buf.length;
-  const ab=new ArrayBuffer(44+len*nCh*2),v=new DataView(ab);
+/* ═══════════════════════════════════════
+   WAV ENCODER
+═══════════════════════════════════════ */
+function bufferToWav(buf) {
+  const nCh=buf.numberOfChannels, SR=buf.sampleRate, len=buf.length;
+  const ab=new ArrayBuffer(44+len*nCh*2), v=new DataView(ab);
   const ws=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};
-  ws(0,'RIFF');v.setUint32(4,36+len*nCh*2,true);ws(8,'WAVE');
-  ws(12,'fmt ');v.setUint32(16,16,true);v.setInt16(20,1,true);v.setInt16(22,nCh,true);
-  v.setUint32(24,SR,true);v.setUint32(28,SR*nCh*2,true);v.setInt16(32,nCh*2,true);v.setInt16(34,16,true);
-  ws(36,'data');v.setUint32(40,len*nCh*2,true);
+  ws(0,'RIFF'); v.setUint32(4,36+len*nCh*2,true); ws(8,'WAVE');
+  ws(12,'fmt '); v.setUint32(16,16,true); v.setInt16(20,1,true); v.setInt16(22,nCh,true);
+  v.setUint32(24,SR,true); v.setUint32(28,SR*nCh*2,true); v.setInt16(32,nCh*2,true); v.setInt16(34,16,true);
+  ws(36,'data'); v.setUint32(40,len*nCh*2,true);
   let off=44;
-  for(let i=0;i<len;i++)for(let ch=0;ch<nCh;ch++){
+  for(let i=0;i<len;i++) for(let ch=0;ch<nCh;ch++){
     const s=Math.max(-1,Math.min(1,buf.getChannelData(ch)[i]));
-    v.setInt16(off,s<0?s*0x8000:s*0x7FFF,true);off+=2;
+    v.setInt16(off, s<0?s*0x8000:s*0x7FFF, true); off+=2;
   }
   return new Blob([ab],{type:'audio/wav'});
 }
 
-/* ── UTILS ── */
-function formatTime(s){if(!isFinite(s)||s<0)return'0:00';return Math.floor(s/60)+':'+(Math.floor(s%60)).toString().padStart(2,'0');}
-function formatSize(b){return b>1e6?(b/1e6).toFixed(1)+' MB':(b/1e3).toFixed(0)+' KB';}
-function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+/* ═══════════════════════════════════════
+   UTILS
+═══════════════════════════════════════ */
+function formatTime(s) { if(!isFinite(s)||s<0) return'0:00'; return Math.floor(s/60)+':'+(Math.floor(s%60)).toString().padStart(2,'0'); }
+function formatSize(b) { return b>1e6?(b/1e6).toFixed(1)+' MB':(b/1e3).toFixed(0)+' KB'; }
+function delay(ms) { return new Promise(r=>setTimeout(r,ms)); }
 let toastT;
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3000);}
+function toast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),3000); }
+function showErr(msg) { const e=document.getElementById('err-msg'); if(msg){e.textContent=msg;e.style.display='block';}else{e.style.display='none';} }
 
-/* ── INIT ── */
-document.addEventListener('DOMContentLoaded',()=>{
-  buildThemeGrid(); buildFxGrid(); bindSliders(); setupFileInput();
-  document.getElementById('seek-bar').addEventListener('input',function(){
-    pausedAt=parseFloat(this.value);
-    if(isPlaying){stopPreview();startPreview();}
-    else if(sourceBuffer) document.getElementById('time-display').textContent=formatTime(pausedAt)+' / '+formatTime(sourceBuffer.duration);
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  buildThemeGrid();
+  buildFxGrid();
+  bindSliders();
+  setupFileInput();
+
+  document.getElementById('seek-bar').addEventListener('input', function() {
+    pausedAt = parseFloat(this.value);
+    if (isPlaying) { stopPreview(); startPreview(); }
+    else if (sourceBuffer) {
+      document.getElementById('time-display').textContent = formatTime(pausedAt) + ' / ' + formatTime(sourceBuffer.duration);
+    }
   });
 });
 </script>
