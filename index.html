@@ -21,31 +21,19 @@
 –orange: #FF9500;
 –blue:   #007AFF;
 –red:    #FF3B30;
+–fill:   #6B21CC;
+–track:  #C7C7CC;
 –r: 14px;
 }
 
 - { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
   html,body { background:var(–bg); }
-  body {
-  font-family:‘Inter’,-apple-system,BlinkMacSystemFont,sans-serif;
-  color:var(–text); min-height:100vh;
-  -webkit-font-smoothing:antialiased; overflow-x:hidden;
-  }
+  body { font-family:‘Inter’,-apple-system,BlinkMacSystemFont,sans-serif; color:var(–text); min-height:100vh; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
 /* HEADER */
-header {
-background:rgba(242,242,247,0.94);
-backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-position:sticky; top:0; z-index:100; border-bottom:1px solid var(–border);
-padding-top:env(safe-area-inset-top,0px);
-}
+header { background:rgba(242,242,247,0.94); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); position:sticky; top:0; z-index:100; border-bottom:1px solid var(–border); padding-top:env(safe-area-inset-top,0px); }
 .hd { display:flex; align-items:center; gap:12px; padding:12px 16px; }
-.hd-icon {
-width:42px; height:42px; flex-shrink:0; border-radius:10px;
-background:linear-gradient(145deg,var(–purpL),var(–purple));
-display:flex; align-items:center; justify-content:center; font-size:20px;
-box-shadow:0 2px 8px rgba(107,33,204,0.3);
-}
+.hd-icon { width:42px; height:42px; flex-shrink:0; border-radius:10px; background:linear-gradient(145deg,var(–purpL),var(–purple)); display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 2px 8px rgba(107,33,204,0.3); }
 .hd-t { font-size:17px; font-weight:700; }
 .hd-s { font-size:12px; color:var(–text2); margin-top:1px; }
 .hd-badge { margin-left:auto; background:var(–purple); color:#fff; font-size:10px; font-weight:700; padding:3px 9px; border-radius:20px; }
@@ -56,11 +44,7 @@ main { max-width:580px; margin:0 auto; padding:16px 16px 80px; display:flex; fle
 .card { background:var(–surf); border-radius:var(–r); border:1px solid var(–border); overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
 
 /* UPLOAD */
-#drop-zone {
-display:flex; flex-direction:column; align-items:center;
-gap:10px; padding:32px 20px; cursor:pointer; text-align:center;
-background:var(–surf); border:2px dashed #C0A0F0; border-radius:var(–r);
-}
+#drop-zone { display:flex; flex-direction:column; align-items:center; gap:10px; padding:32px 20px; cursor:pointer; text-align:center; background:var(–surf); border:2px dashed #C0A0F0; border-radius:var(–r); }
 #drop-zone.drag-over { background:#F5EEFF; border-color:var(–purple); }
 .up-icon { width:54px; height:54px; border-radius:14px; background:linear-gradient(145deg,#EDE0FF,#D8C5FF); display:flex; align-items:center; justify-content:center; font-size:24px; }
 #drop-zone h3 { font-size:15px; font-weight:700; }
@@ -85,71 +69,26 @@ canvas#waveform { width:100%; height:56px; display:block; border-radius:8px; bac
 .play-btn:active { opacity:.75; }
 #time-display { font-size:11px; color:var(–text2); font-weight:600; white-space:nowrap; min-width:72px; text-align:right; }
 
-/* ─────────────────────────────────────────
-RANGE SLIDER — Safari iOS bulletproof
-Method: native input + inline background
-updated via JS to show fill color
-───────────────────────────────────────── */
-.range-row { display:flex; align-items:center; gap:0; }
-
+/* RANGE SLIDER — inline background trick for Safari iOS */
 input[type=range].sl {
-/* Reset everything */
--webkit-appearance: none;
-appearance: none;
-outline: none;
-border: none;
-background: transparent;   /* track drawn via inline style below */
-flex: 1;
-height: 34px;              /* tall hit area for fat fingers */
-cursor: pointer;
-padding: 0;
-margin: 0;
+-webkit-appearance:none; appearance:none;
+outline:none; border:none; background:transparent;
+width:100%; height:34px; cursor:pointer; padding:0; margin:0;
 }
-
-/* Thumb — white circle with shadow */
 input[type=range].sl::-webkit-slider-thumb {
--webkit-appearance: none;
-appearance: none;
-width: 26px;
-height: 26px;
-border-radius: 50%;
-background: #FFFFFF;
-box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 0.5px rgba(0,0,0,0.08);
-cursor: pointer;
-position: relative;
-z-index: 2;
+-webkit-appearance:none; appearance:none;
+width:26px; height:26px; border-radius:50%;
+background:#FFF; box-shadow:0 2px 8px rgba(0,0,0,0.25),0 0 0 0.5px rgba(0,0,0,0.08);
+cursor:pointer;
 }
-input[type=range].sl::-moz-range-thumb {
-width: 26px; height: 26px; border-radius: 50%;
-background: #FFFFFF; border: none;
-box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-cursor: pointer;
-}
+input[type=range].sl::-webkit-slider-runnable-track { height:5px; border-radius:99px; }
+input[type=range].sl::-moz-range-thumb { width:26px; height:26px; border-radius:50%; background:#FFF; border:none; box-shadow:0 2px 8px rgba(0,0,0,0.25); }
+input[type=range].sl::-moz-range-track { height:5px; border-radius:99px; background:var(–track); }
+input[type=range].sl::-moz-range-progress { height:5px; border-radius:99px; background:var(–fill); }
 
-/* Track — drawn via inline background-image (linear-gradient) set by JS */
-input[type=range].sl::-webkit-slider-runnable-track {
-height: 5px;
-border-radius: 99px;
-/* background set inline by JS */
-}
-input[type=range].sl::-moz-range-track {
-height: 5px; border-radius: 99px; background: #C7C7CC;
-}
-input[type=range].sl::-moz-range-progress {
-height: 5px; border-radius: 99px; background: #6B21CC;
-}
-
-/* Seek bar for waveform */
-.seek-sl {
--webkit-appearance: none; appearance: none;
-outline: none; border: none; background: transparent;
-flex: 1; height: 28px; cursor: pointer; padding: 0; margin: 0;
-}
-.seek-sl::-webkit-slider-thumb {
--webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
-background: var(–purple); cursor: pointer;
-}
-.seek-sl::-webkit-slider-runnable-track { height: 4px; border-radius: 99px; }
+.seek-sl { -webkit-appearance:none; appearance:none; outline:none; border:none; background:transparent; flex:1; height:28px; cursor:pointer; padding:0; margin:0; }
+.seek-sl::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(–purple); cursor:pointer; }
+.seek-sl::-webkit-slider-runnable-track { height:4px; border-radius:99px; }
 
 /* SLIDER ROWS */
 .sl-wrap { padding:8px 16px 16px; display:flex; flex-direction:column; gap:18px; }
@@ -163,42 +102,66 @@ background: var(–purple); cursor: pointer;
 .preview-hint  { font-size:11px; color:var(–text2); }
 .stop-btn { background:var(–red); color:#fff; border:none; border-radius:10px; padding:4px 10px; font-size:11px; font-weight:700; cursor:pointer; display:none; }
 .stop-btn.on { display:block; }
-
 .theme-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:8px 14px 14px; }
-.theme-btn {
-background:var(–bg); border:2px solid var(–border); border-radius:10px;
-padding:12px 4px 10px; cursor:pointer; text-align:center; font-family:inherit; position:relative;
-transition:border-color .15s, background .15s;
-}
+.theme-btn { background:var(–bg); border:2px solid var(–border); border-radius:10px; padding:12px 4px 10px; cursor:pointer; text-align:center; font-family:inherit; position:relative; transition:border-color .15s,background .15s; }
 .theme-btn .t-em { font-size:1.5rem; display:block; margin-bottom:5px; }
 .theme-btn .t-lb { font-size:11px; font-weight:600; color:var(–text2); display:block; }
-.theme-btn .t-pl { position:absolute; top:5px; right:5px; width:18px; height:18px; border-radius:50%; background:var(–purple); color:#fff; font-size:8px; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .2s; pointer-events:none; }
-.theme-btn:hover .t-pl, .theme-btn:focus .t-pl { opacity:.8; }
 .theme-btn.selected { border-color:var(–purple); background:#F5EEFF; }
 .theme-btn.selected .t-lb { color:var(–purple); }
-.theme-btn.playing .t-pl { opacity:1; background:var(–red); }
-
+.theme-btn.playing { border-color:var(–red); background:#FFF1F0; }
+.theme-btn.playing .t-lb { color:var(–red); }
 .vol-row { display:flex; align-items:center; gap:6px; padding:0 14px 14px; }
 .vol-icon { font-size:14px; flex-shrink:0; }
 .vol-val  { font-size:12px; font-weight:700; color:var(–text2); min-width:34px; text-align:right; }
 
-/* FX GRID */
-.fx-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:8px 14px 14px; }
-.fx-btn {
-background:var(–bg); border:2px solid var(–border); border-radius:10px;
-padding:10px 4px 8px; cursor:pointer; text-align:center; font-family:inherit; position:relative;
-transition:border-color .12s, background .12s;
+/* ══════════════════════════════════════════════
+FX SECTION — card per effect with play button
+══════════════════════════════════════════════ */
+.fx-hint { font-size:11px; color:var(–text2); padding:10px 14px 6px; }
+
+.fx-item {
+display:flex; align-items:center; gap:10px;
+padding:11px 14px; border-bottom:1px solid var(–border);
 }
-.fx-btn .f-em  { font-size:1.3rem; display:block; margin-bottom:3px; }
-.fx-btn .f-lb  { font-size:10px; font-weight:600; color:var(–text2); display:block; line-height:1.2; }
-.fx-btn .f-pos { font-size:9px; color:var(–purple); font-weight:700; display:none; margin-top:2px; }
-.fx-btn:active { transform:scale(0.90); }
-.fx-btn.active { border-color:var(–orange); background:#FFF3E0; }
-.fx-btn.active .f-lb  { color:var(–orange); }
-.fx-btn.active .f-pos { display:block; }
-.fx-dot { position:absolute; top:4px; right:4px; width:7px; height:7px; border-radius:50%; background:var(–orange); display:none; }
-.fx-btn.active .fx-dot { display:block; }
-.fx-btn.previewing { border-color:var(–purple); background:#F5EEFF; }
+.fx-item:last-child { border-bottom:none; }
+
+/* Left: activate toggle area */
+.fx-toggle {
+display:flex; align-items:center; gap:8px; flex:1; cursor:pointer;
+}
+.fx-check {
+width:24px; height:24px; border-radius:50%; flex-shrink:0;
+border:2px solid var(–border); background:var(–bg);
+display:flex; align-items:center; justify-content:center;
+transition:all .15s;
+}
+.fx-check .ck { display:none; font-size:12px; color:#fff; }
+.fx-item.active .fx-check { background:var(–orange); border-color:var(–orange); }
+.fx-item.active .fx-check .ck { display:block; }
+
+.fx-em { font-size:1.4rem; }
+.fx-info { display:flex; flex-direction:column; }
+.fx-name { font-size:14px; font-weight:600; color:var(–text); }
+.fx-pos-label { font-size:11px; color:var(–purple); font-weight:600; display:none; }
+.fx-item.active .fx-pos-label { display:block; }
+
+/* Position slider inside fx item — only shown when active */
+.fx-pos-row { display:none; flex-direction:column; gap:4px; padding:0 14px 12px 56px; }
+.fx-item-wrap.active-wrap .fx-pos-row { display:flex; }
+.fx-pos-hd { display:flex; justify-content:space-between; font-size:11px; color:var(–text2); }
+
+/* Right: play preview button */
+.fx-play-btn {
+width:36px; height:36px; flex-shrink:0;
+border-radius:50%; border:none;
+background:rgba(107,33,204,0.10);
+color:var(–purple); font-size:14px;
+cursor:pointer; display:flex; align-items:center; justify-content:center;
+transition:background .15s;
+-webkit-user-select:none; user-select:none;
+}
+.fx-play-btn:active { background:rgba(107,33,204,0.22); }
+.fx-play-btn.playing { background:var(–red); color:#fff; }
 
 /* TOGGLES */
 .toggle-row { display:flex; align-items:center; padding:14px; gap:12px; border-bottom:1px solid var(–border); }
@@ -215,13 +178,7 @@ transition:border-color .12s, background .12s;
 .tog.on .tog-knob { transform:translateX(20px); }
 
 /* PROC BTN */
-#proc-btn {
-width:100%; padding:16px; border:none; border-radius:var(–r);
-background:linear-gradient(135deg,var(–purpL),var(–purple));
-color:#fff; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer;
-box-shadow:0 4px 16px rgba(107,33,204,0.28);
-display:flex; align-items:center; justify-content:center; gap:8px;
-}
+#proc-btn { width:100%; padding:16px; border:none; border-radius:var(–r); background:linear-gradient(135deg,var(–purpL),var(–purple)); color:#fff; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(107,33,204,0.28); display:flex; align-items:center; justify-content:center; gap:8px; }
 #proc-btn:active { opacity:.85; }
 #proc-btn:disabled { opacity:.38; cursor:not-allowed; box-shadow:none; }
 
@@ -242,25 +199,13 @@ display:flex; align-items:center; justify-content:center; gap:8px;
 .out-inner p  { font-size:13px; color:var(–text2); margin-bottom:16px; }
 audio#out-player { width:100%; margin-bottom:16px; }
 .dl-btn { display:inline-flex; align-items:center; gap:8px; background:var(–green); color:#fff; text-decoration:none; border:none; border-radius:12px; padding:13px 28px; font-family:inherit; font-size:15px; font-weight:800; box-shadow:0 3px 12px rgba(52,199,89,0.28); cursor:pointer; }
-.dl-btn:active { opacity:.8; }
 
-#err-msg { display:none; padding:12px 16px; background:#FFF1F0; border:1px solid #FFCDD0; border-radius:var(–r); color:var(–red); font-size:13px; font-weight:600; }
+#err-msg { display:none; padding:12px 16px; background:#FFF1F0; border:1px solid #FFCDD0; border-radius:var(–r); color:var(–red); font-size:13px; font-weight:600; line-height:1.5; }
 
-#toast {
-position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 20px); left:50%;
-transform:translateX(-50%) translateY(80px);
-background:rgba(28,28,30,0.92); color:#fff;
-padding:10px 20px; border-radius:30px; font-size:13px; font-weight:600;
-transition:transform .25s cubic-bezier(.34,1.56,.64,1);
-z-index:999; pointer-events:none; white-space:nowrap;
-backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-}
+#toast { position:fixed; bottom:calc(env(safe-area-inset-bottom,0px)+20px); left:50%; transform:translateX(-50%) translateY(80px); background:rgba(28,28,30,0.92); color:#fff; padding:10px 20px; border-radius:30px; font-size:13px; font-weight:600; transition:transform .25s cubic-bezier(.34,1.56,.64,1); z-index:999; pointer-events:none; white-space:nowrap; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
 #toast.show { transform:translateX(-50%) translateY(0); }
 
-@media (min-width:460px) {
-.fx-grid    { grid-template-columns:repeat(6,1fr); }
-.theme-grid { grid-template-columns:repeat(4,1fr); }
-}
+@media (min-width:460px) { .theme-grid { grid-template-columns:repeat(4,1fr); } }
 </style>
 
 </head>
@@ -311,7 +256,7 @@ backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
   <div class="sec-label">2 — Trilha de fundo</div>
   <div class="card">
     <div class="preview-strip">
-      <span class="preview-hint">Toque em uma trilha para ouvir</span>
+      <span class="preview-hint">Toque em uma trilha para ouvir uma amostra</span>
       <button class="stop-btn" id="theme-stop-btn" onclick="stopThemePrev()">■ Parar</button>
     </div>
     <div class="theme-grid" id="theme-grid"></div>
@@ -328,52 +273,42 @@ backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
   <div class="sec-label">3 — Ajuste de áudio</div>
   <div class="card">
     <div class="sl-wrap">
-
-```
-  <div class="sl-row">
-    <div class="sl-hd"><span class="sl-label">🎤 Volume da voz</span><span class="sl-val" id="sv-voice">150%</span></div>
-    <input type="range" class="sl" id="sl-voice" min="50" max="300" value="150" oninput="updateSl(this,'sv-voice','%')">
-  </div>
-
-  <div class="sl-row">
-    <div class="sl-hd"><span class="sl-label">🧹 Redução de ruído</span><span class="sl-val" id="sv-noise">60%</span></div>
-    <input type="range" class="sl" id="sl-noise" min="0" max="100" value="60" oninput="updateSl(this,'sv-noise','%')">
-  </div>
-
-  <div class="sl-row">
-    <div class="sl-hd"><span class="sl-label">🌀 Reverb</span><span class="sl-val" id="sv-reverb">15%</span></div>
-    <input type="range" class="sl" id="sl-reverb" min="0" max="100" value="15" oninput="updateSl(this,'sv-reverb','%')">
-  </div>
-
-  <div class="sl-row">
-    <div class="sl-hd"><span class="sl-label">⚡ Compressão</span><span class="sl-val" id="sv-compress">70%</span></div>
-    <input type="range" class="sl" id="sl-compress" min="0" max="100" value="70" oninput="updateSl(this,'sv-compress','%')">
-  </div>
-
-  <div class="sl-row">
-    <div class="sl-hd"><span class="sl-label">🎚️ Fade in</span><span class="sl-val" id="sv-fadein">2.0s</span></div>
-    <input type="range" class="sl" id="sl-fadein" min="0" max="5" value="2" step="0.5" oninput="updateSlS(this,'sv-fadein')">
-  </div>
-
-  <div class="sl-row">
-    <div class="sl-hd"><span class="sl-label">🎚️ Fade out</span><span class="sl-val" id="sv-fadeout">3.0s</span></div>
-    <input type="range" class="sl" id="sl-fadeout" min="0" max="5" value="3" step="0.5" oninput="updateSlS(this,'sv-fadeout')">
-  </div>
-
-</div>
-```
-
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🎤 Volume da voz</span><span class="sl-val" id="sv-voice">150%</span></div>
+        <input type="range" class="sl" id="sl-voice" min="50" max="300" value="150" oninput="updateSl(this,'sv-voice','%')">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🧹 Redução de ruído</span><span class="sl-val" id="sv-noise">60%</span></div>
+        <input type="range" class="sl" id="sl-noise" min="0" max="100" value="60" oninput="updateSl(this,'sv-noise','%')">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🌀 Reverb</span><span class="sl-val" id="sv-reverb">15%</span></div>
+        <input type="range" class="sl" id="sl-reverb" min="0" max="100" value="15" oninput="updateSl(this,'sv-reverb','%')">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">⚡ Compressão</span><span class="sl-val" id="sv-compress">70%</span></div>
+        <input type="range" class="sl" id="sl-compress" min="0" max="100" value="70" oninput="updateSl(this,'sv-compress','%')">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🎚️ Fade in</span><span class="sl-val" id="sv-fadein">2.0s</span></div>
+        <input type="range" class="sl" id="sl-fadein" min="0" max="5" value="2" step="0.5" oninput="updateSlS(this,'sv-fadein')">
+      </div>
+      <div class="sl-row">
+        <div class="sl-hd"><span class="sl-label">🎚️ Fade out</span><span class="sl-val" id="sv-fadeout">3.0s</span></div>
+        <input type="range" class="sl" id="sl-fadeout" min="0" max="5" value="3" step="0.5" oninput="updateSlS(this,'sv-fadeout')">
+      </div>
+    </div>
   </div>
 
   <!-- 4. EFEITOS SONOROS -->
 
   <div class="sec-label">4 — Efeitos sonoros</div>
   <div class="card">
-    <div class="preview-strip">
-      <span class="preview-hint">Toque = ativar &nbsp;·&nbsp; Segure 1s = ouvir</span>
-      <button class="stop-btn" id="fx-stop-btn" onclick="stopFXPrev()">■ Parar</button>
+    <div class="fx-hint">
+      Toque no círculo para <b>ativar</b> o efeito · Toque em <b>▶</b> para ouvir a amostra<br>
+      Quando ativo, ajuste <b>onde</b> o efeito entra no episódio (0% = início · 100% = fim)
     </div>
-    <div class="fx-grid" id="fx-grid"></div>
+    <div id="fx-list"></div>
   </div>
 
   <!-- 5. VINHETAS -->
@@ -417,54 +352,29 @@ backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
 <div id="toast"></div>
 
 <script>
-/* ════════════════════════════════════════
-   SLIDER FILL — the only reliable method
-   on Safari iOS: set background-image
-   inline as a linear-gradient that shows
-   the filled portion in purple and the
-   unfilled in grey.
-════════════════════════════════════════ */
-const FILL_COLOR  = '#6B21CC';
-const TRACK_COLOR = '#C7C7CC';
+/* ════════════════════════════
+   SLIDER FILL (Safari-safe)
+════════════════════════════ */
+const FILL  = '#6B21CC';
+const TRACK = '#C7C7CC';
 
 function paintSl(el) {
-  const min = parseFloat(el.min) || 0;
-  const max = parseFloat(el.max) || 100;
-  const val = parseFloat(el.value);
-  const pct = ((val - min) / (max - min)) * 100;
-  // This gradient on the track element is the ONLY method Safari respects
-  el.style.setProperty('--sl-pct', pct + '%');
-  el.style.background =
-    `linear-gradient(to right, ${FILL_COLOR} 0%, ${FILL_COLOR} ${pct}%, ${TRACK_COLOR} ${pct}%, ${TRACK_COLOR} 100%)`;
+  const min = parseFloat(el.min)||0, max = parseFloat(el.max)||100;
+  const pct = ((parseFloat(el.value)-min)/(max-min))*100;
+  el.style.background = `linear-gradient(to right,${FILL} 0%,${FILL} ${pct}%,${TRACK} ${pct}%,${TRACK} 100%)`;
 }
-
-function updateSl(el, labelId, unit) {
-  paintSl(el);
-  document.getElementById(labelId).textContent = Math.round(el.value) + unit;
-}
-
-function updateSlS(el, labelId) {
-  paintSl(el);
-  document.getElementById(labelId).textContent = parseFloat(el.value).toFixed(1) + 's';
-}
-
-function paintAllSliders() {
-  document.querySelectorAll('input[type=range].sl').forEach(paintSl);
-  // Also paint seek bar
-  const sb = document.getElementById('seek-bar');
-  if (sb) paintSeek(sb);
-}
-
+function updateSl(el, lblId, unit) { paintSl(el); document.getElementById(lblId).textContent = Math.round(el.value)+unit; }
+function updateSlS(el, lblId)      { paintSl(el); document.getElementById(lblId).textContent = parseFloat(el.value).toFixed(1)+'s'; }
 function paintSeek(el) {
-  const max = parseFloat(el.max) || 1;
-  const pct = (parseFloat(el.value) / max) * 100;
-  el.style.background =
-    `linear-gradient(to right, ${FILL_COLOR} 0%, ${FILL_COLOR} ${pct}%, ${TRACK_COLOR} ${pct}%, ${TRACK_COLOR} 100%)`;
+  const max = parseFloat(el.max)||1;
+  const pct = (parseFloat(el.value)/max)*100;
+  el.style.background = `linear-gradient(to right,${FILL} 0%,${FILL} ${pct}%,${TRACK} ${pct}%,${TRACK} 100%)`;
 }
+function paintAll() { document.querySelectorAll('input[type=range].sl').forEach(paintSl); paintSeek(document.getElementById('seek-bar')); }
 
-/* ════════════════════════════════════════
+/* ════════════════════════════
    DATA
-════════════════════════════════════════ */
+════════════════════════════ */
 const THEMES = [
   {id:'none',    e:'🔇', l:'Sem trilha'},
   {id:'forest',  e:'🌲', l:'Floresta'},
@@ -479,6 +389,7 @@ const THEMES = [
   {id:'farm',    e:'🐄', l:'Fazenda'},
   {id:'mystery', e:'🔍', l:'Mistério'},
 ];
+
 const SFX = [
   {id:'stars',   e:'⭐', l:'Estrelas'},
   {id:'laugh',   e:'😂', l:'Risada'},
@@ -494,49 +405,50 @@ const SFX = [
   {id:'magic2',  e:'✨', l:'Encanto'},
 ];
 
-/* ════════════════════════════════════════
+/* ════════════════════════════
    STATE
-════════════════════════════════════════ */
+════════════════════════════ */
 let audioCtx = null;
-let srcBuf = null, selTheme = 'none', activeFX = new Set();
-let isPlaying = false, playSrc = null, startedAt = 0, pausedAt = 0, seekRAF = null;
-let thPrevSrc = null, thPrevBtn = null;
-let fxPrevSrc = null, fxPrevBtn = null;
+let srcBuf = null, selTheme = 'none';
+// FX state: map id -> {active, pos(0-100)}
+const fxState = {};
+SFX.forEach(fx => { fxState[fx.id] = {active:false, pos:50}; });
+
+let isPlaying=false, playSrc=null, startedAt=0, pausedAt=0, seekRAF=null;
+let thPrevSrc=null, thPrevBtn=null;
+let fxPrevSrc=null, fxPrevPlayBtn=null;
 
 function ensureCtx() {
-  if (!audioCtx || audioCtx.state === 'closed') {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)({sampleRate: 44100});
+  if (!audioCtx || audioCtx.state==='closed') {
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)({sampleRate:44100});
   }
-  if (audioCtx.state === 'suspended') audioCtx.resume();
+  if (audioCtx.state==='suspended') audioCtx.resume();
   return audioCtx;
 }
 
-/* ════════════════════════════════════════
-   TOGGLES
-════════════════════════════════════════ */
+/* ════════════════════════════
+   TOGGLE
+════════════════════════════ */
 function toggleTog(togId, cbId) {
-  const t = document.getElementById(togId);
-  const c = document.getElementById(cbId);
-  t.classList.toggle('on');
-  c.checked = t.classList.contains('on');
+  const t=document.getElementById(togId), c=document.getElementById(cbId);
+  t.classList.toggle('on'); c.checked=t.classList.contains('on');
 }
 
-/* ════════════════════════════════════════
+/* ════════════════════════════
    THEME GRID
-════════════════════════════════════════ */
+════════════════════════════ */
 function buildThemeGrid() {
   const g = document.getElementById('theme-grid');
   THEMES.forEach(t => {
     const b = document.createElement('button');
-    b.className = 'theme-btn' + (t.id === 'none' ? ' selected' : '');
-    b.id = 'tb-' + t.id;
-    b.innerHTML = `<span class="t-em">${t.e}</span><span class="t-lb">${t.l}</span><span class="t-pl">▶</span>`;
+    b.className = 'theme-btn' + (t.id==='none'?' selected':'');
+    b.id = 'tb-'+t.id;
+    b.innerHTML = `<span class="t-em">${t.e}</span><span class="t-lb">${t.l}</span>`;
     b.addEventListener('click', () => {
-      document.querySelectorAll('.theme-btn').forEach(x => x.classList.remove('selected'));
+      document.querySelectorAll('.theme-btn').forEach(x=>x.classList.remove('selected','playing'));
       b.classList.add('selected');
       selTheme = t.id;
-      if (t.id !== 'none') previewTheme(t.id, b);
-      else stopThemePrev();
+      if (t.id!=='none') previewTheme(t.id, b); else stopThemePrev();
     });
     g.appendChild(b);
   });
@@ -545,421 +457,376 @@ function buildThemeGrid() {
 function previewTheme(id, btn) {
   stopThemePrev();
   const ctx = ensureCtx();
-  const buf = genTheme(ctx, 6, id);
-  if (!buf) return;
-  thPrevSrc = ctx.createBufferSource();
-  thPrevSrc.buffer = buf;
+  const buf = genTheme(ctx, 7, id); if (!buf) return;
+  thPrevSrc = ctx.createBufferSource(); thPrevSrc.buffer = buf;
   const g = ctx.createGain(); g.gain.value = 0.6;
   thPrevSrc.connect(g); g.connect(ctx.destination);
   thPrevSrc.start(0);
   thPrevSrc.onended = () => {
     if (thPrevBtn) thPrevBtn.classList.remove('playing');
     document.getElementById('theme-stop-btn').classList.remove('on');
-    thPrevSrc = null; thPrevBtn = null;
+    thPrevSrc=null; thPrevBtn=null;
   };
-  thPrevBtn = btn; btn.classList.add('playing');
+  thPrevBtn=btn; btn.classList.add('playing');
   document.getElementById('theme-stop-btn').classList.add('on');
-  toast('▶ ' + btn.querySelector('.t-lb').textContent);
+  toast('▶ '+btn.querySelector('.t-lb').textContent);
 }
 
 function stopThemePrev() {
-  if (thPrevSrc) { try { thPrevSrc.stop(); } catch(e){} thPrevSrc = null; }
-  if (thPrevBtn) { thPrevBtn.classList.remove('playing'); thPrevBtn = null; }
+  if (thPrevSrc){try{thPrevSrc.stop();}catch(e){}thPrevSrc=null;}
+  if (thPrevBtn){thPrevBtn.classList.remove('playing');thPrevBtn=null;}
   document.getElementById('theme-stop-btn').classList.remove('on');
 }
 
-/* ════════════════════════════════════════
-   FX GRID
-════════════════════════════════════════ */
-function buildFXGrid() {
-  const g = document.getElementById('fx-grid');
-  SFX.forEach((fx) => {
-    const b = document.createElement('button');
-    b.className = 'fx-btn';
-    b.id = 'fxb-' + fx.id;
-    b.innerHTML = `<span class="f-em">${fx.e}</span><span class="f-lb">${fx.l}</span><span class="f-pos" id="fpos-${fx.id}"></span><span class="fx-dot"></span>`;
+/* ════════════════════════════
+   FX LIST — each effect is a row
+   with explicit ▶ button (no long press)
+════════════════════════════ */
+function buildFXList() {
+  const list = document.getElementById('fx-list');
+  SFX.forEach(fx => {
+    // Wrapper for the item + pos slider
+    const wrap = document.createElement('div');
+    wrap.className = 'fx-item-wrap';
+    wrap.id = 'fxw-'+fx.id;
 
-    let pressTimer = null, didLong = false;
-    const startPress = () => { didLong = false; pressTimer = setTimeout(() => { didLong = true; previewFX(fx.id, b); }, 700); };
-    const endPress   = () => { clearTimeout(pressTimer); pressTimer = null; };
+    // Main row
+    const row = document.createElement('div');
+    row.className = 'fx-item';
+    row.id = 'fxi-'+fx.id;
 
-    b.addEventListener('click', () => { if (didLong) { didLong = false; return; } toggleFX(fx.id, b); });
-    b.addEventListener('mousedown', startPress);
-    b.addEventListener('mouseup', endPress);
-    b.addEventListener('touchstart', startPress, {passive:true});
-    b.addEventListener('touchend', endPress, {passive:true});
-    g.appendChild(b);
+    // Activate toggle (left side)
+    const toggleArea = document.createElement('div');
+    toggleArea.className = 'fx-toggle';
+    toggleArea.innerHTML = `
+      <div class="fx-check"><span class="ck">✓</span></div>
+      <span class="fx-em">${fx.e}</span>
+      <div class="fx-info">
+        <span class="fx-name">${fx.l}</span>
+        <span class="fx-pos-label" id="fxlbl-${fx.id}">Entra em: 50%</span>
+      </div>`;
+    toggleArea.addEventListener('click', () => toggleFX(fx.id));
+
+    // Play preview button (right side) — explicit button, no long press needed
+    const playBtn = document.createElement('button');
+    playBtn.className = 'fx-play-btn';
+    playBtn.id = 'fxplay-'+fx.id;
+    playBtn.innerHTML = '▶';
+    playBtn.title = 'Ouvir amostra';
+    // Use touchend + click both to maximise iOS compatibility
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (fxPrevSrc && fxPrevPlayBtn === playBtn) stopFXPrev();
+      else previewFX(fx.id, playBtn);
+    });
+
+    row.appendChild(toggleArea);
+    row.appendChild(playBtn);
+
+    // Position slider row (shown when active)
+    const posRow = document.createElement('div');
+    posRow.className = 'fx-pos-row';
+    posRow.innerHTML = `
+      <div class="fx-pos-hd"><span>Início</span><span>Posição no episódio</span><span>Fim</span></div>
+      <input type="range" class="sl" id="fxpos-${fx.id}" min="0" max="100" value="50"
+        oninput="onFXPos('${fx.id}',this)">`;
+
+    wrap.appendChild(row);
+    wrap.appendChild(posRow);
+    list.appendChild(wrap);
   });
 }
 
-function toggleFX(id, btn) {
-  if (activeFX.has(id)) { activeFX.delete(id); btn.classList.remove('active'); }
-  else { activeFX.add(id); btn.classList.add('active'); }
-  updateFXPositions();
+function toggleFX(id) {
+  const st = fxState[id];
+  st.active = !st.active;
+  const row  = document.getElementById('fxi-'+id);
+  const wrap = document.getElementById('fxw-'+id);
+  if (st.active) {
+    row.classList.add('active');
+    wrap.classList.add('active-wrap');
+    // Paint the position slider
+    const sl = document.getElementById('fxpos-'+id);
+    if (sl) paintSl(sl);
+  } else {
+    row.classList.remove('active');
+    wrap.classList.remove('active-wrap');
+  }
 }
 
-function updateFXPositions() {
-  const arr = [...activeFX];
-  arr.forEach((id, i) => {
-    const pct = arr.length === 1 ? 50 : Math.round((i / (arr.length - 1)) * 100);
-    const el = document.getElementById('fpos-' + id);
-    if (el) el.textContent = arr.length === 1 ? '· no meio' : `· ${pct}%`;
-  });
+function onFXPos(id, el) {
+  paintSl(el);
+  fxState[id].pos = parseFloat(el.value);
+  const lbl = document.getElementById('fxlbl-'+id);
+  if (lbl) lbl.textContent = 'Entra em: ' + Math.round(el.value) + '%';
 }
 
 function previewFX(id, btn) {
   stopFXPrev();
   const ctx = ensureCtx();
   const buf = genSFX(ctx, id);
-  fxPrevSrc = ctx.createBufferSource();
-  fxPrevSrc.buffer = buf;
-  const g = ctx.createGain(); g.gain.value = 0.75;
+  fxPrevSrc = ctx.createBufferSource(); fxPrevSrc.buffer = buf;
+  const g = ctx.createGain(); g.gain.value = 0.8;
   fxPrevSrc.connect(g); g.connect(ctx.destination);
   fxPrevSrc.start(0);
   fxPrevSrc.onended = () => {
-    if (fxPrevBtn) fxPrevBtn.classList.remove('previewing');
-    document.getElementById('fx-stop-btn').classList.remove('on');
-    fxPrevSrc = null; fxPrevBtn = null;
+    if (fxPrevPlayBtn) fxPrevPlayBtn.classList.remove('playing');
+    fxPrevSrc=null; fxPrevPlayBtn=null;
   };
-  fxPrevBtn = btn; btn.classList.add('previewing');
-  document.getElementById('fx-stop-btn').classList.add('on');
-  toast('▶ ' + btn.querySelector('.f-lb').textContent);
+  fxPrevPlayBtn=btn; btn.classList.add('playing');
+  btn.innerHTML='■';
+  const name = btn.closest('.fx-item').querySelector('.fx-name').textContent;
+  toast('▶ '+name);
 }
 
 function stopFXPrev() {
-  if (fxPrevSrc) { try { fxPrevSrc.stop(); } catch(e){} fxPrevSrc = null; }
-  if (fxPrevBtn) { fxPrevBtn.classList.remove('previewing'); fxPrevBtn = null; }
-  document.getElementById('fx-stop-btn').classList.remove('on');
+  if (fxPrevSrc){try{fxPrevSrc.stop();}catch(e){}fxPrevSrc=null;}
+  if (fxPrevPlayBtn){fxPrevPlayBtn.classList.remove('playing');fxPrevPlayBtn.innerHTML='▶';fxPrevPlayBtn=null;}
 }
 
-/* ════════════════════════════════════════
+/* ════════════════════════════
    FILE LOADING
-════════════════════════════════════════ */
+════════════════════════════ */
 function setupFileInput() {
-  const fi = document.getElementById('file-input');
-  const dz = document.getElementById('drop-zone');
-  fi.addEventListener('change', function() { if (this.files && this.files[0]) loadFile(this.files[0]); });
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+  const fi=document.getElementById('file-input');
+  const dz=document.getElementById('drop-zone');
+  fi.addEventListener('change',function(){if(this.files&&this.files[0])loadFile(this.files[0]);});
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0]);});
 }
 
 function resetFile() {
-  if (isPlaying) stopPlayback();
-  stopThemePrev(); stopFXPrev();
-  srcBuf = null; pausedAt = 0;
-  try { document.getElementById('file-input').value = ''; } catch(e) {}
-  document.getElementById('drop-zone').style.display = '';
-  document.getElementById('file-loaded').style.display = 'none';
-  document.getElementById('waveform-section').style.display = 'none';
-  document.getElementById('proc-btn').disabled = true;
-  document.getElementById('out-wrap').style.display = 'none';
-  document.getElementById('prog-wrap').style.display = 'none';
+  if(isPlaying)stopPlayback();
+  stopThemePrev();stopFXPrev();
+  srcBuf=null;pausedAt=0;
+  try{document.getElementById('file-input').value='';}catch(e){}
+  document.getElementById('drop-zone').style.display='';
+  document.getElementById('file-loaded').style.display='none';
+  document.getElementById('waveform-section').style.display='none';
+  document.getElementById('proc-btn').disabled=true;
+  document.getElementById('out-wrap').style.display='none';
+  document.getElementById('prog-wrap').style.display='none';
   showErr('');
 }
 
 async function loadFile(file) {
   showErr('');
   toast('📂 Carregando...');
-  document.getElementById('fname-label').textContent = file.name;
-  document.getElementById('dur-label').textContent = fmtSize(file.size);
-  document.getElementById('drop-zone').style.display = 'none';
-  document.getElementById('file-loaded').style.display = 'block';
-  document.getElementById('waveform-section').style.display = 'none';
-
+  document.getElementById('fname-label').textContent=file.name;
+  document.getElementById('dur-label').textContent=fmtSize(file.size);
+  document.getElementById('drop-zone').style.display='none';
+  document.getElementById('file-loaded').style.display='block';
+  document.getElementById('waveform-section').style.display='none';
   try {
-    const ctx = ensureCtx();
-    const ab  = await file.arrayBuffer();
-    srcBuf = await new Promise((res, rej) => {
-      ctx.decodeAudioData(ab, res, () => rej(new Error('Formato não suportado. No iPhone: abra o arquivo no app Arquivos, segure e escolha "Compartilhar" > "Salvar como" ou converta para MP3.')));
+    const ctx=ensureCtx();
+    const ab=await file.arrayBuffer();
+    srcBuf=await new Promise((res,rej)=>{
+      ctx.decodeAudioData(ab,res,()=>rej(new Error('Formato não suportado.\n\nDica iPhone: App Arquivos → segure o arquivo → Ações Rápidas → Converter para MP3 (se disponível), ou envie para si mesmo por e-mail e baixe como MP3.')));
     });
-    document.getElementById('dur-label').textContent = fmtTime(srcBuf.duration) + ' · ' + fmtSize(file.size);
-    const sb = document.getElementById('seek-bar'); sb.max = srcBuf.duration; sb.value = 0;
-    paintSeek(sb);
+    document.getElementById('dur-label').textContent=fmtTime(srcBuf.duration)+' · '+fmtSize(file.size);
+    const sb=document.getElementById('seek-bar'); sb.max=srcBuf.duration; sb.value=0; paintSeek(sb);
     drawWaveform(srcBuf);
-    document.getElementById('waveform-section').style.display = 'block';
-    document.getElementById('proc-btn').disabled = false;
+    document.getElementById('waveform-section').style.display='block';
+    document.getElementById('proc-btn').disabled=false;
     toast('✅ Áudio carregado!');
-  } catch(err) {
-    console.error(err);
-    showErr('❌ ' + err.message);
-    resetFile();
+  } catch(err){
+    console.error(err); showErr('❌ '+err.message); resetFile();
   }
 }
 
-/* ════════════════════════════════════════
+/* ════════════════════════════
    WAVEFORM
-════════════════════════════════════════ */
+════════════════════════════ */
 function drawWaveform(buf) {
-  const canvas = document.getElementById('waveform');
-  const dpr = window.devicePixelRatio || 1;
-  const W = canvas.offsetWidth, H = 56;
-  canvas.width = W * dpr; canvas.height = H * dpr;
-  const ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
-  const data = buf.getChannelData(0);
-  const step = Math.ceil(data.length / W);
-  const grad = ctx.createLinearGradient(0,0,W,0);
+  const canvas=document.getElementById('waveform');
+  const dpr=window.devicePixelRatio||1, W=canvas.offsetWidth, H=56;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const data=buf.getChannelData(0), step=Math.ceil(data.length/W);
+  const grad=ctx.createLinearGradient(0,0,W,0);
   grad.addColorStop(0,'#9B59E0'); grad.addColorStop(1,'#007AFF');
-  ctx.fillStyle = grad;
-  for (let i = 0; i < W; i++) {
-    let mx = 0;
-    for (let j = 0; j < step; j++) { const v = Math.abs(data[i*step+j]||0); if(v>mx)mx=v; }
-    const h = Math.max(2, mx * H * 0.88);
-    ctx.fillRect(i, (H-h)/2, 1, h);
-  }
+  ctx.fillStyle=grad;
+  for(let i=0;i<W;i++){let mx=0;for(let j=0;j<step;j++){const v=Math.abs(data[i*step+j]||0);if(v>mx)mx=v;}const h=Math.max(2,mx*H*0.88);ctx.fillRect(i,(H-h)/2,1,h);}
 }
 
-/* ════════════════════════════════════════
+/* ════════════════════════════
    PLAYBACK
-════════════════════════════════════════ */
-function togglePlay() {
-  if (!srcBuf) return;
-  if (isPlaying) stopPlayback(); else startPlayback();
-}
-function startPlayback() {
-  const ctx = ensureCtx();
-  playSrc = ctx.createBufferSource(); playSrc.buffer = srcBuf;
+════════════════════════════ */
+function togglePlay(){if(!srcBuf)return;if(isPlaying)stopPlayback();else startPlayback();}
+function startPlayback(){
+  const ctx=ensureCtx();
+  playSrc=ctx.createBufferSource();playSrc.buffer=srcBuf;
   playSrc.connect(ctx.destination);
-  startedAt = ctx.currentTime - pausedAt;
-  playSrc.start(0, pausedAt);
-  isPlaying = true; document.getElementById('play-btn').textContent = '⏸';
-  playSrc.onended = () => {
-    isPlaying = false; pausedAt = 0;
-    document.getElementById('play-btn').textContent = '▶';
-    const sb = document.getElementById('seek-bar'); sb.value = 0; paintSeek(sb);
-    if (seekRAF) cancelAnimationFrame(seekRAF);
-  };
+  startedAt=ctx.currentTime-pausedAt; playSrc.start(0,pausedAt);
+  isPlaying=true; document.getElementById('play-btn').textContent='⏸';
+  playSrc.onended=()=>{isPlaying=false;pausedAt=0;document.getElementById('play-btn').textContent='▶';const sb=document.getElementById('seek-bar');sb.value=0;paintSeek(sb);if(seekRAF)cancelAnimationFrame(seekRAF);};
   tickSeek();
 }
-function stopPlayback() {
-  if (playSrc) { try { playSrc.stop(); } catch(e){} }
-  pausedAt = audioCtx ? Math.min(audioCtx.currentTime - startedAt, srcBuf ? srcBuf.duration : 0) : 0;
-  isPlaying = false; document.getElementById('play-btn').textContent = '▶';
-  if (seekRAF) cancelAnimationFrame(seekRAF);
+function stopPlayback(){
+  if(playSrc){try{playSrc.stop();}catch(e){}}
+  pausedAt=audioCtx?Math.min(audioCtx.currentTime-startedAt,srcBuf?srcBuf.duration:0):0;
+  isPlaying=false;document.getElementById('play-btn').textContent='▶';if(seekRAF)cancelAnimationFrame(seekRAF);
 }
-function tickSeek() {
-  if (!isPlaying) return;
-  const cur = audioCtx.currentTime - startedAt;
-  const sb = document.getElementById('seek-bar');
-  sb.value = Math.min(cur, srcBuf.duration); paintSeek(sb);
-  document.getElementById('time-display').textContent = fmtTime(cur) + ' / ' + fmtTime(srcBuf.duration);
-  seekRAF = requestAnimationFrame(tickSeek);
+function tickSeek(){
+  if(!isPlaying)return;
+  const cur=audioCtx.currentTime-startedAt;
+  const sb=document.getElementById('seek-bar'); sb.value=Math.min(cur,srcBuf.duration); paintSeek(sb);
+  document.getElementById('time-display').textContent=fmtTime(cur)+' / '+fmtTime(srcBuf.duration);
+  seekRAF=requestAnimationFrame(tickSeek);
 }
 
-/* ════════════════════════════════════════
+/* ════════════════════════════
    PROCESS
-════════════════════════════════════════ */
+════════════════════════════ */
 async function processAudio() {
-  if (!srcBuf) { toast('⚠️ Suba um áudio primeiro!'); return; }
-  stopThemePrev(); stopFXPrev(); if (isPlaying) stopPlayback();
-  showErr('');
+  if(!srcBuf){toast('⚠️ Suba um áudio primeiro!');return;}
+  stopThemePrev();stopFXPrev();if(isPlaying)stopPlayback();showErr('');
 
-  const pw = document.getElementById('prog-wrap');
-  pw.style.display = 'block';
-  document.getElementById('out-wrap').style.display = 'none';
-  document.getElementById('proc-btn').disabled = true;
-  pw.scrollIntoView({behavior:'smooth', block:'nearest'});
+  const pw=document.getElementById('prog-wrap');
+  pw.style.display='block';
+  document.getElementById('out-wrap').style.display='none';
+  document.getElementById('proc-btn').disabled=true;
+  pw.scrollIntoView({behavior:'smooth',block:'nearest'});
 
-  const setP = (pct, lbl) => {
-    document.getElementById('prog-fill').style.width = pct + '%';
-    document.getElementById('prog-pct').textContent = pct + '%';
-    document.getElementById('prog-lbl').textContent = lbl;
+  const setP=(pct,lbl)=>{
+    document.getElementById('prog-fill').style.width=pct+'%';
+    document.getElementById('prog-pct').textContent=pct+'%';
+    document.getElementById('prog-lbl').textContent=lbl;
   };
 
   try {
-    setP(5, '🎤 Preparando voz...'); await wait(120);
+    setP(5,'🎤 Preparando...');await wait(120);
 
-    const voiceGain  = parseInt(document.getElementById('sl-voice').value)   / 100;
-    const bgVol      = parseInt(document.getElementById('sl-bgvol').value)   / 100 * 0.28;
-    const noiseRed   = parseInt(document.getElementById('sl-noise').value)   / 100;
-    const reverbAmt  = parseInt(document.getElementById('sl-reverb').value)  / 100;
-    const compAmt    = parseInt(document.getElementById('sl-compress').value) / 100;
+    const voiceGain  = parseInt(document.getElementById('sl-voice').value)/100;
+    const bgVol      = parseInt(document.getElementById('sl-bgvol').value)/100*0.28;
+    const noiseRed   = parseInt(document.getElementById('sl-noise').value)/100;
+    const reverbAmt  = parseInt(document.getElementById('sl-reverb').value)/100;
+    const compAmt    = parseInt(document.getElementById('sl-compress').value)/100;
     const fadeInSec  = parseFloat(document.getElementById('sl-fadein').value);
     const fadeOutSec = parseFloat(document.getElementById('sl-fadeout').value);
     const addIntro   = document.getElementById('cb-intro').checked;
     const addOutro   = document.getElementById('cb-outro').checked;
 
-    const SR       = 44100;
-    const introDur = addIntro ? 3.0 : 0;
-    const totalDur = srcBuf.duration + introDur + (addOutro ? 3.0 : 0) + 0.5;
-    const offCtx   = new OfflineAudioContext(2, Math.ceil(SR * totalDur), SR);
+    const SR=44100, introDur=addIntro?3:0;
+    const totalDur=srcBuf.duration+introDur+(addOutro?3:0)+0.5;
+    const offCtx=new OfflineAudioContext(2,Math.ceil(SR*totalDur),SR);
 
-    setP(15, '🔧 Montando cadeia...'); await wait(80);
+    setP(15,'🔧 Montando cadeia...');await wait(80);
 
-    const vBuf = srcBuf.sampleRate !== SR ? resample(srcBuf, SR, offCtx) : srcBuf;
-    const vSrc = offCtx.createBufferSource(); vSrc.buffer = vBuf;
+    const vBuf=srcBuf.sampleRate!==SR?resample(srcBuf,SR,offCtx):srcBuf;
+    const vSrc=offCtx.createBufferSource();vSrc.buffer=vBuf;
+    const gainN=offCtx.createGain();gainN.gain.value=voiceGain;
+    const hpf=offCtx.createBiquadFilter();hpf.type='highpass';hpf.frequency.value=80+noiseRed*120;hpf.Q.value=0.5;
+    const lpf=offCtx.createBiquadFilter();lpf.type='lowpass';lpf.frequency.value=13000-noiseRed*4000;
+    const eq=offCtx.createBiquadFilter();eq.type='peaking';eq.frequency.value=3000;eq.gain.value=3+compAmt*4;eq.Q.value=1;
+    const comp=offCtx.createDynamicsCompressor();
+    comp.threshold.value=-24-compAmt*12;comp.knee.value=10;comp.ratio.value=3+compAmt*6;comp.attack.value=0.003;comp.release.value=0.25;
+    const conv=offCtx.createConvolver();conv.buffer=makeIR(offCtx,1.5*reverbAmt+0.1,2);
+    const dryG=offCtx.createGain();dryG.gain.value=1-reverbAmt*0.4;
+    const wetG=offCtx.createGain();wetG.gain.value=reverbAmt*0.4;
+    const mast=offCtx.createGain();
 
-    const gainN = offCtx.createGain(); gainN.gain.value = voiceGain;
-    const hpf   = offCtx.createBiquadFilter(); hpf.type = 'highpass'; hpf.frequency.value = 80 + noiseRed*120; hpf.Q.value = 0.5;
-    const lpf   = offCtx.createBiquadFilter(); lpf.type = 'lowpass';  lpf.frequency.value = 13000 - noiseRed*4000;
-    const eq    = offCtx.createBiquadFilter(); eq.type  = 'peaking';  eq.frequency.value = 3000; eq.gain.value = 3 + compAmt*4; eq.Q.value = 1;
-    const comp  = offCtx.createDynamicsCompressor();
-    comp.threshold.value = -24 - compAmt*12; comp.knee.value = 10;
-    comp.ratio.value = 3 + compAmt*6; comp.attack.value = 0.003; comp.release.value = 0.25;
-    const conv  = offCtx.createConvolver(); conv.buffer = makeIR(offCtx, 1.5*reverbAmt+0.1, 2);
-    const dryG  = offCtx.createGain(); dryG.gain.value = 1 - reverbAmt*0.4;
-    const wetG  = offCtx.createGain(); wetG.gain.value = reverbAmt*0.4;
-    const mast  = offCtx.createGain();
+    const sOff=introDur, endT=sOff+srcBuf.duration;
+    mast.gain.setValueAtTime(0,0);
+    if(fadeInSec>0){mast.gain.setValueAtTime(0,sOff);mast.gain.linearRampToValueAtTime(1,sOff+fadeInSec);}
+    else mast.gain.setValueAtTime(1,sOff);
+    if(fadeOutSec>0&&endT>fadeOutSec){mast.gain.setValueAtTime(1,endT-fadeOutSec);mast.gain.linearRampToValueAtTime(0,endT);}
 
-    const sOff = introDur, endT = sOff + srcBuf.duration;
-    mast.gain.setValueAtTime(0, 0);
-    if (fadeInSec > 0) { mast.gain.setValueAtTime(0, sOff); mast.gain.linearRampToValueAtTime(1, sOff + fadeInSec); }
-    else mast.gain.setValueAtTime(1, sOff);
-    if (fadeOutSec > 0 && endT > fadeOutSec) { mast.gain.setValueAtTime(1, endT - fadeOutSec); mast.gain.linearRampToValueAtTime(0, endT); }
-
-    vSrc.connect(hpf); hpf.connect(lpf); lpf.connect(eq); eq.connect(comp);
-    comp.connect(dryG); comp.connect(conv); conv.connect(wetG);
-    dryG.connect(mast); wetG.connect(mast); mast.connect(offCtx.destination);
+    vSrc.connect(hpf);hpf.connect(lpf);lpf.connect(eq);eq.connect(comp);
+    comp.connect(dryG);comp.connect(conv);conv.connect(wetG);
+    dryG.connect(mast);wetG.connect(mast);mast.connect(offCtx.destination);
     vSrc.start(sOff);
 
-    setP(30, '🎵 Trilha de fundo...'); await wait(80);
-    if (selTheme !== 'none') {
-      const tBuf = genTheme(offCtx, totalDur, selTheme);
-      if (tBuf) { const tS=offCtx.createBufferSource();tS.buffer=tBuf;const tG=offCtx.createGain();tG.gain.value=bgVol;tS.connect(tG);tG.connect(offCtx.destination);tS.start(0); }
-    }
+    setP(30,'🎵 Trilha de fundo...');await wait(80);
+    if(selTheme!=='none'){const tBuf=genTheme(offCtx,totalDur,selTheme);if(tBuf){const tS=offCtx.createBufferSource();tS.buffer=tBuf;const tG=offCtx.createGain();tG.gain.value=bgVol;tS.connect(tG);tG.connect(offCtx.destination);tS.start(0);}}
 
-    setP(50, '✨ Efeitos sonoros...'); await wait(80);
-    const fxArr = [...activeFX];
-    fxArr.forEach((fxId, i) => {
-      const fxBuf = genSFX(offCtx, fxId);
-      const fxS = offCtx.createBufferSource(); fxS.buffer = fxBuf;
-      const fxG = offCtx.createGain(); fxG.gain.value = 0.3;
-      fxS.connect(fxG); fxG.connect(offCtx.destination);
-      const t = sOff + (srcBuf.duration / (fxArr.length+1)) * (i+1);
-      fxS.start(Math.max(0.05, t));
+    setP(50,'✨ Efeitos sonoros...');await wait(80);
+    // Use per-effect position from fxState
+    SFX.forEach(fx=>{
+      const st=fxState[fx.id];
+      if(!st.active)return;
+      const fxBuf=genSFX(offCtx,fx.id);
+      const fxS=offCtx.createBufferSource();fxS.buffer=fxBuf;
+      const fxG=offCtx.createGain();fxG.gain.value=0.3;
+      fxS.connect(fxG);fxG.connect(offCtx.destination);
+      const t=sOff+(srcBuf.duration*(st.pos/100));
+      fxS.start(Math.max(0.05,t));
     });
 
-    setP(65, '🎺 Vinhetas...'); await wait(80);
-    if (addIntro) { const s=offCtx.createBufferSource();s.buffer=makeJingle(offCtx,3,'intro');const g=offCtx.createGain();g.gain.value=0.55;s.connect(g);g.connect(offCtx.destination);s.start(0.01); }
-    if (addOutro) { const s=offCtx.createBufferSource();s.buffer=makeJingle(offCtx,3,'outro');const g=offCtx.createGain();g.gain.value=0.55;s.connect(g);g.connect(offCtx.destination);s.start(Math.max(0.05,endT)); }
+    setP(65,'🎺 Vinhetas...');await wait(80);
+    if(addIntro){const s=offCtx.createBufferSource();s.buffer=makeJingle(offCtx,3,'intro');const g=offCtx.createGain();g.gain.value=0.55;s.connect(g);g.connect(offCtx.destination);s.start(0.01);}
+    if(addOutro){const s=offCtx.createBufferSource();s.buffer=makeJingle(offCtx,3,'outro');const g=offCtx.createGain();g.gain.value=0.55;s.connect(g);g.connect(offCtx.destination);s.start(Math.max(0.05,endT));}
 
-    setP(78, '🔄 Renderizando...'); await wait(60);
-    const rendered = await offCtx.startRendering();
+    setP(78,'🔄 Renderizando...');await wait(60);
+    const rendered=await offCtx.startRendering();
 
-    setP(93, '💾 Codificando WAV...'); await wait(80);
-    const blob = toWav(rendered);
-    const url  = URL.createObjectURL(blob);
-    document.getElementById('out-player').src = url;
-    const dl = document.getElementById('dl-link');
-    dl.href = url; dl.download = 'historinhas-miguel-' + Date.now() + '.wav';
+    setP(93,'💾 Codificando WAV...');await wait(80);
+    const blob=toWav(rendered);
+    const url=URL.createObjectURL(blob);
+    document.getElementById('out-player').src=url;
+    const dl=document.getElementById('dl-link');dl.href=url;dl.download='historinhas-miguel-'+Date.now()+'.wav';
 
-    setP(100, '✅ Concluído!'); await wait(300);
-    pw.style.display = 'none';
-    document.getElementById('out-wrap').style.display = 'block';
+    setP(100,'✅ Concluído!');await wait(300);
+    pw.style.display='none';
+    document.getElementById('out-wrap').style.display='block';
     document.getElementById('out-wrap').scrollIntoView({behavior:'smooth'});
     toast('🎉 Podcast pronto!');
 
-  } catch(err) {
-    console.error('processAudio:', err);
-    showErr('❌ Erro: ' + err.message);
-    pw.style.display = 'none';
+  } catch(err){
+    console.error('processAudio:',err);showErr('❌ Erro: '+err.message);pw.style.display='none';
   } finally {
-    document.getElementById('proc-btn').disabled = false;
+    document.getElementById('proc-btn').disabled=false;
   }
 }
 
-/* ════════════════════════════════════════
-   SYNTH — SFX (each sound is distinct)
-════════════════════════════════════════ */
-function genSFX(ctx, id) {
-  const SR = ctx.sampleRate, dur = 1.5;
-  const buf = ctx.createBuffer(2, Math.ceil(SR*dur), SR);
-  const fns = {
-    stars:   t => Math.sin(2*Math.PI*(800+1200*t+300*Math.sin(18*t))*t)*Math.exp(-2.5*t)*0.45,
-    laugh:   t => { const b=Math.floor(t/0.14)%2===0?1:0; return (Math.random()*2-1)*b*Math.exp(-6*(t%0.14))*0.55*(1+0.6*Math.sin(9*2*Math.PI*t)); },
-    wow:     t => Math.sin(2*Math.PI*(520-300*t+80*Math.sin(3*t))*t)*Math.exp(-2.0*t)*0.5,
-    drum:    t => (Math.sin(2*Math.PI*55*(1-0.8*t)*t)*Math.exp(-12*t)+(Math.random()*2-1)*Math.exp(-30*t)*0.3)*0.7,
-    bell:    t => (Math.sin(2*Math.PI*880*t)*0.5+Math.sin(2*Math.PI*1760*t)*0.2+Math.sin(2*Math.PI*2637*t)*0.1)*Math.exp(-3.5*t)*0.55,
-    wind:    t => (Math.random()*2-1)*(0.5+0.5*Math.sin(Math.PI*t/1.5))*0.3*(1-Math.exp(-10*t)),
-    pop:     t => t<0.015 ? (Math.random()*2-1)*0.9 : (Math.random()*2-1)*Math.exp(-22*(t-0.015))*0.4,
-    tada:    t => { const fs=[523,659,784,1046]; const ix=Math.min(Math.floor(t/0.28),3); const lt=t-ix*0.28; return Math.sin(2*Math.PI*fs[ix]*lt)*Math.exp(-4*lt)*0.45; },
-    horse:   t => { const ph=t%0.22; const bt=Math.floor(t/0.22)%2; return Math.sin(2*Math.PI*(bt?180:140)*ph)*Math.exp(-18*ph)*0.55; },
-    bird:    t => Math.sin(2*Math.PI*(2200+600*Math.sin(14*Math.PI*t)+200*Math.sin(7*t))*t)*Math.exp(-2.5*t)*0.38,
-    thunder: t => (Math.random()*2-1)*(0.6+0.4*Math.sin(3*t))*Math.exp(-2.2*t)*0.75,
-    magic2:  t => { let s=0; [440,554,659,880,1046].forEach((f,pi)=>{ const d=pi*0.18; if(t>=d)s+=Math.sin(2*Math.PI*f*(t-d))*Math.exp(-5*(t-d))*0.18; }); return s; },
+/* ════════════════════════════
+   SYNTH — SFX (distinct sounds)
+════════════════════════════ */
+function genSFX(ctx,id){
+  const SR=ctx.sampleRate,dur=1.5;
+  const buf=ctx.createBuffer(2,Math.ceil(SR*dur),SR);
+  const fns={
+    stars:   t=>Math.sin(2*Math.PI*(800+1200*t+300*Math.sin(18*t))*t)*Math.exp(-2.5*t)*0.45,
+    laugh:   t=>{const b=Math.floor(t/0.14)%2===0?1:0;return(Math.random()*2-1)*b*Math.exp(-6*(t%0.14))*0.55*(1+0.6*Math.sin(9*2*Math.PI*t));},
+    wow:     t=>Math.sin(2*Math.PI*(520-300*t+80*Math.sin(3*t))*t)*Math.exp(-2.0*t)*0.5,
+    drum:    t=>(Math.sin(2*Math.PI*55*(1-0.8*t)*t)*Math.exp(-12*t)+(Math.random()*2-1)*Math.exp(-30*t)*0.3)*0.7,
+    bell:    t=>(Math.sin(2*Math.PI*880*t)*0.5+Math.sin(2*Math.PI*1760*t)*0.2+Math.sin(2*Math.PI*2637*t)*0.1)*Math.exp(-3.5*t)*0.55,
+    wind:    t=>(Math.random()*2-1)*(0.5+0.5*Math.sin(Math.PI*t/1.5))*0.3*(1-Math.exp(-10*t)),
+    pop:     t=>t<0.015?(Math.random()*2-1)*0.9:(Math.random()*2-1)*Math.exp(-22*(t-0.015))*0.4,
+    tada:    t=>{const fs=[523,659,784,1046];const ix=Math.min(Math.floor(t/0.28),3);const lt=t-ix*0.28;return Math.sin(2*Math.PI*fs[ix]*lt)*Math.exp(-4*lt)*0.45;},
+    horse:   t=>{const ph=t%0.22;const bt=Math.floor(t/0.22)%2;return Math.sin(2*Math.PI*(bt?180:140)*ph)*Math.exp(-18*ph)*0.55;},
+    bird:    t=>Math.sin(2*Math.PI*(2200+600*Math.sin(14*Math.PI*t)+200*Math.sin(7*t))*t)*Math.exp(-2.5*t)*0.38,
+    thunder: t=>(Math.random()*2-1)*(0.6+0.4*Math.sin(3*t))*Math.exp(-2.2*t)*0.75,
+    magic2:  t=>{let s=0;[440,554,659,880,1046].forEach((f,pi)=>{const d=pi*0.18;if(t>=d)s+=Math.sin(2*Math.PI*f*(t-d))*Math.exp(-5*(t-d))*0.18;});return s;},
   };
-  const fn = fns[id] || fns.bell;
-  for (let ch=0; ch<2; ch++) {
-    const d = buf.getChannelData(ch);
-    for (let i=0; i<d.length; i++) d[i] = Math.max(-1, Math.min(1, fn(i/SR, i)));
-  }
+  const fn=fns[id]||fns.bell;
+  for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<d.length;i++)d[i]=Math.max(-1,Math.min(1,fn(i/SR,i)));}
   return buf;
 }
 
-/* ════════════════════════════════════════
-   SYNTH — THEME BACKGROUNDS
-════════════════════════════════════════ */
-function genTheme(ctx, dur, theme) {
-  if (theme === 'none') return null;
-  const SR = ctx.sampleRate, len = Math.ceil(SR*dur);
-  const buf = ctx.createBuffer(2, len, SR);
-  const cfgs = {
-    forest: {base:220,h:[1,1.5,2,3],amp:.055},
-    ocean:  {base:110,h:[1,2,3,4.1],amp:.07,slow:true},
-    space:  {base:55, h:[1,2,3.7,5.1],amp:.045},
-    castle: {base:165,h:[1,2,3,4],amp:.06},
-    rain:   {base:0,  h:[],amp:.035,noise:true},
-    magic:  {base:440,h:[1,1.25,1.5,2],amp:.045},
-    sleep:  {base:80, h:[1,2,3],amp:.038,slow:true},
-    adv:    {base:130,h:[1,2,3,4],amp:.06},
-    joy:    {base:261,h:[1,2,3,4,5,6],amp:.055},
-    farm:   {base:196,h:[1,2,3,4,5],amp:.055},
-    mystery:{base:98, h:[1,1.7,2.5,3.9],amp:.045},
-  };
-  const cfg = cfgs[theme] || cfgs.forest;
-  for (let ch=0; ch<2; ch++) {
-    const d = buf.getChannelData(ch);
-    let prev = 0;
-    for (let i=0; i<len; i++) {
-      let s = 0;
-      if (cfg.noise) { s = prev*0.95+(Math.random()*2-1)*cfg.amp*0.05; prev=s; }
-      else cfg.h.forEach((hv,idx)=>{ const lfo=cfg.slow?(1+0.04*Math.sin(2*Math.PI*0.15*i/SR)):(1+0.02*Math.sin(2*Math.PI*0.3*i/SR)); s+=(cfg.amp/(idx+1))*Math.sin(2*Math.PI*cfg.base*hv*i/SR)*lfo; });
-      d[i] = s * Math.min(i/(SR*2),1) * Math.min((len-i)/(SR*2),1);
-    }
-  }
+/* ════════════════════════════
+   SYNTH — THEMES
+════════════════════════════ */
+function genTheme(ctx,dur,theme){
+  if(theme==='none')return null;
+  const SR=ctx.sampleRate,len=Math.ceil(SR*dur);
+  const buf=ctx.createBuffer(2,len,SR);
+  const cfgs={forest:{base:220,h:[1,1.5,2,3],amp:.055},ocean:{base:110,h:[1,2,3,4.1],amp:.07,slow:true},space:{base:55,h:[1,2,3.7,5.1],amp:.045},castle:{base:165,h:[1,2,3,4],amp:.06},rain:{base:0,h:[],amp:.035,noise:true},magic:{base:440,h:[1,1.25,1.5,2],amp:.045},sleep:{base:80,h:[1,2,3],amp:.038,slow:true},adv:{base:130,h:[1,2,3,4],amp:.06},joy:{base:261,h:[1,2,3,4,5,6],amp:.055},farm:{base:196,h:[1,2,3,4,5],amp:.055},mystery:{base:98,h:[1,1.7,2.5,3.9],amp:.045}};
+  const cfg=cfgs[theme]||cfgs.forest;
+  for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);let prev=0;for(let i=0;i<len;i++){let s=0;if(cfg.noise){s=prev*0.95+(Math.random()*2-1)*cfg.amp*0.05;prev=s;}else cfg.h.forEach((hv,idx)=>{const lfo=cfg.slow?(1+0.04*Math.sin(2*Math.PI*0.15*i/SR)):(1+0.02*Math.sin(2*Math.PI*0.3*i/SR));s+=(cfg.amp/(idx+1))*Math.sin(2*Math.PI*cfg.base*hv*i/SR)*lfo;});d[i]=s*Math.min(i/(SR*2),1)*Math.min((len-i)/(SR*2),1);}}
   return buf;
 }
 
-function makeIR(ctx, dur, decay) {
-  const len=Math.ceil(ctx.sampleRate*dur), buf=ctx.createBuffer(2,len,ctx.sampleRate);
-  for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}
-  return buf;
-}
+function makeIR(ctx,dur,decay){const len=Math.ceil(ctx.sampleRate*dur),buf=ctx.createBuffer(2,len,ctx.sampleRate);for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}return buf;}
 
-function makeJingle(ctx, dur, type) {
-  const SR=ctx.sampleRate, buf=ctx.createBuffer(2,Math.ceil(SR*dur),SR);
-  const notes=type==='intro'?[523.25,659.25,783.99,1046.50]:[1046.50,783.99,659.25,523.25];
-  for(let ch=0;ch<2;ch++){
-    const d=buf.getChannelData(ch);
-    notes.forEach((freq,idx)=>{
-      const start=Math.floor(idx*SR*0.55),nd=Math.floor(SR*0.5);
-      for(let i=0;i<nd&&(start+i)<d.length;i++){const t=i/SR,env=Math.exp(-3*t);d[start+i]+=Math.sin(2*Math.PI*freq*t)*env*0.28+Math.sin(2*Math.PI*freq*2*t)*env*0.09;}
-    });
-    for(let i=0;i<d.length;i++)d[i]*=Math.min(i/(SR*0.08),1)*Math.min((d.length-i)/(SR*0.25),1);
-  }
-  return buf;
-}
+function makeJingle(ctx,dur,type){const SR=ctx.sampleRate,buf=ctx.createBuffer(2,Math.ceil(SR*dur),SR);const notes=type==='intro'?[523.25,659.25,783.99,1046.50]:[1046.50,783.99,659.25,523.25];for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);notes.forEach((freq,idx)=>{const start=Math.floor(idx*SR*0.55),nd=Math.floor(SR*0.5);for(let i=0;i<nd&&(start+i)<d.length;i++){const t=i/SR,env=Math.exp(-3*t);d[start+i]+=Math.sin(2*Math.PI*freq*t)*env*0.28+Math.sin(2*Math.PI*freq*2*t)*env*0.09;}});for(let i=0;i<d.length;i++)d[i]*=Math.min(i/(SR*0.08),1)*Math.min((d.length-i)/(SR*0.25),1);}return buf;}
 
-function resample(buf, tSR, ctx) {
-  const ratio=tSR/buf.sampleRate, newLen=Math.ceil(buf.length*ratio);
-  const out=ctx.createBuffer(Math.min(buf.numberOfChannels,2),newLen,tSR);
-  for(let ch=0;ch<out.numberOfChannels;ch++){const src=buf.getChannelData(ch),dst=out.getChannelData(ch);for(let i=0;i<newLen;i++){const p=i/ratio,p0=Math.floor(p),f=p-p0;dst[i]=(src[p0]||0)+f*((src[p0+1]||0)-(src[p0]||0));}}
-  return out;
-}
+function resample(buf,tSR,ctx){const ratio=tSR/buf.sampleRate,newLen=Math.ceil(buf.length*ratio);const out=ctx.createBuffer(Math.min(buf.numberOfChannels,2),newLen,tSR);for(let ch=0;ch<out.numberOfChannels;ch++){const src=buf.getChannelData(ch),dst=out.getChannelData(ch);for(let i=0;i<newLen;i++){const p=i/ratio,p0=Math.floor(p),f=p-p0;dst[i]=(src[p0]||0)+f*((src[p0+1]||0)-(src[p0]||0));}}return out;}
 
-function toWav(buf) {
-  const nCh=buf.numberOfChannels,SR=buf.sampleRate,len=buf.length;
-  const ab=new ArrayBuffer(44+len*nCh*2),v=new DataView(ab);
-  const ws=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};
-  ws(0,'RIFF');v.setUint32(4,36+len*nCh*2,true);ws(8,'WAVE');
-  ws(12,'fmt ');v.setUint32(16,16,true);v.setInt16(20,1,true);v.setInt16(22,nCh,true);
-  v.setUint32(24,SR,true);v.setUint32(28,SR*nCh*2,true);v.setInt16(32,nCh*2,true);v.setInt16(34,16,true);
-  ws(36,'data');v.setUint32(40,len*nCh*2,true);
-  let off=44;
-  for(let i=0;i<len;i++)for(let ch=0;ch<nCh;ch++){const s=Math.max(-1,Math.min(1,buf.getChannelData(ch)[i]));v.setInt16(off,s<0?s*0x8000:s*0x7FFF,true);off+=2;}
-  return new Blob([ab],{type:'audio/wav'});
-}
+function toWav(buf){const nCh=buf.numberOfChannels,SR=buf.sampleRate,len=buf.length;const ab=new ArrayBuffer(44+len*nCh*2),v=new DataView(ab);const ws=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};ws(0,'RIFF');v.setUint32(4,36+len*nCh*2,true);ws(8,'WAVE');ws(12,'fmt ');v.setUint32(16,16,true);v.setInt16(20,1,true);v.setInt16(22,nCh,true);v.setUint32(24,SR,true);v.setUint32(28,SR*nCh*2,true);v.setInt16(32,nCh*2,true);v.setInt16(34,16,true);ws(36,'data');v.setUint32(40,len*nCh*2,true);let off=44;for(let i=0;i<len;i++)for(let ch=0;ch<nCh;ch++){const s=Math.max(-1,Math.min(1,buf.getChannelData(ch)[i]));v.setInt16(off,s<0?s*0x8000:s*0x7FFF,true);off+=2;}return new Blob([ab],{type:'audio/wav'});}
 
+/* UTILS */
 function fmtTime(s){if(!isFinite(s)||s<0)return'0:00';return Math.floor(s/60)+':'+(Math.floor(s%60)).toString().padStart(2,'0');}
 function fmtSize(b){return b>1e6?(b/1e6).toFixed(1)+' MB':(b/1e3).toFixed(0)+' KB';}
 function wait(ms){return new Promise(r=>setTimeout(r,ms));}
@@ -967,26 +834,22 @@ function showErr(m){const e=document.getElementById('err-msg');if(m){e.textConte
 let toastT;
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3000);}
 
-/* ════════════════════════════════════════
+/* ════════════════════════════
    INIT
-════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
-  // Paint all sliders on load
-  paintAllSliders();
-
+════════════════════════════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  paintAll();
   buildThemeGrid();
-  buildFXGrid();
+  buildFXList();
   setupFileInput();
 
-  document.getElementById('seek-bar').addEventListener('input', function() {
-    pausedAt = parseFloat(this.value);
-    paintSeek(this);
-    if (isPlaying) { stopPlayback(); startPlayback(); }
-    else if (srcBuf) document.getElementById('time-display').textContent = fmtTime(pausedAt)+' / '+fmtTime(srcBuf.duration);
+  document.getElementById('seek-bar').addEventListener('input',function(){
+    pausedAt=parseFloat(this.value); paintSeek(this);
+    if(isPlaying){stopPlayback();startPlayback();}
+    else if(srcBuf)document.getElementById('time-display').textContent=fmtTime(pausedAt)+' / '+fmtTime(srcBuf.duration);
   });
 
-  // Re-paint sliders if window resizes
-  window.addEventListener('resize', paintAllSliders);
+  window.addEventListener('resize',paintAll);
 });
 </script>
 
