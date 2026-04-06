@@ -418,13 +418,22 @@ let isPlaying=false, playSrc=null, startedAt=0, pausedAt=0, seekRAF=null;
 let thPrevSrc=null, thPrevBtn=null;
 let fxPrevSrc=null, fxPrevPlayBtn=null;
 
-function ensureCtx() {
-  if (!audioCtx || audioCtx.state==='closed') {
-    audioCtx = new (window.AudioContext||window.webkitAudioContext)({sampleRate:44100});
+// Safari iOS fix: criar contexto sincronamente no gesto do usuario,
+// depois await resume() antes de iniciar qualquer BufferSource.
+function getOrCreateCtx() {
+  if (!audioCtx || audioCtx.state === 'closed') {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 44100 });
   }
-  if (audioCtx.state==='suspended') audioCtx.resume();
   return audioCtx;
 }
+async function resumeCtx() {
+  const ctx = getOrCreateCtx();
+  if (ctx.state === 'suspended') {
+    try { await ctx.resume(); } catch(e) { console.warn('ctx.resume failed', e); }
+  }
+  return ctx;
+}
+function ensureCtx() { return getOrCreateCtx(); }
 
 /* ════════════════════════════
    TOGGLE
@@ -454,14 +463,15 @@ function buildThemeGrid() {
   });
 }
 
-function previewTheme(id, btn) {
+async function previewTheme(id, btn) {
   stopThemePrev();
-  const ctx = ensureCtx();
+  // CRITICAL for Safari iOS: await resume inside the user gesture
+  const ctx = await resumeCtx();
   const buf = genTheme(ctx, 7, id); if (!buf) return;
   thPrevSrc = ctx.createBufferSource(); thPrevSrc.buffer = buf;
   const g = ctx.createGain(); g.gain.value = 0.6;
   thPrevSrc.connect(g); g.connect(ctx.destination);
-  thPrevSrc.start(0);
+  thPrevSrc.start(ctx.currentTime + 0.05);
   thPrevSrc.onended = () => {
     if (thPrevBtn) thPrevBtn.classList.remove('playing');
     document.getElementById('theme-stop-btn').classList.remove('on');
@@ -514,10 +524,10 @@ function buildFXList() {
     playBtn.innerHTML = '▶';
     playBtn.title = 'Ouvir amostra';
     // Use touchend + click both to maximise iOS compatibility
-    playBtn.addEventListener('click', (e) => {
+    playBtn.addEventListener('click', async (e) => {
       e.stopPropagation();
       if (fxPrevSrc && fxPrevPlayBtn === playBtn) stopFXPrev();
-      else previewFX(fx.id, playBtn);
+      else await previewFX(fx.id, playBtn);
     });
 
     row.appendChild(toggleArea);
@@ -561,16 +571,20 @@ function onFXPos(id, el) {
   if (lbl) lbl.textContent = 'Entra em: ' + Math.round(el.value) + '%';
 }
 
-function previewFX(id, btn) {
+async function previewFX(id, btn) {
   stopFXPrev();
-  const ctx = ensureCtx();
+  // CRITICAL for Safari iOS: resume MUST be awaited inside the user gesture
+  const ctx = await resumeCtx();
+  // Generate buffer AFTER context is running
   const buf = genSFX(ctx, id);
   fxPrevSrc = ctx.createBufferSource(); fxPrevSrc.buffer = buf;
   const g = ctx.createGain(); g.gain.value = 0.8;
   fxPrevSrc.connect(g); g.connect(ctx.destination);
-  fxPrevSrc.start(0);
+  // Small offset so Safari doesn't drop the first frames
+  const startAt = ctx.currentTime + 0.05;
+  fxPrevSrc.start(startAt);
   fxPrevSrc.onended = () => {
-    if (fxPrevPlayBtn) fxPrevPlayBtn.classList.remove('playing');
+    if (fxPrevPlayBtn) { fxPrevPlayBtn.classList.remove('playing'); fxPrevPlayBtn.innerHTML='▶'; }
     fxPrevSrc=null; fxPrevPlayBtn=null;
   };
   fxPrevPlayBtn=btn; btn.classList.add('playing');
@@ -619,8 +633,9 @@ async function loadFile(file) {
   document.getElementById('file-loaded').style.display='block';
   document.getElementById('waveform-section').style.display='none';
   try {
-    const ctx=ensureCtx();
+    getOrCreateCtx();
     const ab=await file.arrayBuffer();
+    const ctx=await resumeCtx();
     srcBuf=await new Promise((res,rej)=>{
       ctx.decodeAudioData(ab,res,()=>rej(new Error('Formato não suportado.\n\nDica iPhone: App Arquivos → segure o arquivo → Ações Rápidas → Converter para MP3 (se disponível), ou envie para si mesmo por e-mail e baixe como MP3.')));
     });
@@ -653,12 +668,12 @@ function drawWaveform(buf) {
 /* ════════════════════════════
    PLAYBACK
 ════════════════════════════ */
-function togglePlay(){if(!srcBuf)return;if(isPlaying)stopPlayback();else startPlayback();}
-function startPlayback(){
-  const ctx=ensureCtx();
+function togglePlay(){if(!srcBuf)return;if(isPlaying)stopPlayback();else startPlayback().catch(e=>console.error(e));}
+async function startPlayback(){
+  const ctx=await resumeCtx();
   playSrc=ctx.createBufferSource();playSrc.buffer=srcBuf;
   playSrc.connect(ctx.destination);
-  startedAt=ctx.currentTime-pausedAt; playSrc.start(0,pausedAt);
+  startedAt=ctx.currentTime-pausedAt; playSrc.start(ctx.currentTime+0.05,pausedAt);
   isPlaying=true; document.getElementById('play-btn').textContent='⏸';
   playSrc.onended=()=>{isPlaying=false;pausedAt=0;document.getElementById('play-btn').textContent='▶';const sb=document.getElementById('seek-bar');sb.value=0;paintSeek(sb);if(seekRAF)cancelAnimationFrame(seekRAF);};
   tickSeek();
