@@ -418,21 +418,48 @@ let isPlaying=false, playSrc=null, startedAt=0, pausedAt=0, seekRAF=null;
 let thPrevSrc=null, thPrevBtn=null;
 let fxPrevSrc=null, fxPrevPlayBtn=null;
 
-// Safari iOS fix: criar contexto sincronamente no gesto do usuario,
-// depois await resume() antes de iniciar qualquer BufferSource.
+// ─────────────────────────────────────────────────────
+// Safari iOS AudioContext unlock — the only reliable method.
+// We create the context on first user gesture, play a silent
+// buffer to "unlock" it, and keep it alive from then on.
+// ─────────────────────────────────────────────────────
+let ctxUnlocked = false;
+
 function getOrCreateCtx() {
   if (!audioCtx || audioCtx.state === 'closed') {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 44100 });
+    ctxUnlocked = false;
   }
   return audioCtx;
 }
+
 async function resumeCtx() {
   const ctx = getOrCreateCtx();
+
+  // Step 1: resume if suspended
   if (ctx.state === 'suspended') {
-    try { await ctx.resume(); } catch(e) { console.warn('ctx.resume failed', e); }
+    try { await ctx.resume(); } catch(e) {}
   }
+
+  // Step 2: play silent buffer to fully unlock on iOS
+  if (!ctxUnlocked) {
+    await new Promise(resolve => {
+      const silentBuf = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
+      const src = ctx.createBufferSource();
+      src.buffer = silentBuf;
+      src.connect(ctx.destination);
+      src.onended = () => { resolve(); };
+      src.start(0);
+      // Fallback in case onended doesn't fire
+      setTimeout(resolve, 200);
+    });
+    ctxUnlocked = true;
+  }
+
   return ctx;
 }
+
+// Compat alias used in processAudio (OfflineAudioContext path)
 function ensureCtx() { return getOrCreateCtx(); }
 
 /* ════════════════════════════
@@ -753,6 +780,9 @@ async function processAudio() {
   try {
     setP(5,'🎤 Preparando...');await wait(120);
 
+    // Ensure live context is unlocked (needed if user hasn't previewed anything)
+    await resumeCtx();
+
     const voiceGain  = parseInt(document.getElementById('sl-voice').value)/100;
     const bgVol      = parseInt(document.getElementById('sl-bgvol').value)/100*0.28;
     const noiseRed   = parseInt(document.getElementById('sl-noise').value)/100;
@@ -892,7 +922,24 @@ function toast(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 /* ════════════════════════════
    INIT
 ════════════════════════════ */
+// Pre-unlock AudioContext on very first touch anywhere on the page
+// This is the most reliable iOS Safari technique
+function setupPageUnlock() {
+  const unlock = async () => {
+    if (!ctxUnlocked) {
+      await resumeCtx();
+    }
+    document.removeEventListener('touchstart', unlock, true);
+    document.removeEventListener('touchend', unlock, true);
+    document.removeEventListener('click', unlock, true);
+  };
+  document.addEventListener('touchstart', unlock, { once: true, capture: true, passive: true });
+  document.addEventListener('touchend',   unlock, { once: true, capture: true, passive: true });
+  document.addEventListener('click',      unlock, { once: true, capture: true });
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
+  setupPageUnlock();
   paintAll();
   buildThemeGrid();
   buildFXList();
