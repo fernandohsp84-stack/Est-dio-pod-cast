@@ -419,48 +419,21 @@ let thPrevSrc=null, thPrevBtn=null;
 let fxPrevSrc=null, fxPrevPlayBtn=null;
 
 // ─────────────────────────────────────────────────────
-// Safari iOS AudioContext unlock — the only reliable method.
-// We create the context on first user gesture, play a silent
-// buffer to "unlock" it, and keep it alive from then on.
+// iOS Safari AudioContext: the ONLY reliable approach is to
+// call ctx.resume() and source.start() SYNCHRONOUSLY within
+// the same call stack as the user gesture (touchend/click).
+// Any await/Promise breaks the gesture chain on iOS.
 // ─────────────────────────────────────────────────────
-let ctxUnlocked = false;
-
-function getOrCreateCtx() {
+function ensureCtx() {
   if (!audioCtx || audioCtx.state === 'closed') {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 44100 });
-    ctxUnlocked = false;
+  }
+  // Call resume() synchronously — do NOT await it
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume(); // fire-and-forget, iOS unlocks on the gesture
   }
   return audioCtx;
 }
-
-async function resumeCtx() {
-  const ctx = getOrCreateCtx();
-
-  // Step 1: resume if suspended
-  if (ctx.state === 'suspended') {
-    try { await ctx.resume(); } catch(e) {}
-  }
-
-  // Step 2: play silent buffer to fully unlock on iOS
-  if (!ctxUnlocked) {
-    await new Promise(resolve => {
-      const silentBuf = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
-      const src = ctx.createBufferSource();
-      src.buffer = silentBuf;
-      src.connect(ctx.destination);
-      src.onended = () => { resolve(); };
-      src.start(0);
-      // Fallback in case onended doesn't fire
-      setTimeout(resolve, 200);
-    });
-    ctxUnlocked = true;
-  }
-
-  return ctx;
-}
-
-// Compat alias used in processAudio (OfflineAudioContext path)
-function ensureCtx() { return getOrCreateCtx(); }
 
 /* ════════════════════════════
    TOGGLE
@@ -490,23 +463,28 @@ function buildThemeGrid() {
   });
 }
 
-async function previewTheme(id, btn) {
+function previewTheme(id, btn) {
   stopThemePrev();
-  // CRITICAL for Safari iOS: await resume inside the user gesture
-  const ctx = await resumeCtx();
-  const buf = genTheme(ctx, 7, id); if (!buf) return;
-  thPrevSrc = ctx.createBufferSource(); thPrevSrc.buffer = buf;
-  const g = ctx.createGain(); g.gain.value = 0.6;
-  thPrevSrc.connect(g); g.connect(ctx.destination);
-  thPrevSrc.start(ctx.currentTime + 0.05);
+  // iOS Safari: synchronous within gesture call stack
+  const ctx = ensureCtx();
+  const buf = genTheme(ctx, 7, id);
+  if (!buf) return;
+  thPrevSrc = ctx.createBufferSource();
+  thPrevSrc.buffer = buf;
+  const g = ctx.createGain();
+  g.gain.value = 0.6;
+  thPrevSrc.connect(g);
+  g.connect(ctx.destination);
+  thPrevSrc.start(0);
   thPrevSrc.onended = () => {
     if (thPrevBtn) thPrevBtn.classList.remove('playing');
     document.getElementById('theme-stop-btn').classList.remove('on');
-    thPrevSrc=null; thPrevBtn=null;
+    thPrevSrc = null; thPrevBtn = null;
   };
-  thPrevBtn=btn; btn.classList.add('playing');
+  thPrevBtn = btn;
+  btn.classList.add('playing');
   document.getElementById('theme-stop-btn').classList.add('on');
-  toast('▶ '+btn.querySelector('.t-lb').textContent);
+  toast('▶ ' + btn.querySelector('.t-lb').textContent);
 }
 
 function stopThemePrev() {
@@ -551,10 +529,10 @@ function buildFXList() {
     playBtn.innerHTML = '▶';
     playBtn.title = 'Ouvir amostra';
     // Use touchend + click both to maximise iOS compatibility
-    playBtn.addEventListener('click', async (e) => {
+    playBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (fxPrevSrc && fxPrevPlayBtn === playBtn) stopFXPrev();
-      else await previewFX(fx.id, playBtn);
+      else previewFX(fx.id, playBtn);
     });
 
     row.appendChild(toggleArea);
@@ -598,26 +576,28 @@ function onFXPos(id, el) {
   if (lbl) lbl.textContent = 'Entra em: ' + Math.round(el.value) + '%';
 }
 
-async function previewFX(id, btn) {
+function previewFX(id, btn) {
   stopFXPrev();
-  // CRITICAL for Safari iOS: resume MUST be awaited inside the user gesture
-  const ctx = await resumeCtx();
-  // Generate buffer AFTER context is running
+  // iOS Safari: ensureCtx() calls resume() synchronously within the gesture
+  const ctx = ensureCtx();
   const buf = genSFX(ctx, id);
-  fxPrevSrc = ctx.createBufferSource(); fxPrevSrc.buffer = buf;
-  const g = ctx.createGain(); g.gain.value = 0.8;
-  fxPrevSrc.connect(g); g.connect(ctx.destination);
-  // Small offset so Safari doesn't drop the first frames
-  const startAt = ctx.currentTime + 0.05;
-  fxPrevSrc.start(startAt);
+  fxPrevSrc = ctx.createBufferSource();
+  fxPrevSrc.buffer = buf;
+  const g = ctx.createGain();
+  g.gain.value = 0.8;
+  fxPrevSrc.connect(g);
+  g.connect(ctx.destination);
+  // start(0) must be called synchronously in the same gesture call stack
+  fxPrevSrc.start(0);
   fxPrevSrc.onended = () => {
-    if (fxPrevPlayBtn) { fxPrevPlayBtn.classList.remove('playing'); fxPrevPlayBtn.innerHTML='▶'; }
-    fxPrevSrc=null; fxPrevPlayBtn=null;
+    if (fxPrevPlayBtn) { fxPrevPlayBtn.classList.remove('playing'); fxPrevPlayBtn.innerHTML = '▶'; }
+    fxPrevSrc = null; fxPrevPlayBtn = null;
   };
-  fxPrevPlayBtn=btn; btn.classList.add('playing');
-  btn.innerHTML='■';
+  fxPrevPlayBtn = btn;
+  btn.classList.add('playing');
+  btn.innerHTML = '■';
   const name = btn.closest('.fx-item').querySelector('.fx-name').textContent;
-  toast('▶ '+name);
+  toast('▶ ' + name);
 }
 
 function stopFXPrev() {
@@ -661,8 +641,8 @@ async function loadFile(file) {
   document.getElementById('waveform-section').style.display='none';
   try {
     getOrCreateCtx();
+    const ctx = ensureCtx();
     const ab=await file.arrayBuffer();
-    const ctx=await resumeCtx();
     srcBuf=await new Promise((res,rej)=>{
       ctx.decodeAudioData(ab,res,()=>rej(new Error('Formato não suportado.\n\nDica iPhone: App Arquivos → segure o arquivo → Ações Rápidas → Converter para MP3 (se disponível), ou envie para si mesmo por e-mail e baixe como MP3.')));
     });
@@ -735,12 +715,12 @@ function drawWaveform(buf) {
 /* ════════════════════════════
    PLAYBACK
 ════════════════════════════ */
-function togglePlay(){if(!srcBuf)return;if(isPlaying)stopPlayback();else startPlayback().catch(e=>console.error(e));}
-async function startPlayback(){
-  const ctx=await resumeCtx();
+function togglePlay(){if(!srcBuf)return;if(isPlaying)stopPlayback();else startPlayback();}
+function startPlayback(){
+  const ctx=ensureCtx();
   playSrc=ctx.createBufferSource();playSrc.buffer=srcBuf;
   playSrc.connect(ctx.destination);
-  startedAt=ctx.currentTime-pausedAt; playSrc.start(ctx.currentTime+0.05,pausedAt);
+  startedAt=ctx.currentTime-pausedAt; playSrc.start(0,pausedAt);
   isPlaying=true; document.getElementById('play-btn').textContent='⏸';
   playSrc.onended=()=>{isPlaying=false;pausedAt=0;document.getElementById('play-btn').textContent='▶';const sb=document.getElementById('seek-bar');sb.value=0;paintSeek(sb);if(seekRAF)cancelAnimationFrame(seekRAF);};
   tickSeek();
@@ -779,9 +759,6 @@ async function processAudio() {
 
   try {
     setP(5,'🎤 Preparando...');await wait(120);
-
-    // Ensure live context is unlocked (needed if user hasn't previewed anything)
-    await resumeCtx();
 
     const voiceGain  = parseInt(document.getElementById('sl-voice').value)/100;
     const bgVol      = parseInt(document.getElementById('sl-bgvol').value)/100*0.28;
@@ -925,17 +902,10 @@ function toast(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 // Pre-unlock AudioContext on very first touch anywhere on the page
 // This is the most reliable iOS Safari technique
 function setupPageUnlock() {
-  const unlock = async () => {
-    if (!ctxUnlocked) {
-      await resumeCtx();
-    }
-    document.removeEventListener('touchstart', unlock, true);
-    document.removeEventListener('touchend', unlock, true);
-    document.removeEventListener('click', unlock, true);
-  };
+  // Pre-warm the AudioContext on first touch so it's ready instantly
+  const unlock = () => { ensureCtx(); };
   document.addEventListener('touchstart', unlock, { once: true, capture: true, passive: true });
-  document.addEventListener('touchend',   unlock, { once: true, capture: true, passive: true });
-  document.addEventListener('click',      unlock, { once: true, capture: true });
+  document.addEventListener('click',      unlock, { once: true, capture: true, passive: true });
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
