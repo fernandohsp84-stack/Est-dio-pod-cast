@@ -367,6 +367,7 @@ function initSliders() {
   sb.addEventListener('input', () => {
     pausedAt = +sb.value;
     paintSeek(sb);
+    if (playbackAudio) playbackAudio.currentTime = pausedAt;
     if (isPlaying) { stopPlayback(); startPlayback(); }
     else if (srcBuf) document.getElementById('time-disp').textContent = fmt(pausedAt)+' / '+fmt(srcBuf.duration);
   });
@@ -406,7 +407,7 @@ let srcBuf = null, selTheme = 'none';
 const fxSt = {};        // {id: {active, pos}}
 SFX.forEach(f => { fxSt[f.id] = {active:false, pos:50}; });
 
-let isPlaying=false, playSrc=null, stAt=0, pausedAt=0, seekRAF=null;
+let isPlaying=false, playSrc=null, playbackAudio=null, stAt=0, pausedAt=0, seekRAF=null;
 let thSrc=null, thBtn=null;
 let fxSrc=null, fxBtn=null;
 
@@ -416,10 +417,57 @@ let fxSrc=null, fxBtn=null;
    in the same call stack as the user gesture.
    source.start() also called synchronously.
 ───────────────────────────────────────── */
+// AudioContext — only used for decodeAudioData and OfflineAudioContext rendering.
+// NOT used for preview playback (previews use <audio> elements instead).
 function getAC() {
   if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)({sampleRate:44100});
-  if (AC.state === 'suspended') AC.resume(); // sync, no await — required by iOS
   return AC;
+}
+
+// Convert an AudioBuffer to a base64 WAV data URL
+function bufToDataURL(buf) {
+  const blob = toWav(buf);
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
+
+// Pre-generated data URLs for each SFX (created on first use)
+const sfxCache = {};
+let sfxAC = null; // temporary offline context for sfx generation
+
+function getSfxAC() {
+  if (!sfxAC) sfxAC = new OfflineAudioContext(2, 44100*2, 44100);
+  return sfxAC;
+}
+
+// Play a sound using an <audio> element — no gesture restrictions on iOS
+let previewAudio = null;
+
+function playAudioEl(dataURL, onEnd) {
+  if (previewAudio) {
+    previewAudio.pause();
+    previewAudio.src = '';
+    previewAudio = null;
+  }
+  const a = new Audio(dataURL);
+  a.volume = 0.8;
+  previewAudio = a;
+  a.onended = () => { onEnd && onEnd(); previewAudio = null; };
+  a.onerror = (e) => { console.error('audio play error', e); onEnd && onEnd(); };
+  // play() returns a promise — catch silently on iOS
+  const p = a.play();
+  if (p && p.catch) p.catch(e => console.warn('play() blocked:', e));
+}
+
+function stopPreviewAudio() {
+  if (previewAudio) {
+    previewAudio.pause();
+    previewAudio.src = '';
+    previewAudio = null;
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -452,24 +500,35 @@ function buildThemes() {
 
 function prevTheme(id, btn) {
   stopThPrev();
-  const ctx = getAC();                     // sync within gesture ✓
-  const buf = mkTheme(ctx, 7, id);
-  if (!buf) return;
-  thSrc = ctx.createBufferSource(); thSrc.buffer = buf;
-  const g = ctx.createGain(); g.gain.value = 0.55;
-  thSrc.connect(g); g.connect(ctx.destination);
-  thSrc.start(0);                          // sync ✓
-  thSrc.onended = () => {
-    if (thBtn) thBtn.classList.remove('playing');
-    document.getElementById('th-stop').classList.remove('on');
-    thSrc = null; thBtn = null;
-  };
-  thBtn = btn; btn.classList.add('playing');
+
+  thBtn = btn;
+  btn.classList.add('playing');
   document.getElementById('th-stop').classList.add('on');
-  toast('▶ ' + btn.querySelector('.tl').textContent);
+  const nm = btn.querySelector('.tl').textContent;
+
+  // Generate theme audio buffer using a fresh context
+  const tmpCtx = new (window.AudioContext || window.webkitAudioContext)({sampleRate:44100});
+  const buf = mkTheme(tmpCtx, 7, id);
+  if (!buf) { stopThPrev(); return; }
+
+  bufToDataURL(buf).then(dataURL => {
+    tmpCtx.close();
+    playAudioEl(dataURL, () => {
+      if (thBtn === btn) {
+        btn.classList.remove('playing');
+        document.getElementById('th-stop').classList.remove('on');
+        thBtn = null;
+      }
+    });
+    toast('▶ ' + nm);
+  }).catch(e => {
+    console.error('prevTheme error:', e);
+    stopThPrev();
+  });
 }
 
 function stopThPrev() {
+  stopPreviewAudio();
   if (thSrc) { try { thSrc.stop(); } catch(e){} thSrc = null; }
   if (thBtn) { thBtn.classList.remove('playing'); thBtn = null; }
   document.getElementById('th-stop').classList.remove('on');
@@ -534,23 +593,37 @@ function toggleFX(id) {
 }
 
 function prevFX(id, btn) {
+  // Stop any current preview
   stopFXPrev();
-  const ctx = getAC();                   // sync within gesture ✓
-  const buf = mkSFX(ctx, id);
-  fxSrc = ctx.createBufferSource(); fxSrc.buffer = buf;
-  const g = ctx.createGain(); g.gain.value = 0.75;
-  fxSrc.connect(g); g.connect(ctx.destination);
-  fxSrc.start(0);                        // sync ✓
-  fxSrc.onended = () => {
-    if (fxBtn) { fxBtn.classList.remove('playing'); fxBtn.innerHTML = '▶'; }
-    fxSrc = null; fxBtn = null;
-  };
-  fxBtn = btn; btn.classList.add('playing'); btn.innerHTML = '■';
+  if (fxBtn === btn) return; // second tap = stop
+
+  fxBtn = btn;
+  btn.classList.add('playing');
+  btn.innerHTML = '⏳';
   const nm = btn.closest('.fx-item').querySelector('.fx-name').textContent;
-  toast('▶ ' + nm);
+
+  // Generate SFX using a standalone AudioContext (not the shared AC)
+  // Using a fresh StandardAudioContext just for buffer generation (no playback)
+  const tmpCtx = new (window.AudioContext || window.webkitAudioContext)({sampleRate:44100});
+  const buf = mkSFX(tmpCtx, id);
+
+  // Convert to WAV data URL, then play via <audio> element
+  // <audio> has no gesture restrictions on iOS Safari
+  bufToDataURL(buf).then(dataURL => {
+    tmpCtx.close();
+    playAudioEl(dataURL, () => {
+      if (fxBtn === btn) { btn.classList.remove('playing'); btn.innerHTML = '▶'; fxBtn = null; }
+    });
+    btn.innerHTML = '■';
+    toast('▶ ' + nm);
+  }).catch(e => {
+    console.error('prevFX error:', e);
+    btn.classList.remove('playing'); btn.innerHTML = '▶'; fxBtn = null;
+  });
 }
 
 function stopFXPrev() {
+  stopPreviewAudio();
   if (fxSrc) { try { fxSrc.stop(); } catch(e){} fxSrc = null; }
   if (fxBtn) { fxBtn.classList.remove('playing'); fxBtn.innerHTML = '▶'; fxBtn = null; }
 }
@@ -660,31 +733,45 @@ function drawWV(buf) {
 function togglePlay() { if (!srcBuf) return; if (isPlaying) stopPlayback(); else startPlayback(); }
 
 function startPlayback() {
-  const ctx = getAC();                   // sync, within gesture ✓
-  playSrc = ctx.createBufferSource(); playSrc.buffer = srcBuf;
-  playSrc.connect(ctx.destination);
-  stAt = ctx.currentTime - pausedAt;
-  playSrc.start(0, pausedAt);            // sync ✓
-  isPlaying = true; document.getElementById('play-btn').textContent = '⏸';
-  playSrc.onended = () => {
-    isPlaying = false; pausedAt = 0;
-    document.getElementById('play-btn').textContent = '▶';
-    const sb = document.getElementById('seek-bar'); sb.value = 0; paintSeek(sb);
-    if (seekRAF) cancelAnimationFrame(seekRAF);
-  };
-  tickSeek();
+  if (!srcBuf) return;
+
+  // Convert srcBuf to data URL and play via <audio> element
+  // This avoids ALL AudioContext gesture restrictions on iOS
+  bufToDataURL(srcBuf).then(dataURL => {
+    if (playbackAudio) { playbackAudio.pause(); playbackAudio = null; }
+    const a = new Audio(dataURL);
+    playbackAudio = a;
+    a.currentTime = pausedAt;
+    a.onended = () => {
+      isPlaying = false; pausedAt = 0; playbackAudio = null;
+      document.getElementById('play-btn').textContent = '▶';
+      const sb = document.getElementById('seek-bar'); sb.value = 0; paintSeek(sb);
+      if (seekRAF) cancelAnimationFrame(seekRAF);
+    };
+    a.onerror = (e) => { console.error('playback error', e); isPlaying = false; };
+    const p = a.play();
+    if (p && p.catch) p.catch(e => console.warn('play() blocked:', e));
+    isPlaying = true;
+    document.getElementById('play-btn').textContent = '⏸';
+    stAt = performance.now()/1000 - pausedAt;
+    tickSeek();
+  });
 }
 
 function stopPlayback() {
-  if (playSrc) { try { playSrc.stop(); } catch(e){} }
-  pausedAt = AC ? Math.min(AC.currentTime - stAt, srcBuf ? srcBuf.duration : 0) : 0;
+  if (playbackAudio) {
+    pausedAt = playbackAudio.currentTime;
+    playbackAudio.pause();
+    playbackAudio = null;
+  }
+  if (playSrc) { try { playSrc.stop(); } catch(e){} playSrc = null; }
   isPlaying = false; document.getElementById('play-btn').textContent = '▶';
   if (seekRAF) cancelAnimationFrame(seekRAF);
 }
 
 function tickSeek() {
   if (!isPlaying) return;
-  const cur = AC.currentTime - stAt;
+  const cur = playbackAudio ? playbackAudio.currentTime : (performance.now()/1000 - stAt);
   const sb = document.getElementById('seek-bar'); sb.value = Math.min(cur, srcBuf.duration); paintSeek(sb);
   document.getElementById('time-disp').textContent = fmt(cur)+' / '+fmt(srcBuf.duration);
   seekRAF = requestAnimationFrame(tickSeek);
